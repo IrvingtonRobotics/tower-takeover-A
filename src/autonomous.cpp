@@ -1,4 +1,6 @@
-#include "main.h"
+#include "common.cpp"
+
+using namespace okapi;
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -11,4 +13,11 @@
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+	printf("Moving 1\n");
+	drive.moveDistance(12_in);
+	printf("Done moving 1\n");
+	printf("Moving 1\n");
+	drive.moveDistance(12_in);
+	printf("Done moving 1\n");
+}

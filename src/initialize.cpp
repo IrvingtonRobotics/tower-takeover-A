@@ -1,14 +1,38 @@
-#include "main.h"
+#include "common.cpp"
+/**
+ * LCD Configuration
+ */
 
-void on_center_button() {
-	static bool pressed = false;
-	pressed = !pressed;
-	if (pressed) {
-		pros::lcd::set_text(2, "I was pressed!");
-	} else {
-		pros::lcd::clear_line(2);
-	}
+bool is_red = true;
+bool is_back = true;
+
+void set_color_text() {
+  std::string color = is_red ? "red" : "blue";
+	pros::lcd::set_text(2, "Color: " + color + ".");
 }
+
+void set_location_text() {
+  std::string location = is_back ? "back" : "side";
+  pros::lcd::set_text(3, "Location: " + location + ".");
+}
+
+void on_left_button() {
+  is_red = !is_red;
+  set_color_text();
+}
+
+void on_right_button() {
+  is_back = !is_back;
+  set_location_text();
+}
+
+ChassisControllerIntegrated drive = ChassisControllerFactory::create(
+  -10, 1,
+  AbstractMotor::gearset::green,
+  {4_in, 11.5_in}
+);
+
+AsyncPosIntegratedController lift = AsyncControllerFactory::posIntegrated(9);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -17,10 +41,22 @@ void on_center_button() {
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-	pros::lcd::initialize();
-	pros::lcd::set_text(1, "Hello PROS User!");
+  /**
+   * Parts Configuration
+   */
 
-	pros::lcd::register_btn1_cb(on_center_button);
+  /**
+   * LCD Configuration
+   */
+
+ 	pros::lcd::initialize();
+
+  pros::lcd::set_text(0, "Configuration");
+  set_location_text();
+  set_color_text();
+
+	pros::lcd::register_btn0_cb(on_left_button);
+  pros::lcd::register_btn2_cb(on_right_button);
 }
 
 /**
