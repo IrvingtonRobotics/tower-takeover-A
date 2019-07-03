@@ -1,4 +1,4 @@
-#include "common.cpp"
+#include "common.hpp"
 
 using namespace okapi;
 

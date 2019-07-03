@@ -1,4 +1,4 @@
-#include "common.cpp"
+#include "common.hpp"
 /**
  * LCD Configuration
  */
@@ -44,6 +44,9 @@ void initialize() {
   /**
    * Parts Configuration
    */
+
+  lift.setMaxVelocity(30);
+  liftTareHeight(1_in);
 
   /**
    * LCD Configuration
