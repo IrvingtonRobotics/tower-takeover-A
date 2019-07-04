@@ -18,6 +18,9 @@ extern const QLength targetHeights[];
 extern const int ticksPerRev;
 extern int liftTareTicks;
 
+QLength getLiftHeight(double ticks);
+double getLiftTicks(QLength height);
+
 void liftTareHeight(QLength height);
 void moveLift(int height);
 void moveLift(QLength height);

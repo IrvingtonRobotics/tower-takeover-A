@@ -6,20 +6,14 @@ extern const QLength armLength = 20_in;
 // height of arm above ground
 extern const QLength armElevation = 16_in;
 extern const int numHeights = 3;
-extern const QLength targetHeights[] = {0_in, 18.5_in, 24.5_in, 38.0_in};
+extern const QLength targetHeights[] = {1_in, 18.5_in, 24.5_in, 38.0_in};
 extern const int ticksPerRev = 900;
 extern const QLength maxArmHeight = armElevation + armLength * 0.9;
+extern const QLength minArmHeight = 1_in;
 int liftTareTicks = 0;
 
-int getLiftTicks(QLength height) {
+double getLiftTicks(QLength height) {
   QLength dy = height - armElevation;
-  if (height > maxArmHeight) {
-    printf(
-      "Height %f is too high --> rounding down to %f\n",
-      height, maxArmHeight
-    );
-    dy = maxArmHeight;
-  }
   double ratio = (dy / armLength).getValue();
   printf("Height sin: %f\n", ratio);
   // radians
@@ -27,6 +21,16 @@ int getLiftTicks(QLength height) {
   printf("Height angle: %f\n", angle);
   double revolutions = angle / PI / 2;
   return revolutions * ticksPerRev;
+}
+
+QLength getLiftHeight(double ticks) {
+  double revolutions = ticks / ticksPerRev;
+  // radians
+  double angle = revolutions * PI * 2;
+  double ratio = sin(angle);
+  QLength dy = ratio * armLength;
+  QLength height = dy + armElevation;
+  return height;
 }
 
 void liftTareHeight(QLength height) {
@@ -43,6 +47,7 @@ void moveLift(int heightIndex) {
 }
 
 void moveLift(QLength height) {
-  int targetTicks = getLiftTicks(height);
+  QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
+  double targetTicks = getLiftTicks(clampedHeight);
   lift.setTarget(targetTicks - liftTareTicks);
 }

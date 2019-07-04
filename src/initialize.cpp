@@ -47,6 +47,7 @@ void initialize() {
 
   lift.setMaxVelocity(30);
   liftTareHeight(1_in);
+  moveLift(1_in);
 
   /**
    * LCD Configuration
