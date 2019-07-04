@@ -6,8 +6,9 @@
 ### Primary Controller
 | Position | Description |
 |----------|-------------|
-| Left Y | Left drive control |
-| Right Y | Right drive control |
+| Left Y | Left drive control (Tank) |
+| Right Y | Right drive control (Tank) |
+| Arrows | Lift |
 
 ## Wiring
 
@@ -15,4 +16,5 @@
 | Motor Port | Function |
 |------------|----------|
 | 1 | Left drive motor |
+| 9 | Lift Motor |
 | 10 | Right drive motor |
