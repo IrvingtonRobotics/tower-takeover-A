@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "Bluescreens A",
+    "project_name": "44730A Bluescreens",
     "target": "v5",
     "templates": {
       "kernel": {
