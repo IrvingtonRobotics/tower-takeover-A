@@ -4,8 +4,7 @@ ControllerButton buttonLiftUp(ControllerDigital::up);
 ControllerButton buttonLiftDown(ControllerDigital::down);
 ControllerButton buttonLiftSmallUp(ControllerDigital::right);
 ControllerButton buttonLiftSmallDown(ControllerDigital::left);
-ControllerButton buttonRailsBack(ControllerDigital::R1);
-ControllerButton buttonRailsForward(ControllerDigital::R2);
+ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRunAuton(ControllerDigital::Y);
 Controller masterController;
 
@@ -63,13 +62,8 @@ void runLift() {
 }
 
 void runRails() {
-  const double railsBackTicks = 0;
-  const double railsForwardTicks = 100;
-  if (buttonRailsBack.changedToPressed()) {
-    moveRails(railsBackTicks);
-  }
-  if (buttonRailsForward.changedToPressed()) {
-    moveRails(railsForwardTicks);
+  if (buttonRailsToggle.changedToPressed()) {
+    toggleRails();
   }
 }
 

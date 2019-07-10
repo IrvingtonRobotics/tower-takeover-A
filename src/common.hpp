@@ -27,5 +27,7 @@ void moveLift(QLength height);
 
 extern AsyncPosIntegratedController rails;
 void moveRails(double ticks);
+void moveRails(bool _isBack);
+void toggleRails();
 
 #endif

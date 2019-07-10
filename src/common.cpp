@@ -52,6 +52,23 @@ void moveLift(QLength height) {
   lift.setTarget(targetTicks - liftTareTicks);
 }
 
+bool isRailsBack;
+const double railsBackTicks = 0;
+const double railsForwardTicks = 100;
+
 void moveRails(double ticks) {
   rails.setTarget(ticks);
+}
+
+void moveRails(bool isBack) {
+  isRailsBack = isBack;
+  if (isRailsBack) {
+    moveRails(railsBackTicks);
+  } else {
+    moveRails(railsForwardTicks);
+  }
+}
+
+void toggleRails() {
+  moveRails(!isRailsBack);
 }

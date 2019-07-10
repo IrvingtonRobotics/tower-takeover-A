@@ -8,6 +8,7 @@
 |----------|-------------|
 | Left Y | Left drive control (Tank) |
 | Right Y | Right drive control (Tank) |
+| R1 | Toggle Rails Angle |
 | Arrows | Lift |
 
 ## Wiring
