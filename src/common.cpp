@@ -54,7 +54,7 @@ void moveLift(QLength height) {
 
 bool isRailsBack;
 const double railsBackTicks = 0;
-const double railsForwardTicks = 100;
+const double railsForwardTicks = 250;
 
 void moveRails(double ticks) {
   rails.setTarget(ticks);

@@ -53,6 +53,7 @@ void initialize() {
 
   rails.setMaxVelocity(20);
   rails.tarePosition();
+  moveRails(true);
 
   /**
    * LCD Configuration
