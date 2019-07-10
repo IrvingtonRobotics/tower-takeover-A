@@ -16,5 +16,6 @@
 | Motor Port | Function |
 |------------|----------|
 | 1 | Left drive motor |
+| 2 | Rails angling motor |
 | 9 | Lift Motor |
 | 10 | Right drive motor |

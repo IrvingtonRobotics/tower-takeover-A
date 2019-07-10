@@ -25,4 +25,7 @@ void liftTareHeight(QLength height);
 void moveLift(int height);
 void moveLift(QLength height);
 
+extern AsyncPosIntegratedController rails;
+void moveRails(double ticks);
+
 #endif

@@ -34,6 +34,8 @@ ChassisControllerIntegrated drive = ChassisControllerFactory::create(
 
 AsyncPosIntegratedController lift = AsyncControllerFactory::posIntegrated(9);
 
+AsyncPosIntegratedController rails = AsyncControllerFactory::posIntegrated(2);
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -48,6 +50,9 @@ void initialize() {
   lift.setMaxVelocity(30);
   liftTareHeight(1_in);
   moveLift(1_in);
+
+  rails.setMaxVelocity(20);
+  rails.tarePosition();
 
   /**
    * LCD Configuration

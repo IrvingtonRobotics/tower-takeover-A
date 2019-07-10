@@ -51,3 +51,7 @@ void moveLift(QLength height) {
   double targetTicks = getLiftTicks(clampedHeight);
   lift.setTarget(targetTicks - liftTareTicks);
 }
+
+void moveRails(double ticks) {
+  rails.setTarget(ticks);
+}
