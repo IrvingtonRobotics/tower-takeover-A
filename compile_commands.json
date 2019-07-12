@@ -25,7 +25,7 @@
             "-fdiagnostics-color",
             "--std=gnu++17",
             "-o",
-            "/tmp/tmph_ws2e8w/initialize.cpp.o",
+            "/tmp/tmpvc8di272/initialize.cpp.o",
             "src/initialize.cpp"
         ],
         "directory": "/home/jared/Robotics/robotCode/tower-takeover-A",
@@ -57,11 +57,11 @@
             "-fdiagnostics-color",
             "--std=gnu++17",
             "-o",
-            "/tmp/tmph_ws2e8w/opcontrol.cpp.o",
-            "src/opcontrol.cpp"
+            "/tmp/tmpvc8di272/autonomous.cpp.o",
+            "src/autonomous.cpp"
         ],
         "directory": "/home/jared/Robotics/robotCode/tower-takeover-A",
-        "file": "src/opcontrol.cpp"
+        "file": "src/autonomous.cpp"
     },
     {
         "arguments": [
@@ -89,7 +89,7 @@
             "-fdiagnostics-color",
             "--std=gnu++17",
             "-o",
-            "/tmp/tmpocv0vadv/common.cpp.o",
+            "/tmp/tmpvc8di272/common.cpp.o",
             "src/common.cpp"
         ],
         "directory": "/home/jared/Robotics/robotCode/tower-takeover-A",
@@ -121,10 +121,10 @@
             "-fdiagnostics-color",
             "--std=gnu++17",
             "-o",
-            "/tmp/tmpocv0vadv/autonomous.cpp.o",
-            "src/autonomous.cpp"
+            "/tmp/tmpvc8di272/opcontrol.cpp.o",
+            "src/opcontrol.cpp"
         ],
         "directory": "/home/jared/Robotics/robotCode/tower-takeover-A",
-        "file": "src/autonomous.cpp"
+        "file": "src/opcontrol.cpp"
     }
 ]

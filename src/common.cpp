@@ -72,3 +72,7 @@ void moveRails(bool isBack) {
 void toggleRails() {
   moveRails(!isRailsBack);
 }
+
+void moveIntake(double speed) {
+  intake.setTarget(speed);
+}

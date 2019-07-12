@@ -6,6 +6,8 @@ ControllerButton buttonLiftSmallUp(ControllerDigital::right);
 ControllerButton buttonLiftSmallDown(ControllerDigital::left);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRunAuton(ControllerDigital::Y);
+ControllerButton buttonRunIntake(ControllerDigital::L1);
+ControllerButton buttonRunOuttake(ControllerDigital::L2);
 Controller masterController;
 
 void runDrive() {
@@ -67,12 +69,23 @@ void runRails() {
   }
 }
 
+void runIntake() {
+  if (buttonRunIntake.isPressed()) {
+    moveIntake(100);
+  } else if (buttonRunOuttake.isPressed()) {
+    moveIntake(-100);
+  } else {
+    moveIntake(0);
+  }
+}
+
 void opcontrol() {
 	while (true) {
 		runAuton();
 		runDrive();
     runLift();
     runRails();
+    runIntake();
 	  pros::delay(10);
 	}
 }

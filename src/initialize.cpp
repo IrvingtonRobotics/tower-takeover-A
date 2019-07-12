@@ -36,6 +36,8 @@ AsyncPosIntegratedController lift = AsyncControllerFactory::posIntegrated(9);
 
 AsyncPosIntegratedController rails = AsyncControllerFactory::posIntegrated(2);
 
+AsyncVelIntegratedController intake = AsyncControllerFactory::velIntegrated({3, -8});
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *

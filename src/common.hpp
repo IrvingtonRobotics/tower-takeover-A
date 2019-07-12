@@ -30,4 +30,7 @@ void moveRails(double ticks);
 void moveRails(bool _isBack);
 void toggleRails();
 
+extern AsyncVelIntegratedController intake;
+void moveIntake(double speed);
+
 #endif
