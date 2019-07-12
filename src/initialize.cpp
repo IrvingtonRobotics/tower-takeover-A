@@ -1,4 +1,5 @@
 #include "common.hpp"
+
 /**
  * LCD Configuration
  */
@@ -32,11 +33,9 @@ ChassisControllerIntegrated drive = ChassisControllerFactory::create(
   {4_in, 11.5_in}
 );
 
-AsyncPosIntegratedController lift = AsyncControllerFactory::posIntegrated(9);
-
-AsyncPosIntegratedController rails = AsyncControllerFactory::posIntegrated(2);
-
-AsyncVelIntegratedController intake = AsyncControllerFactory::velIntegrated({3, -8});
+Lift lift = Lift();
+Rails rails = Rails();
+Intake intake = Intake();
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -50,12 +49,12 @@ void initialize() {
    */
 
   lift.setMaxVelocity(30);
-  liftTareHeight(1_in);
-  moveLift(1_in);
+  lift.tareHeight(1_in);
+  lift.move(1_in);
 
   rails.setMaxVelocity(20);
   rails.tarePosition();
-  moveRails(true);
+  rails.move(true);
 
   /**
    * LCD Configuration

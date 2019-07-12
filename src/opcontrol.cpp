@@ -23,34 +23,7 @@ void runAuton() {
 	}
 }
 
-const QLength smallLiftMoveSize = 0.25_in;
-QLength getChangedLiftHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
-  if (isIncreaseSmall) {
-    // just move a bit in one direction
-    return lastHeight + boolToSign(isIncrease) * smallLiftMoveSize;
-  } else {
-    // move to the nearest preset in that direction
-    int i = 0;
-    while (lastHeight > targetHeights[i]) {
-      ++i;
-    }
-    if (isIncrease) {
-      if (targetHeights[i] != lastHeight && i < numHeights - 1) {
-        return targetHeights[i+1];
-      }
-    } else {
-      if (i != 0) {
-        return targetHeights[i-1];
-      }
-    }
-    return lastHeight;
-  }
-}
-
 void runLift() {
-  const double lastTargetTicks = lift.getTarget();
-  const QLength lastTargetHeight = getLiftHeight(lastTargetTicks);
-
   bool smallUp = buttonLiftSmallUp.changedToPressed();
   bool up = buttonLiftUp.changedToPressed();
   bool smallDown = buttonLiftSmallDown.changedToPressed();
@@ -58,24 +31,23 @@ void runLift() {
   bool isIncrease = smallUp || up;
   bool isSmall = smallUp || smallDown;
   if (smallUp || up || smallDown || down) {
-    QLength newHeight = getChangedLiftHeight(lastTargetHeight, isIncrease, isSmall);
-    moveLift(newHeight);
+    lift.move(isIncrease, isSmall);
   }
 }
 
 void runRails() {
   if (buttonRailsToggle.changedToPressed()) {
-    toggleRails();
+    rails.togglePosition();
   }
 }
 
 void runIntake() {
   if (buttonRunIntake.isPressed()) {
-    moveIntake(100);
+    intake.move(100);
   } else if (buttonRunOuttake.isPressed()) {
-    moveIntake(-100);
+    intake.move(-100);
   } else {
-    moveIntake(0);
+    intake.move(0);
   }
 }
 

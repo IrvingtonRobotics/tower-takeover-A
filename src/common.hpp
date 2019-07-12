@@ -2,35 +2,18 @@
 #define _COMMON_
 
 #include "main.h"
+#include "lift.cpp"
+#include "rails.cpp"
+#include "intake.cpp"
 
 using namespace okapi;
 
 extern ChassisControllerIntegrated drive;
+extern Lift lift;
+extern Rails rails;
+extern Intake intake;
 
 extern bool is_red;
 extern bool is_back;
-
-extern AsyncPosIntegratedController lift;
-extern const QLength armLength;
-extern const QLength armElevation;
-extern const int numHeights;
-extern const QLength targetHeights[];
-extern const int ticksPerRev;
-extern int liftTareTicks;
-
-QLength getLiftHeight(double ticks);
-double getLiftTicks(QLength height);
-
-void liftTareHeight(QLength height);
-void moveLift(int height);
-void moveLift(QLength height);
-
-extern AsyncPosIntegratedController rails;
-void moveRails(double ticks);
-void moveRails(bool _isBack);
-void toggleRails();
-
-extern AsyncVelIntegratedController intake;
-void moveIntake(double speed);
 
 #endif
