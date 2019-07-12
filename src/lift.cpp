@@ -13,8 +13,7 @@ class Lift {
   const QLength smallMoveSize = 0.25_in;
   const int numHeights = 4;
   const QLength targetHeights[4] = {1_in, 18.5_in, 24.5_in, 38.0_in};
-  const int port = 9;
-  AsyncPosIntegratedController controller = AsyncControllerFactory::posIntegrated(port);
+  AsyncPosIntegratedController controller = AsyncControllerFactory::posIntegrated({-5, 6});
 
   double getTicks(QLength height) {
     QLength dy = height - armElevation;

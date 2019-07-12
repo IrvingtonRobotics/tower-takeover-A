@@ -20,6 +20,7 @@
 | 1 | Left drive motor |
 | 2 | Rails angling motor |
 | 3 | Left intake motor |
+| 5 | Left lift motor |
+| 6 | Right lift motor |
 | 8 | Right intake motor  |
-| 9 | Lift Motor |
 | 10 | Right drive motor |
