@@ -9,17 +9,30 @@ class Rails {
   const int port = 2;
   AsyncPosIntegratedController controller = AsyncControllerFactory::posIntegrated(port);
 
-public:
   void move(double ticks) {
+    printf("Moving rails to %f ticks\n", ticks);
     controller.setTarget(ticks);
   }
 
-  void move(bool isBack) {
-    isBack = isBack;
+public:
+  void moveBack() {
+    setMaxVelocity(30);
+    printf("Moving rails to back\n");
+    move(railsBackTicks);
+  }
+
+  void moveForward() {
+    setMaxVelocity(20);
+    printf("Moving rails to front\n");
+    move(railsForwardTicks);
+  }
+
+  void move(bool _isBack) {
+    isBack = _isBack;
     if (isBack) {
-      move(railsBackTicks);
+      moveBack();
     } else {
-      move(railsForwardTicks);
+      moveForward();
     }
   }
 
