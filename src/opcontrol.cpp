@@ -1,20 +1,8 @@
 #include "common.hpp"
-
-ControllerButton buttonLiftUp(ControllerDigital::up);
-ControllerButton buttonLiftDown(ControllerDigital::down);
-ControllerButton buttonLiftSmallUp(ControllerDigital::right);
-ControllerButton buttonLiftSmallDown(ControllerDigital::left);
-ControllerButton buttonRailsToggle(ControllerDigital::R1);
-ControllerButton buttonRunAuton(ControllerDigital::Y);
-ControllerButton buttonRunIntake(ControllerDigital::L1);
-ControllerButton buttonRunOuttake(ControllerDigital::L2);
-Controller masterController;
+#include "controls.hpp"
 
 void runDrive() {
-	drive.tank(
-		masterController.getAnalog(ControllerAnalog::leftY),
-		masterController.getAnalog(ControllerAnalog::rightY)
-	);
+	drive.tank(DRIVE_LEFT_CONTROL, DRIVE_RIGHT_CONTROL);
 }
 
 void runAuton() {
