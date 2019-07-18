@@ -10,10 +10,11 @@ class Lift {
   const int ticksPerRev = 900;
   const QLength maxArmHeight = armElevation + armLength * 0.9;
   const QLength minArmHeight = 1_in;
-  int liftTareTicks = 0;
-  const QLength smallMoveSize = 0.25_in;
-  const int numHeights = 4;
-  const QLength targetHeights[4] = {1_in, 18.5_in, 24.5_in, 38.0_in};
+  int tareTicks = 0;
+  const QLength smallMoveSize = 1_in;
+  static const int numHeights = 4;
+  // targetHeights MUST be sorted
+  const QLength targetHeights[numHeights] = {1_in, 18.5_in, 24.5_in, 38.0_in};
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated({-LIFT_LEFT_PORT, LIFT_RIGHT_PORT});
 
@@ -39,25 +40,26 @@ class Lift {
   }
 
   QLength getChangedHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
+    printf("Last height %f\n", lastHeight.getValue());
+    int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
       // just move a bit in one direction
-      return lastHeight + boolToSign(isIncrease) * smallMoveSize;
+      return lastHeight + m * smallMoveSize;
     } else {
-      // move to the nearest preset in that direction
-      int i = 0;
-      while (lastHeight > targetHeights[i]) {
-        ++i;
+      /*
+        increasing: find first one greater than current position
+        decreasing: find last one less than current position
+        switching isIncrease just switches direction and comparison type
+      */
+      int i = isIncrease ? 0 : numHeights - 1;
+      while (lastHeight * m >= targetHeights[i] * m) {
+        printf("i %d\n", i);
+        i += m;
       }
-      if (isIncrease) {
-        if (targetHeights[i] != lastHeight && i < numHeights - 1) {
-          return targetHeights[i+1];
-        }
-      } else {
-        if (i != 0) {
-          return targetHeights[i-1];
-        }
-      }
-      return lastHeight;
+      i = std::clamp(i + m, 0, numHeights - 1);
+      printf("clamped i %d\n", i);
+      printf("returning ... %f\n", targetHeights[i]);
+      return targetHeights[i];
     }
   }
 
@@ -66,7 +68,8 @@ public:
     // tare to 0
     controller.tarePosition();
     // assume lift is 1 inch off ground
-    liftTareTicks = getTicks(height);
+    tareTicks = 0;
+    tareTicks = getTicks(height);
   }
 
   void move(int heightIndex) {
@@ -76,15 +79,21 @@ public:
   }
 
   void move(QLength height) {
+    printf("tare ticks %f\n", tareTicks);
     QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
     double targetTicks = getTicks(clampedHeight);
-    controller.setTarget(targetTicks - liftTareTicks);
+    printf("Setting height %f which corresponds to ticks %f\n",
+      clampedHeight, targetTicks
+    );
+    controller.setTarget(targetTicks - tareTicks);
   }
 
   void move(bool isIncrease, bool isSmall) {
     const double lastTargetTicks = controller.getTarget();
     QLength lastTargetHeight = getHeight(lastTargetTicks);
+    printf("Moving lift ...\n");
     QLength newHeight = getChangedHeight(lastTargetHeight, isIncrease, isSmall);
+    printf("New height: %f\n", newHeight.getValue());
     move(newHeight);
   }
 
