@@ -28,7 +28,7 @@ void on_right_button() {
 }
 
 ChassisControllerIntegrated drive = ChassisControllerFactory::create(
-  -DRIVE_RIGHT_PORT, DRIVE_LEFT_PORT,
+  DRIVE_LEFT_PORT, -DRIVE_RIGHT_PORT,
   AbstractMotor::gearset::green,
   {4_in, 11.5_in}
 );
