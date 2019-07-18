@@ -10,3 +10,5 @@ Controller masterController;
 
 #define DRIVE_LEFT_CONTROL masterController.getAnalog(ControllerAnalog::leftY)
 #define DRIVE_RIGHT_CONTROL masterController.getAnalog(ControllerAnalog::rightY)
+#define MAX_DRIVE_ACCEL 0.01
+#define MAX_DRIVE_DECEL 0.05
