@@ -1,4 +1,5 @@
 #include "main.h"
+#include "ports.hpp"
 
 using namespace okapi;
 
@@ -6,8 +7,8 @@ class Rails {
   bool isBack;
   const double railsBackTicks = 0;
   const double railsForwardTicks = 250;
-  const int port = 2;
-  AsyncPosIntegratedController controller = AsyncControllerFactory::posIntegrated(port);
+  AsyncPosIntegratedController controller =
+    AsyncControllerFactory::posIntegrated(ANGLE_RAILS_PORT);
 
   void move(double ticks) {
     printf("Moving rails to %f ticks\n", ticks);

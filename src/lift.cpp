@@ -1,4 +1,5 @@
 #include "main.h"
+#include "ports.hpp"
 
 using namespace okapi;
 
@@ -13,7 +14,8 @@ class Lift {
   const QLength smallMoveSize = 0.25_in;
   const int numHeights = 4;
   const QLength targetHeights[4] = {1_in, 18.5_in, 24.5_in, 38.0_in};
-  AsyncPosIntegratedController controller = AsyncControllerFactory::posIntegrated({-5, 6});
+  AsyncPosIntegratedController controller =
+    AsyncControllerFactory::posIntegrated({-LIFT_LEFT_PORT, LIFT_RIGHT_PORT});
 
   double getTicks(QLength height) {
     QLength dy = height - armElevation;
