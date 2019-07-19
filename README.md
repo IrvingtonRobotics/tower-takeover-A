@@ -10,7 +10,8 @@
 | Right Y | Right drive control (Tank) |
 | R1 | Toggle Rails Angle |
 | L1 | Run intake |
-| Arrows | Lift |
+| Up/Down arrows | Lift up/down to presets |
+| Right/Left arrows | Lift up/down by small increments (hold for longer movement) |
 
 ## Wiring
 

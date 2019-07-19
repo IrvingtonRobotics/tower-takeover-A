@@ -82,19 +82,26 @@ public:
     printf("tare ticks %f\n", tareTicks);
     QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
     double targetTicks = getTicks(clampedHeight);
-    printf("Setting height %f which corresponds to ticks %f\n",
-      clampedHeight, targetTicks
+    printf("Setting height %f which corresponds to ticks %f which corresponds to height %f\n",
+      clampedHeight, targetTicks, getHeight(targetTicks)
     );
     controller.setTarget(targetTicks - tareTicks);
   }
 
   void move(bool isIncrease, bool isSmall) {
-    const double lastTargetTicks = controller.getTarget();
-    QLength lastTargetHeight = getHeight(lastTargetTicks);
+    QLength lastTargetHeight = getTargetHeight();
     printf("Moving lift ...\n");
     QLength newHeight = getChangedHeight(lastTargetHeight, isIncrease, isSmall);
     printf("New height: %f\n", newHeight.getValue());
     move(newHeight);
+  }
+
+  float getTargetTicks() {
+    return controller.getTarget() + tareTicks;
+  }
+
+  QLength getTargetHeight() {
+    return getHeight(getTargetTicks());
   }
 
   void setMaxVelocity(double tps) {

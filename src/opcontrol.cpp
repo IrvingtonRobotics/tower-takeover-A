@@ -31,6 +31,14 @@ void runAuton() {
 	}
 }
 
+Timer liftButtonHeldTimer;
+enum LiftStatus { neutral, up, down };
+LiftStatus liftStatus = neutral;
+void liftNeutral() {
+  liftStatus = neutral;
+  liftButtonHeldTimer.clearHardMark();
+}
+
 void runLift() {
   bool smallUp = buttonLiftSmallUp.changedToPressed();
   bool up = buttonLiftUp.changedToPressed();
@@ -39,7 +47,37 @@ void runLift() {
   bool isIncrease = smallUp || up;
   bool isSmall = smallUp || smallDown;
   if (smallUp || up || smallDown || down) {
+    printf("moving %d %d\n", isIncrease, isSmall);
     lift.move(isIncrease, isSmall);
+  }
+  if (smallUp) {
+    liftStatus = LiftStatus::up;
+    liftButtonHeldTimer.placeHardMark();
+  } else if (smallDown) {
+    liftStatus = LiftStatus::down;
+    liftButtonHeldTimer.placeHardMark();
+  }
+  // printf("dt %f\n", liftButtonHeldTimer.getDtFromHardMark().getValue());
+  // printf("ms %f\n", liftButtonHeldTimer.millis().getValue());
+  bool isRepeat = false;
+  if (liftButtonHeldTimer.getDtFromHardMark() > 400_ms && liftButtonHeldTimer.repeat(140_ms)) {
+    isRepeat = true;
+  }
+  // printf("isRepeat %d\n", isRepeat);
+  if (isRepeat) {
+    printf("Repeating!\n");
+  }
+  switch (liftStatus) {
+    case LiftStatus::up:
+      if (isRepeat) lift.move(true, true);
+      if (buttonLiftSmallUp.changedToReleased())
+        liftNeutral();
+      break;
+    case LiftStatus::down:
+      if (isRepeat) lift.move(false, true);
+      if (buttonLiftSmallDown.changedToReleased())
+        liftNeutral();
+      break;
   }
 }
 
