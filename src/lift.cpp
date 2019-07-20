@@ -89,11 +89,20 @@ public:
   }
 
   void move(bool isIncrease, bool isSmall) {
-    QLength lastTargetHeight = getTargetHeight();
+    QLength lastHeight = getCurrentHeight();
     printf("Moving lift ...\n");
-    QLength newHeight = getChangedHeight(lastTargetHeight, isIncrease, isSmall);
+    QLength newHeight = getChangedHeight(lastHeight, isIncrease, isSmall);
     printf("New height: %f\n", newHeight.getValue());
     move(newHeight);
+  }
+
+  float getCurrentTicks() {
+    // return controller.getTarget() + tareTicks;
+    return controller.getTarget() - controller.getError() + tareTicks;
+  }
+
+  QLength getCurrentHeight() {
+    return getHeight(getCurrentTicks());
   }
 
   float getTargetTicks() {
