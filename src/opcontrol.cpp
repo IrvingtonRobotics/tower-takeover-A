@@ -44,7 +44,7 @@ void runLift() {
 }
 
 void runRails() {
-  if (buttonRailsToggle.changedToPressed()) {
+  if (buttonRailsToggle.changedToPressed() || buttonRailsToggle2.changedToPressed()) {
     rails.togglePosition();
   }
 }

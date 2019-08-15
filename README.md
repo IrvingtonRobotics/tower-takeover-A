@@ -8,7 +8,7 @@
 |----------|-------------|
 | Left Y | Left drive control (Tank) |
 | Right Y | Right drive control (Tank) |
-| R1 | Toggle Rails Angle |
+| R1 or R2 | Toggle Rails Angle |
 | L1 | Run intake |
 | L2 | Run outtake |
 | Arrows | Lift |
