@@ -10,6 +10,7 @@
 | Right Y | Right drive control (Tank) |
 | R1 | Toggle Rails Angle |
 | L1 | Run intake |
+| L2 | Run outtake |
 | Arrows | Lift |
 
 ## Wiring
