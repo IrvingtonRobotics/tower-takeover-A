@@ -32,6 +32,7 @@ void runAuton() {
 }
 
 void runLift() {
+  lift.checkTare();
   bool smallUp = buttonLiftSmallUp.changedToPressed();
   bool up = buttonLiftUp.changedToPressed();
   bool smallDown = buttonLiftSmallDown.changedToPressed();

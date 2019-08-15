@@ -15,6 +15,11 @@
 
 ## Wiring
 
+| Port | Description |
+|------------|----------|
+| ADI E | Lift limit |
+
+
 ### Motors
 | Motor Port | Function |
 |------------|----------|

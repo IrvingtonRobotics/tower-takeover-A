@@ -49,7 +49,7 @@ void initialize() {
    */
 
   lift.setMaxVelocity(30);
-  lift.tareHeight(1_in);
+  lift.tare();
   lift.move(1_in);
 
   rails.setMaxVelocity(20);

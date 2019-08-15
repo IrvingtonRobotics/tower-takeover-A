@@ -16,6 +16,7 @@ class Lift {
   const QLength targetHeights[4] = {1_in, 18.5_in, 24.5_in, 38.0_in};
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated({-LIFT_LEFT_PORT, LIFT_RIGHT_PORT});
+  ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
 
   double getTicks(QLength height) {
     QLength dy = height - armElevation;
@@ -28,7 +29,8 @@ class Lift {
     return revolutions * ticksPerRev;
   }
 
-  QLength getHeight(double ticks) {
+  QLength getHeight(double taredTicks) {
+    double ticks = taredTicks + liftTareTicks;
     double revolutions = ticks / ticksPerRev;
     // radians
     double angle = revolutions * PI * 2;
@@ -62,10 +64,21 @@ class Lift {
   }
 
 public:
+  void checkTare() {
+    if(buttonLimit.isPressed()) {
+      tare();
+    }
+  }
+
+  void tare() {
+    tareHeight(1_in);
+  }
+
   void tareHeight(QLength height) {
     // tare to 0
     controller.tarePosition();
     // assume lift is 1 inch off ground
+    printf("Taring arm to height %f\n", height.getValue());
     liftTareTicks = getTicks(height);
   }
 
@@ -77,13 +90,21 @@ public:
 
   void move(QLength height) {
     QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
+    printf("Clamped height from %f to %f\n", height.getValue(), clampedHeight.getValue());
     double targetTicks = getTicks(clampedHeight);
-    controller.setTarget(targetTicks - liftTareTicks);
+    double taredTicks = targetTicks - liftTareTicks;
+    printf("New target ticks %f\n", taredTicks);
+    controller.setTarget(taredTicks);
   }
 
   void move(bool isIncrease, bool isSmall) {
+    printf("\n");
+    printf("Button limit status: %d\n", buttonLimit.isPressed() ? 1 : 0);
+    printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
     const double lastTargetTicks = controller.getTarget();
+    printf("Last target ticks %f\n", lastTargetTicks);
     QLength lastTargetHeight = getHeight(lastTargetTicks);
+    printf("Last height %f\n", lastTargetHeight.getValue());
     QLength newHeight = getChangedHeight(lastTargetHeight, isIncrease, isSmall);
     move(newHeight);
   }
