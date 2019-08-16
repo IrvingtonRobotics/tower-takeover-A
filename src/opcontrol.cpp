@@ -1,28 +1,8 @@
 #include "common.hpp"
 #include "controls.hpp"
 
-float getNewDriveSpeed(float current, float input) {
-  // tried using clamp, but difficulties
-  float lo;
-  float hi;
-  if (current >= 0) {
-    lo = current - MAX_DRIVE_DECEL;
-    hi = current + MAX_DRIVE_ACCEL;
-  } else {
-    lo = current - MAX_DRIVE_ACCEL;
-    hi = current + MAX_DRIVE_DECEL;
-  }
-  if (lo > input) return lo;
-  if (hi < input) return hi;
-  return input;
-}
-
-float leftDriveSpeed = 0;
-float rightDriveSpeed = 0;
 void runDrive() {
-  leftDriveSpeed = getNewDriveSpeed(leftDriveSpeed, DRIVE_LEFT_CONTROL);
-  rightDriveSpeed = getNewDriveSpeed(rightDriveSpeed, DRIVE_RIGHT_CONTROL);
-	drive.tank(leftDriveSpeed, rightDriveSpeed);
+  drive.move(DRIVE_LEFT_CONTROL, DRIVE_RIGHT_CONTROL);
 }
 
 void runAuton() {

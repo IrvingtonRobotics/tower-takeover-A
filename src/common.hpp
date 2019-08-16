@@ -3,13 +3,14 @@
 
 #include "main.h"
 #include "lift.cpp"
+#include "drive.cpp"
 #include "rails.cpp"
 #include "intake.cpp"
 
 using namespace okapi;
 
-extern ChassisControllerIntegrated drive;
 extern Lift lift;
+extern Drive drive;
 extern Rails rails;
 extern Intake intake;
 
