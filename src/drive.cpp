@@ -9,7 +9,7 @@ class Drive {
   const float MAX_DRIVE_ACCEL = 0.01;
   const float MAX_DRIVE_DECEL = 0.05;
   ChassisControllerIntegrated controller = ChassisControllerFactory::create(
-    DRIVE_LEFT_PORT, -DRIVE_RIGHT_PORT,
+    {DRIVE_LEFT_FRONT_PORT, -DRIVE_LEFT_BACK_PORT}, {-DRIVE_RIGHT_FRONT_PORT, DRIVE_RIGHT_BACK_PORT},
     AbstractMotor::gearset::green,
     {4_in, 11.5_in}
   );

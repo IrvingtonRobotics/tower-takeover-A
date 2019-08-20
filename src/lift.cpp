@@ -16,7 +16,7 @@ class Lift {
   // targetHeights MUST be sorted
   const QLength targetHeights[numHeights] = {1_in, 18.5_in, 24.5_in, 38.0_in};
   AsyncPosIntegratedController controller =
-    AsyncControllerFactory::posIntegrated(-LIFT_LEFT_PORT);
+    AsyncControllerFactory::posIntegrated(-LIFT_PORT);
   ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
 
   double getTicks(QLength height) {

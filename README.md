@@ -18,16 +18,17 @@
 
 | Port | Description |
 |------------|----------|
-| ADI E | Lift limit |
+| ADI H | Lift limit |
 
 
 ### Motors
 | Motor Port | Function |
 |------------|----------|
-| 1 | Left drive motor |
-| 2 | Rails angling motor |
-| 3 | Left intake motor |
-| 5 | Left lift motor |
-| 6 | Right lift motor |
-| 8 | Right intake motor  |
-| 10 | Right drive motor |
+| 1 | Right front drive motor |
+| 2 | Right back drive motor |
+| 4 | Right intake motor  |
+| 5 | Lift motor |
+| 7 | Left intake motor |
+| 8 | Rails angling motor |
+| 9 | Left back drive motor |
+| 10 | Left front drive motor |
