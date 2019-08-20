@@ -31,7 +31,7 @@ class Lift {
   }
 
   QLength getHeight(double taredTicks) {
-    double ticks = taredTicks + liftTareTicks;
+    double ticks = taredTicks + tareTicks;
     double revolutions = ticks / ticksPerRev;
     // radians
     double angle = revolutions * PI * 2;
@@ -81,7 +81,7 @@ public:
     controller.tarePosition();
     // assume lift is 1 inch off ground
     printf("Taring arm to height %f\n", height.getValue());
-    liftTareTicks = getTicks(height);
+    tareTicks = getTicks(height);
   }
 
   void move(int heightIndex) {
@@ -95,7 +95,7 @@ public:
     QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
     printf("Clamped height from %f to %f\n", height.getValue(), clampedHeight.getValue());
     double targetTicks = getTicks(clampedHeight);
-    double taredTicks = targetTicks - liftTareTicks;
+    double taredTicks = targetTicks - tareTicks;
     printf("New target ticks %f\n", taredTicks);
     controller.setTarget(taredTicks);
   }
