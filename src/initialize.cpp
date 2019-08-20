@@ -27,13 +27,8 @@ void on_right_button() {
   set_location_text();
 }
 
-ChassisControllerIntegrated drive = ChassisControllerFactory::create(
-  DRIVE_LEFT_PORT, -DRIVE_RIGHT_PORT,
-  AbstractMotor::gearset::green,
-  {4_in, 11.5_in}
-);
-
 Lift lift = Lift();
+Drive drive = Drive();
 Rails rails = Rails();
 Intake intake = Intake();
 
@@ -49,7 +44,7 @@ void initialize() {
    */
 
   lift.setMaxVelocity(30);
-  lift.tareHeight(1_in);
+  lift.tare();
   lift.move(1_in);
 
   rails.setMaxVelocity(20);

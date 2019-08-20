@@ -5,7 +5,7 @@ using namespace okapi;
 
 class Intake {
   AsyncVelIntegratedController controller =
-    AsyncControllerFactory::velIntegrated({INTAKE_LEFT_PORT, INTAKE_RIGHT_PORT});
+    AsyncControllerFactory::velIntegrated({INTAKE_LEFT_PORT, -INTAKE_RIGHT_PORT});
 
 public:
   void move(double speed) {

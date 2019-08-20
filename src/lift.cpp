@@ -7,7 +7,7 @@ class Lift {
   const QLength armLength = 20_in;
   // height of arm pivot above ground
   const QLength armElevation = 16_in;
-  const int ticksPerRev = 900;
+  const int ticksPerRev = 1800;
   const QLength maxArmHeight = armElevation + armLength * 0.9;
   const QLength minArmHeight = 1_in;
   int tareTicks = 0;
@@ -16,7 +16,8 @@ class Lift {
   // targetHeights MUST be sorted
   const QLength targetHeights[numHeights] = {1_in, 18.5_in, 24.5_in, 38.0_in};
   AsyncPosIntegratedController controller =
-    AsyncControllerFactory::posIntegrated({-LIFT_LEFT_PORT, LIFT_RIGHT_PORT});
+    AsyncControllerFactory::posIntegrated(-LIFT_LEFT_PORT);
+  ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
 
   double getTicks(QLength height) {
     QLength dy = height - armElevation;
@@ -29,7 +30,8 @@ class Lift {
     return revolutions * ticksPerRev;
   }
 
-  QLength getHeight(double ticks) {
+  QLength getHeight(double taredTicks) {
+    double ticks = taredTicks + liftTareTicks;
     double revolutions = ticks / ticksPerRev;
     // radians
     double angle = revolutions * PI * 2;
@@ -64,12 +66,22 @@ class Lift {
   }
 
 public:
+  void checkTare() {
+    if(buttonLimit.isPressed()) {
+      tare();
+    }
+  }
+
+  void tare() {
+    tareHeight(1_in);
+  }
+
   void tareHeight(QLength height) {
     // tare to 0
     controller.tarePosition();
     // assume lift is 1 inch off ground
-    tareTicks = 0;
-    tareTicks = getTicks(height);
+    printf("Taring arm to height %f\n", height.getValue());
+    liftTareTicks = getTicks(height);
   }
 
   void move(int heightIndex) {
@@ -81,18 +93,22 @@ public:
   void move(QLength height) {
     printf("tare ticks %f\n", tareTicks);
     QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
+    printf("Clamped height from %f to %f\n", height.getValue(), clampedHeight.getValue());
     double targetTicks = getTicks(clampedHeight);
-    printf("Setting height %f which corresponds to ticks %f which corresponds to height %f\n",
-      clampedHeight, targetTicks, getHeight(targetTicks)
-    );
-    controller.setTarget(targetTicks - tareTicks);
+    double taredTicks = targetTicks - liftTareTicks;
+    printf("New target ticks %f\n", taredTicks);
+    controller.setTarget(taredTicks);
   }
 
   void move(bool isIncrease, bool isSmall) {
-    QLength lastHeight = getCurrentHeight();
-    printf("Moving lift ...\n");
-    QLength newHeight = getChangedHeight(lastHeight, isIncrease, isSmall);
-    printf("New height: %f\n", newHeight.getValue());
+    printf("\n");
+    printf("Button limit status: %d\n", buttonLimit.isPressed() ? 1 : 0);
+    printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
+    const double lastTargetTicks = controller.getTarget();
+    printf("Last target ticks %f\n", lastTargetTicks);
+    QLength lastTargetHeight = getHeight(lastTargetTicks);
+    printf("Last height %f\n", lastTargetHeight.getValue());
+    QLength newHeight = getChangedHeight(lastTargetHeight, isIncrease, isSmall);
     move(newHeight);
   }
 
