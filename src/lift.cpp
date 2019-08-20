@@ -7,7 +7,7 @@ class Lift {
   const QLength armLength = 20_in;
   // height of arm pivot above ground
   const QLength armElevation = 16_in;
-  const int ticksPerRev = 1800;
+  const int ticksPerRev = 600;
   const QLength maxArmHeight = armElevation + armLength * 0.9;
   const QLength minArmHeight = 1_in;
   int tareTicks = 0;
