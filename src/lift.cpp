@@ -7,7 +7,7 @@ class Lift {
   const QLength armLength = 20_in;
   // height of arm pivot above ground
   const QLength armElevation = 16_in;
-  const int ticksPerRev = 900;
+  const int ticksPerRev = 1800;
   const QLength maxArmHeight = armElevation + armLength * 0.9;
   const QLength minArmHeight = 1_in;
   int liftTareTicks = 0;
@@ -15,7 +15,7 @@ class Lift {
   const int numHeights = 4;
   const QLength targetHeights[4] = {1_in, 18.5_in, 24.5_in, 38.0_in};
   AsyncPosIntegratedController controller =
-    AsyncControllerFactory::posIntegrated({-LIFT_LEFT_PORT, LIFT_RIGHT_PORT});
+    AsyncControllerFactory::posIntegrated(-LIFT_LEFT_PORT);
   ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
 
   double getTicks(QLength height) {
