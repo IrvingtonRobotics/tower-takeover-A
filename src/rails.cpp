@@ -6,9 +6,9 @@ using namespace okapi;
 class Rails {
   bool isBack;
   const double railsBackTicks = 0;
-  const double railsForwardTicks = 250;
+  const double railsForwardTicks = 750;
   AsyncPosIntegratedController controller =
-    AsyncControllerFactory::posIntegrated(ANGLE_RAILS_PORT);
+    AsyncControllerFactory::posIntegrated(-ANGLE_RAILS_PORT);
 
   void move(double ticks) {
     printf("Moving rails to %f ticks\n", ticks);
@@ -17,13 +17,13 @@ class Rails {
 
 public:
   void moveBack() {
-    setMaxVelocity(30);
+    setMaxVelocity(45);
     printf("Moving rails to back\n");
     move(railsBackTicks);
   }
 
   void moveForward() {
-    setMaxVelocity(20);
+    setMaxVelocity(30);
     printf("Moving rails to front\n");
     move(railsForwardTicks);
   }
