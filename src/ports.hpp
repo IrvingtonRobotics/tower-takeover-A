@@ -6,4 +6,4 @@
 #define INTAKE_LEFT_PORT 7
 #define INTAKE_RIGHT_PORT 4
 #define LIFT_PORT 5
-#define BUTTON_LIMIT_PORT 'H'
+#define BUTTON_LIMIT_PORT 'E'
