@@ -5,6 +5,7 @@ ControllerButton buttonLiftSmallDown(ControllerDigital::left);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggle2(ControllerDigital::R2);
 ControllerButton buttonRunAuton(ControllerDigital::Y);
+ControllerButton buttonRetare(ControllerDigital::B);
 ControllerButton buttonRunIntake(ControllerDigital::L1);
 ControllerButton buttonRunOuttake(ControllerDigital::L2);
 Controller masterController;

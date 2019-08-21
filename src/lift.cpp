@@ -17,6 +17,8 @@ class Lift {
   const QLength targetHeights[numHeights] = {1_in, 18.5_in, 24.5_in, 38.0_in};
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(-LIFT_PORT);
+  AsyncVelIntegratedController velController =
+    AsyncControllerFactory::velIntegrated(-LIFT_PORT);
   ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
 
   double getTicks(QLength height) {
@@ -66,6 +68,10 @@ class Lift {
   }
 
 public:
+  Lift() {
+    velController.flipDisable();
+  }
+
   void checkTare() {
     if(buttonLimit.isPressed()) {
       tare();
@@ -81,7 +87,9 @@ public:
     controller.tarePosition();
     // assume lift is 1 inch off ground
     printf("Taring arm to height %f\n", height.getValue());
+    printf("Think ticks: %f\n", controller.getTarget());
     tareTicks = getTicks(height);
+    printf("Tare ticks: %f\n", tareTicks);
   }
 
   void move(int heightIndex) {
@@ -131,5 +139,19 @@ public:
 
   void setMaxVelocity(double tps) {
     controller.setMaxVelocity(tps);
+  }
+
+  void lowerToButton() {
+    controller.flipDisable();
+    velController.flipDisable();
+    velController.setTarget(-30);
+    while(!buttonLimit.isPressed()) {
+      pros::delay(10);
+    }
+    velController.setTarget(0);
+    velController.flipDisable();
+    controller.flipDisable();
+    tare();
+    controller.setTarget(0);
   }
 };

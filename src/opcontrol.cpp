@@ -37,6 +37,9 @@ void runLift() {
   } else if (smallDown) {
     liftStatus = LiftStatus::down;
     liftButtonHeldTimer.placeHardMark();
+  }  
+  if (buttonRetare.changedToPressed()) {
+    lift.lowerToButton();
   }
   // printf("dt %f\n", liftButtonHeldTimer.getDtFromHardMark().getValue());
   // printf("ms %f\n", liftButtonHeldTimer.millis().getValue());
@@ -79,6 +82,8 @@ void runIntake() {
 }
 
 void opcontrol() {
+  // perhaps add a button to lower the lift?
+  lift.lowerToButton();
 	while (true) {
 		runAuton();
 		runDrive();
