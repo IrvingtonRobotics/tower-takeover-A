@@ -28,7 +28,7 @@ void runLift() {
   bool isIncrease = smallUp || up;
   bool isSmall = smallUp || smallDown;
   if (smallUp || up || smallDown || down) {
-    printf("moving %d %d\n", isIncrease, isSmall);
+    // printf("moving %d %d\n", isIncrease, isSmall);
     lift.move(isIncrease, isSmall);
   }
   if (smallUp) {
@@ -37,19 +37,25 @@ void runLift() {
   } else if (smallDown) {
     liftStatus = LiftStatus::down;
     liftButtonHeldTimer.placeHardMark();
-  }  
+  }
   if (buttonRetare.changedToPressed()) {
     lift.lowerToButton();
   }
-  // printf("dt %f\n", liftButtonHeldTimer.getDtFromHardMark().getValue());
-  // printf("ms %f\n", liftButtonHeldTimer.millis().getValue());
+  if (buttonQuery.changedToPressed()) {
+    lift.query();
+  }
+  if (buttonLift90.changedToPressed()) {
+    lift.lift90();
+  }
+  // // printf("dt %f\n", liftButtonHeldTimer.getDtFromHardMark().getValue());
+  // // printf("ms %f\n", liftButtonHeldTimer.millis().getValue());
   bool isRepeat = false;
   if (liftButtonHeldTimer.getDtFromHardMark() > 400_ms && liftButtonHeldTimer.repeat(140_ms)) {
     isRepeat = true;
   }
-  // printf("isRepeat %d\n", isRepeat);
+  // // printf("isRepeat %d\n", isRepeat);
   if (isRepeat) {
-    printf("Repeating!\n");
+    // printf("Repeating!\n");
   }
   switch (liftStatus) {
     case LiftStatus::up:
@@ -82,8 +88,7 @@ void runIntake() {
 }
 
 void opcontrol() {
-  // perhaps add a button to lower the lift?
-  lift.lowerToButton();
+  // lift.lowerToButton();
 	while (true) {
 		runAuton();
 		runDrive();

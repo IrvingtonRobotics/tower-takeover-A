@@ -14,10 +14,10 @@ using namespace okapi;
  * from where it left off.
  */
 void autonomous() {
-	printf("Moving 1\n");
+	// printf("Moving 1\n");
 	drive.moveDistance(12_in);
-	printf("Done moving 1\n");
-	printf("Moving 1\n");
+	// printf("Done moving 1\n");
+	// printf("Moving 1\n");
 	drive.moveDistance(12_in);
-	printf("Done moving 1\n");
+	// printf("Done moving 1\n");
 }
