@@ -10,7 +10,7 @@ class Lift {
   // 1800 ticks/rev with 36:1 gears -- high torque
   // 900 ticks/rev with 18:1 gears
   // 300 ticks/rev with 6:1 gears -- high speed
-  const double arbitraryFactor = 1.16;
+  const double arbitraryFactor = 1.8;
   const int ticksPerRev = 1800 * arbitraryFactor;
   const QLength maxArmHeight = armElevation + armLength * 0.7;
   const QLength minArmHeight = 2.5_in;
