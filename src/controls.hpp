@@ -12,5 +12,5 @@ ControllerButton buttonRunIntake(ControllerDigital::L1);
 ControllerButton buttonRunOuttake(ControllerDigital::L2);
 Controller masterController;
 
-#define DRIVE_LEFT_CONTROL masterController.getAnalog(ControllerAnalog::leftY)
-#define DRIVE_RIGHT_CONTROL masterController.getAnalog(ControllerAnalog::rightY)
+#define DRIVE_X_CONTROL masterController.getAnalog(ControllerAnalog::leftX)
+#define DRIVE_Y_CONTROL masterController.getAnalog(ControllerAnalog::leftY)

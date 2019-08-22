@@ -32,7 +32,10 @@ class Drive {
   }
 
 public:
-  float move(float left, float right) {
+  float move(float x, float y) {
+    // don't just use controller.arcade(y, x) in order to take use of existing accel
+    float left = y + x;
+    float right = y - x;
     leftDriveSpeed = getNewDriveSpeed(leftDriveSpeed, left);
     rightDriveSpeed = getNewDriveSpeed(rightDriveSpeed, right);
     controller.tank(leftDriveSpeed, rightDriveSpeed);

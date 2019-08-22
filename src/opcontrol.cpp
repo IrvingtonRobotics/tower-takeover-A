@@ -2,7 +2,7 @@
 #include "controls.hpp"
 
 void runDrive() {
-  drive.move(DRIVE_LEFT_CONTROL, DRIVE_RIGHT_CONTROL);
+  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL);
 }
 
 void runAuton() {
