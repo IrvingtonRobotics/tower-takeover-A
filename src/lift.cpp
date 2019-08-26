@@ -12,13 +12,13 @@ class Lift {
   // 300 ticks/rev with 6:1 gears -- high speed
   const double arbitraryFactor = 1.8;
   const int ticksPerRev = 1800 * arbitraryFactor;
-  const QLength maxArmHeight = armElevation + armLength * 0.7;
+  const QLength maxArmHeight = 29_in;
   const QLength minArmHeight = 2.5_in;
   double tareTicks = 0;
   const QLength smallMoveSize = 1_in;
   static const int numHeights = 4;
   // targetHeights MUST be sorted
-  const QLength targetHeights[numHeights] = {minArmHeight, 16_in, 24.5_in, 38.0_in};
+  const QLength targetHeights[numHeights] = {minArmHeight, 16_in, 24.5_in, maxArmHeight};
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(-LIFT_PORT);
   AsyncVelIntegratedController velController =
@@ -62,6 +62,10 @@ class Lift {
   }
 
   QLength getChangedHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
+    printf("---------\n");
+    printf("  getChangedHeight(%f, %d, %d)  \n", lastHeight / 0.0254,
+      isIncrease?1:0, isIncreaseSmall?1:0);
+    printf("---------\n");
     // printf("Last height %f\n", lastHeight.getValue());
     int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
@@ -79,8 +83,8 @@ class Lift {
         i += m;
       }
       i = std::clamp(i + m, 0, numHeights - 1);
-      // printf("clamped i %d\n", i);
-      // printf("returning ... %f\n", targetHeights[i]);
+      printf("clamped i %d\n", i);
+      printf("returning ... %f\n", targetHeights[i] / 0.0254);
       return targetHeights[i];
     }
   }
@@ -104,14 +108,14 @@ public:
     // calculates tareTicks as ticks from center
     // tare to 0
     controller.tarePosition();
-    printf("Think ticks: %f\n", controller.getTarget());
+    // printf("Think ticks: %f\n", controller.getTarget());
     // assume lift is height off ground
-    printf("Taring arm to height %f\n", height.getValue());
+    // printf("Taring arm to height %f\n", height.getValue());
     // printf("Think ticks: %f\n", controller.getTarget());
     tareTicks = getTicks(height);
-    printf("Height ticks: %f\n", getTicks(height));
-    printf("Think height:%f\n", getHeight(getCurrentTicks()));
-    printf("Tare ticks: %f\n", tareTicks);
+    // printf("Height ticks: %f\n", getTicks(height));
+    // printf("Think height:%f\n", getHeight(getCurrentTicks()));
+    // printf("Tare ticks: %f\n", tareTicks);
   }
 
   void move(int heightIndex) {
@@ -139,11 +143,8 @@ public:
     // printf("\n");
     // printf("Button limit status: %d\n", buttonLimit.isPressed() ? 1 : 0);
     // printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
-    const double lastTargetTicks = controller.getTarget();
-    // printf("Last target ticks %f\n", lastTargetTicks);
-    QLength lastTargetHeight = getHeight(lastTargetTicks);
     // printf("Last height %f\n", lastTargetHeight.getValue());
-    QLength newHeight = getChangedHeight(lastTargetHeight, isIncrease, isSmall);
+    QLength newHeight = getChangedHeight(getCurrentHeight(), isIncrease, isSmall);
     move(newHeight);
   }
 
@@ -187,19 +188,27 @@ public:
   }
 
   void query() {
+    printf("---------\n");
+    printf("  query  \n");
+    printf("---------\n");
     double ticks = getCurrentTicks();
     printf("ticks %f\n", ticks);
     QLength height = getHeight(ticks);
     printf("Height: %f inches\n", height.getValue() * 1 / 0.0254);
     double angle = getAngle(ticks);
     printf("Height angle: %f degrees\n", angle * 180 / 3.14);
+    printf("---------\n");
   }
 
   void lift90() {
+    printf("---------\n");
+    printf("  lift90  \n");
+    printf("---------\n");
     double currentTicks = getCurrentTicks();
     printf("current %f\n", currentTicks);
     double nextTicks = currentTicks + getTicks(PI / 2);
     printf("next %f\n", nextTicks);
     controller.setTarget(nextTicks);
+    printf("---------\n");
   }
 };
