@@ -16,7 +16,11 @@ class Lift {
   const QLength minArmHeight = 2.5_in;
   const QLength posTolerance = 0.5_in;
   double tareTicks = 0;
-  const QLength smallMoveSize = 1_in;
+  const QLength smallMoveSize = 0.5_in;
+  const QLength minThreshold = -1000_in;
+  QLength smallMoveThreshold;
+  const QLength smallMoveTolerance = 0.2_in;
+  int smallMoveDir = 1;
   static const int numHeights = 4;
   // targetHeights MUST be sorted
   const QLength targetHeights[numHeights] = {minArmHeight, 16_in, 24.5_in, maxArmHeight};
@@ -71,7 +75,10 @@ class Lift {
     int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
       // just move a bit in one direction
-      return lastHeight + m * smallMoveSize;
+      smallMoveDir = m;
+      QLength smallMoveTarget = lastHeight + m * smallMoveSize;
+      smallMoveThreshold = smallMoveTarget * m - smallMoveTolerance;
+      return smallMoveTarget;
     } else {
       /*
         increasing: find first one greater than current position
@@ -145,8 +152,14 @@ public:
     // printf("Button limit status: %d\n", buttonLimit.isPressed() ? 1 : 0);
     // printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
     // printf("Last height %f\n", lastTargetHeight.getValue());
-    QLength newHeight = getChangedHeight(getCurrentHeight(), isIncrease, isSmall);
-    move(newHeight);
+    if (!isSmall) {
+      smallMoveThreshold = minThreshold;
+    }
+    QLength height = getCurrentHeight();
+    if (height * smallMoveDir >= smallMoveThreshold) {
+      QLength newHeight = getChangedHeight(getCurrentHeight (), isIncrease, isSmall);
+      move(newHeight);
+    }
   }
 
   float getCurrentTicks() {
