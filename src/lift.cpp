@@ -14,6 +14,7 @@ class Lift {
   const int ticksPerRev = 1800 * arbitraryFactor;
   const QLength maxArmHeight = 29_in;
   const QLength minArmHeight = 2.5_in;
+  const QLength posTolerance = 0.5_in;
   double tareTicks = 0;
   const QLength smallMoveSize = 1_in;
   static const int numHeights = 4;
@@ -78,11 +79,11 @@ class Lift {
         switching isIncrease just switches direction and comparison type
       */
       int i = isIncrease ? 0 : numHeights - 1;
-      while (lastHeight * m >= targetHeights[i] * m) {
+      while (lastHeight * m > targetHeights[i] * m - posTolerance) {
         // printf("i %d\n", i);
         i += m;
       }
-      i = std::clamp(i + m, 0, numHeights - 1);
+      i = std::clamp(i, 0, numHeights - 1);
       printf("clamped i %d\n", i);
       printf("returning ... %f\n", targetHeights[i] / 0.0254);
       return targetHeights[i];
