@@ -22,6 +22,7 @@ class Lift {
   const QLength smallMoveTolerance = 0.2_in;
   int smallMoveDir = 1;
   static const int numHeights = 4;
+  const QTime lowerToButtonTimeout = 5_s;
   // targetHeights MUST be sorted
   const QLength targetHeights[numHeights] = {minArmHeight, 16_in, 24.5_in, maxArmHeight};
   AsyncPosIntegratedController controller =
@@ -191,7 +192,8 @@ public:
     controller.flipDisable();
     velController.flipDisable();
     velController.setTarget(-30);
-    while(!buttonLimit.isPressed()) {
+    Timer timeoutTimer = Timer();
+    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < lowerToButtonTimeout) {
       pros::delay(10);
     }
     velController.setTarget(0);
