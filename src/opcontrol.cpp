@@ -6,11 +6,27 @@
 #include "controls.hpp"
 #include "utils.hpp"
 
+const int STANDARD_DELAY = 10;
+
 /**
  * Run the Drive subsystem based on the joysticks
  */
 void runDrive() {
   drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL);
+}
+
+/**
+ * Task to be initiated in the main task
+ * Not DRY at all: all the run*Fn look the same, but how do I generalize this
+ * while loop, delay, and signature?
+ * TODO (make more DRY): Look at pros::Task and pros::task_fn_t to avoid
+ *   code duplication
+ */
+void runDriveFn(void* param) {
+  while (true) {
+    runDrive();
+    pros::delay(STANDARD_DELAY);
+  }
 }
 
 /**
@@ -39,6 +55,13 @@ void runLift() {
   }
 }
 
+void runLiftFn(void* param) {
+  while (true) {
+    runLift();
+    pros::delay(STANDARD_DELAY);
+  }
+}
+
 /**
  * Run the Rails subsystem
  * Simply toggle between the two positions based on buttons
@@ -46,6 +69,17 @@ void runLift() {
 void runRails() {
   if (buttonRailsToggle.changedToPressed() || buttonRailsToggle2.changedToPressed()) {
     rails.togglePosition();
+  }
+  if (buttonTareRails.changedToPressed()) {
+    printf("taring rails\n");
+    rails.backToButton();
+  }
+}
+
+void runRailsFn(void* param) {
+  while (true) {
+    runRails();
+    pros::delay(STANDARD_DELAY);
   }
 }
 
@@ -63,33 +97,22 @@ void runIntake() {
   }
 }
 
+void runIntakeFn(void* param) {
+  while (true) {
+    runIntake();
+    pros::delay(STANDARD_DELAY);
+  }
+}
+
 /**
- * Loop control over all the subsystems
- * This is not multi-threaded, so any subsystem can block out movement
- * of the rest
- * TODO (Impatient from single-threading):
- *   See https://pros.cs.purdue.edu/v5/tutorials/topical/multitasking.html
- * to implement multitasking
+ * Initiate all opcontrol subsystem tasks.
+ * Each is in its own task, so subsystems cannot stop each other.
+ * For thread safety, ensure that no task affects any other subsystem.
  */
 void opcontrol() {
-  // lift.lowerToButton();
-  printf("loopy\n");
-  printf(buttonFoldout.isPressed() ? "pressed" : "");
-	while (true) {
-    // will fold out in autonomous
-    // TODO (Autonomous ready): move this to autonomous
-    if (buttonFoldout.changedToPressed()) {
-      printf("folding out\n");
-      foldout();
-    }
-    if (buttonTareRails.changedToPressed()) {
-      printf("taring rails\n");
-      rails.backToButton();
-    }
-		runDrive();
-    runLift();
-    runRails();
-    runIntake();
-	  pros::delay(10);
-	}
+  // start all tasks
+  pros::Task runDriveTask(runDriveFn);
+  pros::Task runLiftTask(runLiftFn);
+  pros::Task runRailsTask(runRailsFn);
+  pros::Task runIntakeTask(runIntakeFn);
 }
