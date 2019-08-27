@@ -44,10 +44,11 @@ class Lift {
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
   // WARNING: targetHeights MUST be sorted
   const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
+  const int PORT = -LIFT_PORT;
   AsyncPosIntegratedController controller =
-    AsyncControllerFactory::posIntegrated(-LIFT_PORT);
+    AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
-    AsyncControllerFactory::velIntegrated(-LIFT_PORT);
+    AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
 
   /**
