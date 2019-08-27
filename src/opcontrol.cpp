@@ -1,14 +1,9 @@
 #include "common.hpp"
 #include "controls.hpp"
+#include "utils.hpp"
 
 void runDrive() {
   drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL);
-}
-
-void runAuton() {
-	if (buttonRunAuton.changedToPressed()) {
-		autonomous();
-	}
 }
 
 void runLift() {
@@ -28,9 +23,6 @@ void runLift() {
   }
   if (buttonQuery.changedToPressed()) {
     lift.query();
-  }
-  if (buttonLift90.changedToPressed()) {
-    lift.lift90();
   }
 }
 
@@ -52,8 +44,13 @@ void runIntake() {
 
 void opcontrol() {
   // lift.lowerToButton();
+  printf("loopy\n");
+  printf(buttonFoldout.isPressed() ? "pressed" : "");
 	while (true) {
-		runAuton();
+    if (buttonFoldout.changedToPressed()) {
+      printf("folding out\n");
+      foldout();
+    }
 		runDrive();
     runLift();
     runRails();

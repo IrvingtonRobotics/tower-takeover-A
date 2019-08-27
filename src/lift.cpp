@@ -226,5 +226,9 @@ public:
     printf("next %f\n", nextTicks);
     controller.setTarget(nextTicks);
     printf("---------\n");
+  }  
+
+  void waitUntilSettled() {
+    controller.waitUntilSettled();
   }
 };

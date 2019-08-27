@@ -48,4 +48,8 @@ public:
   void tarePosition() {
     controller.tarePosition();
   }
+
+  void waitUntilSettled() {
+    controller.waitUntilSettled();
+  }
 };
