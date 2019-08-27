@@ -12,7 +12,7 @@ ControllerButton buttonLiftSmallDown(ControllerDigital::left);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggle2(ControllerDigital::R2);
 ControllerButton buttonFoldout(ControllerDigital::A);
-ControllerButton buttonRetare(ControllerDigital::B);
+ControllerButton buttonRetareLift(ControllerDigital::B);
 ControllerButton buttonQuery(ControllerDigital::X);
 ControllerButton buttonTareRails(ControllerDigital::Y);
 ControllerButton buttonRunIntake(ControllerDigital::L1);

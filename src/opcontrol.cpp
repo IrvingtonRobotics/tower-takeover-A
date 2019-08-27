@@ -31,7 +31,7 @@ void runLift() {
     // printf("moving %d %d\n", isIncrease, isSmall);
     lift.move(isIncrease, isSmall);
   }
-  if (buttonRetare.changedToPressed()) {
+  if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
   }
   if (buttonQuery.changedToPressed()) {

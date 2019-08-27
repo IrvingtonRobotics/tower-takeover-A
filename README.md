@@ -13,6 +13,9 @@
 | L2 | Run outtake |
 | Up/Down arrows | Lift up/down to presets |
 | Right/Left arrows | Lift up/down by small increments (hold for longer movement) |
+| A | Run foldout procedure for testing |
+| B | Re-tare lift |
+| X | Print out lift debug info |
 | Y | Tare Rails |
 
 ## Wiring
@@ -20,7 +23,7 @@
 | Port | Description |
 |------------|----------|
 | ADI B | Rails limit |
-| ADI H | Lift limit |
+| ADI E | Lift limit |
 
 
 ### Motors
