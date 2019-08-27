@@ -4,27 +4,27 @@
 using namespace okapi;
 
 class Lift {
-  const QLength armLength = 22_in;
+  const QLength ARM_LENGTH = 22_in;
   // height of arm pivot above ground
-  const QLength armElevation = 16_in;
+  const QLength ARM_ELEVATION = 16_in;
   // 1800 ticks/rev with 36:1 gears -- high torque
   // 900 ticks/rev with 18:1 gears
   // 300 ticks/rev with 6:1 gears -- high speed
-  const double arbitraryFactor = 1.8;
-  const int ticksPerRev = 1800 * arbitraryFactor;
-  const QLength maxArmHeight = 29_in;
-  const QLength minArmHeight = 2.5_in;
-  const QLength posTolerance = 0.5_in;
+  const double ARBITRARY_TICKS_FACTOR = 1.8;
+  const int ticksPerRev = 1800 * ARBITRARY_TICKS_FACTOR;
+  const QLength MAX_ARM_HEIGHT = 29_in;
+  const QLength MIN_ARM_HEIGHT = 2.5_in;
+  const QLength POS_TOLERANCE = 0.5_in;
   double tareTicks = 0;
-  const QLength smallMoveSize = 0.5_in;
-  const QLength minThreshold = -1000_in;
+  const QLength SMALL_MOVE_SIZE = 0.5_in;
+  const QLength MIN_THRESHOLD = -1000_in;
   QLength smallMoveThreshold;
-  const QLength smallMoveTolerance = 0.2_in;
+  const QLength SMALL_MOVE_TOLERANCE = 0.2_in;
   int smallMoveDir = 1;
-  static const int numHeights = 4;
-  const QTime lowerToButtonTimeout = 5_s;
+  static const int NUM_HEIGHTS = 4;
+  const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
   // targetHeights MUST be sorted
-  const QLength targetHeights[numHeights] = {minArmHeight, 16_in, 24.5_in, maxArmHeight};
+  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(-LIFT_PORT);
   AsyncVelIntegratedController velController =
@@ -34,8 +34,8 @@ class Lift {
   double getTicks(QLength height) {
     // takes height from ground
     // gives ticks from center
-    QLength dy = height - armElevation;
-    double ratio = (dy / armLength).getValue();
+    QLength dy = height - ARM_ELEVATION;
+    double ratio = (dy / ARM_LENGTH).getValue();
     // printf("Height sin: %f\n", ratio);
     // radians
     double angle = asin(ratio);
@@ -62,8 +62,8 @@ class Lift {
     // gives height from ground
     double angle = getAngle(taredTicks);
     double ratio = sin(angle);
-    QLength dy = ratio * armLength;
-    QLength height = dy + armElevation;
+    QLength dy = ratio * ARM_LENGTH;
+    QLength height = dy + ARM_ELEVATION;
     return height;
   }
 
@@ -77,8 +77,8 @@ class Lift {
     if (isIncreaseSmall) {
       // just move a bit in one direction
       smallMoveDir = m;
-      QLength smallMoveTarget = lastHeight + m * smallMoveSize;
-      smallMoveThreshold = smallMoveTarget * m - smallMoveTolerance;
+      QLength smallMoveTarget = lastHeight + m * SMALL_MOVE_SIZE;
+      smallMoveThreshold = smallMoveTarget * m - SMALL_MOVE_TOLERANCE;
       return smallMoveTarget;
     } else {
       /*
@@ -86,12 +86,12 @@ class Lift {
         decreasing: find last one less than current position
         switching isIncrease just switches direction and comparison type
       */
-      int i = isIncrease ? 0 : numHeights - 1;
-      while (lastHeight * m > targetHeights[i] * m - posTolerance) {
+      int i = isIncrease ? 0 : NUM_HEIGHTS - 1;
+      while (lastHeight * m > targetHeights[i] * m - POS_TOLERANCE) {
         // printf("i %d\n", i);
         i += m;
       }
-      i = std::clamp(i, 0, numHeights - 1);
+      i = std::clamp(i, 0, NUM_HEIGHTS - 1);
       printf("clamped i %d\n", i);
       printf("returning ... %f\n", targetHeights[i] / 0.0254);
       return targetHeights[i];
@@ -110,7 +110,7 @@ public:
   }
 
   void tare() {
-    tareHeight(minArmHeight);
+    tareHeight(MIN_ARM_HEIGHT);
   }
 
   void tareHeight(QLength height) {
@@ -141,7 +141,7 @@ public:
 
   void move(QLength height) {
     // printf("tare ticks %f\n", tareTicks);
-    QLength clampedHeight = std::clamp(height, minArmHeight, maxArmHeight);
+    QLength clampedHeight = std::clamp(height, MIN_ARM_HEIGHT, MAX_ARM_HEIGHT);
     // printf("Clamped height from %f to %f\n", height.getValue(), clampedHeight.getValue());
     double targetTicks = getTicks(clampedHeight);
     // printf("New target ticks %f\n", taredTicks);
@@ -154,7 +154,7 @@ public:
     // printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
     // printf("Last height %f\n", lastTargetHeight.getValue());
     if (!isSmall) {
-      smallMoveThreshold = minThreshold;
+      smallMoveThreshold = MIN_THRESHOLD;
     }
     QLength height = getCurrentHeight();
     if (height * smallMoveDir >= smallMoveThreshold) {
@@ -193,7 +193,7 @@ public:
     velController.flipDisable();
     velController.setTarget(-30);
     Timer timeoutTimer = Timer();
-    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < lowerToButtonTimeout) {
+    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < LOWER_TO_BUTTON_TIMEOUT) {
       pros::delay(10);
     }
     velController.setTarget(0);
@@ -226,7 +226,7 @@ public:
     printf("next %f\n", nextTicks);
     controller.setTarget(nextTicks);
     printf("---------\n");
-  }  
+  }
 
   void waitUntilSettled() {
     controller.waitUntilSettled();
