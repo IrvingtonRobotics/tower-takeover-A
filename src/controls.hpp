@@ -14,6 +14,7 @@ ControllerButton buttonRailsToggle2(ControllerDigital::R2);
 ControllerButton buttonFoldout(ControllerDigital::A);
 ControllerButton buttonRetare(ControllerDigital::B);
 ControllerButton buttonQuery(ControllerDigital::X);
+ControllerButton buttonTareRails(ControllerDigital::Y);
 ControllerButton buttonRunIntake(ControllerDigital::L1);
 ControllerButton buttonRunOuttake(ControllerDigital::L2);
 Controller masterController;

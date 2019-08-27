@@ -3,16 +3,24 @@
 
 /**
  * Main class for the Rails angling subsystem
- * Wraps around AsyncPosIntegratedController
+ * Wraps around AsyncPosIntegratedController and AsyncVelIntegratedController
+ * in the manner of Lift (some of the code is transferred)
+ * Need a limit because the rails can now start in the middle for space concerns
  **/
 class Rails {
-  bool isBack = true;
   const double RAILS_BACK_TICKS = 0;
   const double RAILS_FORWARD_TICKS = 750;
+  const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
   const double MOVE_BACK_SPEED = 45;
   const double MOVE_FORWARD_SPEED = 30;
+  const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
+  const int PORT = -ANGLE_RAILS_PORT;
   AsyncPosIntegratedController controller =
-    AsyncControllerFactory::posIntegrated(-ANGLE_RAILS_PORT);
+    AsyncControllerFactory::posIntegrated(PORT);
+  AsyncVelIntegratedController velController =
+    AsyncControllerFactory::velIntegrated(PORT);
+  ADIButton buttonLimit = ADIButton(RAILS_LIMIT_PORT);
+
 
   void move(double ticks) {
     printf("Moving rails to %f ticks\n", ticks);
@@ -28,7 +36,32 @@ class Rails {
     controller.setMaxVelocity(ticks);
   }
 
+  /**
+   * Switch control between position controller and velocity controller
+   */
+  void flipDisable() {
+    controller.flipDisable();
+    velController.flipDisable();
+  }
+
+  bool isBack() {
+    if (getTargetTicks() < RAILS_MIDPOINT_TICKS) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 public:
+  Rails() {
+    velController.flipDisable();
+    setMaxVelocity(30);
+  }
+
+  float getTargetTicks() {
+    return controller.getTarget();
+  }
+
   void moveBack() {
     printf("Moving rails to back\n");
     move(RAILS_BACK_TICKS, MOVE_BACK_SPEED);
@@ -39,9 +72,13 @@ public:
     move(RAILS_FORWARD_TICKS, MOVE_FORWARD_SPEED);
   }
 
+  void moveForward(double weight) {
+    double target = weight * RAILS_FORWARD_TICKS + (1 - weight) * RAILS_BACK_TICKS;
+    move(target);
+  }
+
   void move(bool _isBack) {
-    isBack = _isBack;
-    if (isBack) {
+    if (_isBack) {
       moveBack();
     } else {
       moveForward();
@@ -49,11 +86,31 @@ public:
   }
 
   /**
+   * BLOCKING
+   */
+  void backToButton() {
+    // move control to vel for smooth movement
+    flipDisable();
+    velController.setTarget(-20);
+    Timer timeoutTimer = Timer();
+    // delay whole code
+    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < BACK_TO_BUTTON_TIMEOUT) {
+      pros::delay(10);
+    }
+    velController.setTarget(0);
+    // hand control back to pos
+    flipDisable();
+    tare();
+    // avoid the controller resuming to its previous location
+    controller.setTarget(0);
+  }
+
+  /**
    * Switch between forward and backward
    * Assume rails have not moved and remain being isBack
    */
   void togglePosition() {
-    move(!isBack);
+    move(!isBack());
   }
 
   /**

@@ -20,6 +20,7 @@
 
 // ADI (3-wire)
 // What does ADI Stand for? Analog Device Input?
-#define BUTTON_LIMIT_PORT 'E'
+#define LIFT_LIMIT_PORT 'E'
+#define RAILS_LIMIT_PORT 'B'
 
 #endif

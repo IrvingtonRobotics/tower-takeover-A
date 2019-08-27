@@ -49,7 +49,7 @@ class Lift {
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
-  ADIButton buttonLimit = ADIButton(BUTTON_LIMIT_PORT);
+  ADIButton buttonLimit = ADIButton(LIFT_LIMIT_PORT);
 
   /**
    * @param QLength height from ground

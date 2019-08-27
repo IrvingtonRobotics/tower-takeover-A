@@ -13,11 +13,13 @@
 | L2 | Run outtake |
 | Up/Down arrows | Lift up/down to presets |
 | Right/Left arrows | Lift up/down by small increments (hold for longer movement) |
+| Y | Tare Rails |
 
 ## Wiring
 
 | Port | Description |
 |------------|----------|
+| ADI B | Rails limit |
 | ADI H | Lift limit |
 
 

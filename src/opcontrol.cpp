@@ -82,6 +82,10 @@ void opcontrol() {
       printf("folding out\n");
       foldout();
     }
+    if (buttonTareRails.changedToPressed()) {
+      printf("taring rails\n");
+      rails.backToButton();
+    }
 		runDrive();
     runLift();
     runRails();
