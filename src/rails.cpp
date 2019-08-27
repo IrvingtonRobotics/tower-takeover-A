@@ -1,8 +1,6 @@
 #include "main.h"
 #include "ports.hpp"
 
-using namespace okapi;
-
 class Rails {
   bool isBack;
   const double RAILS_BACK_TICKS = 0;

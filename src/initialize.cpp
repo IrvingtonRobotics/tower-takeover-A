@@ -1,3 +1,7 @@
+/**
+ * Initialization, run before all other code as soon as the proram is started
+ */
+
 #include "common.hpp"
 
 /**
@@ -27,6 +31,7 @@ void on_right_button() {
   set_location_text();
 }
 
+// Instantiate subsystem classes
 Lift lift = Lift();
 Drive drive = Drive();
 Rails rails = Rails();
@@ -45,7 +50,6 @@ void initialize() {
 
   lift.setMaxVelocity(30);
   lift.tare();
-  lift.move(1_in);
 
   rails.setMaxVelocity(20);
   rails.tarePosition();

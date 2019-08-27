@@ -1,3 +1,9 @@
+/**
+ * Common definitions shared between initialize, autonomous, and opcontrol
+ * Includes and makes instances of each subsystem
+ */
+
+
 #ifndef SRC_COMMON_H_
 #define SRC_COMMON_H_
 
@@ -6,8 +12,6 @@
 #include "drive.cpp"
 #include "rails.cpp"
 #include "intake.cpp"
-
-using namespace okapi;
 
 extern Lift lift;
 extern Drive drive;
