@@ -51,9 +51,7 @@ void initialize() {
   lift.setMaxVelocity(30);
   lift.tare();
 
-  rails.setMaxVelocity(20);
-  rails.tarePosition();
-  rails.move(true);
+  rails.tare();
 
   /**
    * LCD Configuration
