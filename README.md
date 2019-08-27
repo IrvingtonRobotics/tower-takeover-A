@@ -26,9 +26,9 @@
 |------------|----------|
 | 1 | Right front drive motor |
 | 2 | Right back drive motor |
-| 4 | Right intake motor  |
 | 5 | Lift motor |
 | 7 | Left intake motor |
 | 8 | Rails angling motor |
 | 9 | Left back drive motor |
 | 10 | Left front drive motor |
+| 11 | Right intake motor  |
