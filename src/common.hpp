@@ -1,5 +1,5 @@
-#ifndef _COMMON_
-#define _COMMON_
+#ifndef SRC_COMMON_H_
+#define SRC_COMMON_H_
 
 #include "main.h"
 #include "lift.cpp"

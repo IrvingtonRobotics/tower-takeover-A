@@ -1,3 +1,6 @@
+#ifndef SRC_PORTS_H_
+#define SRC_PORTS_H_
+
 #define DRIVE_LEFT_FRONT_PORT 10
 #define DRIVE_LEFT_BACK_PORT 9
 #define DRIVE_RIGHT_FRONT_PORT 1
@@ -7,3 +10,5 @@
 #define INTAKE_RIGHT_PORT 4
 #define LIFT_PORT 5
 #define BUTTON_LIMIT_PORT 'E'
+
+#endif

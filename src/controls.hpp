@@ -1,3 +1,6 @@
+#ifndef SRC_CONTROLS_H_
+#define SRC_CONTROLS_H_
+
 ControllerButton buttonLiftUp(ControllerDigital::up);
 ControllerButton buttonLiftDown(ControllerDigital::down);
 ControllerButton buttonLiftSmallUp(ControllerDigital::right);
@@ -13,3 +16,5 @@ Controller masterController;
 
 #define DRIVE_X_CONTROL masterController.getAnalog(ControllerAnalog::rightX)
 #define DRIVE_Y_CONTROL masterController.getAnalog(ControllerAnalog::rightY)
+
+#endif
