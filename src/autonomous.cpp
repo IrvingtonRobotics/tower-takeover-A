@@ -12,19 +12,17 @@
  */
 void foldout() {
   printf("fold out\n");
-  // push rails
-  rails.moveForward();
-  rails.waitUntilSettled();
-  // return Rails
-  rails.moveBack();
-  rails.waitUntilSettled();
-  // pause
-  pros::delay(100);
-  // raise arm
-  lift.move(15_in);
+  lift.move(7_in);
+  pros::delay(200);
+  lift.move(23_in);
+  intake.intake();
   lift.waitUntilSettled();
-  // lower arm
+  intake.stop();
   lift.lowerToButton();
+  rails.backToButton();
+  rails.moveForward(0.8, 100);
+  rails.waitUntilSettled();
+  rails.moveBack(100);
 }
 
 /**
@@ -42,9 +40,9 @@ void autonomous() {
 	foldout();
 	pros::delay(1000);
 	// printf("Moving 1\n");
-	drive.moveDistance(12_in);
+	// drive.moveDistance(1_in);
 	// printf("Done moving 1\n");
 	// printf("Moving 1\n");
-	drive.moveDistance(12_in);
+	// drive.moveDistance(1_in);
 	// printf("Done moving 1\n");
 }

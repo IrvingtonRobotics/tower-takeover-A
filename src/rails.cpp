@@ -64,8 +64,11 @@ public:
   }
 
   void moveBack() {
-    printf("Moving rails to back\n");
-    move(RAILS_BACK_TICKS, MOVE_BACK_SPEED);
+    moveBack(MOVE_BACK_SPEED);
+  }
+
+  void moveBack(double maxSpeed) {
+    move(RAILS_BACK_TICKS, maxSpeed);
   }
 
   void moveForward() {
@@ -73,9 +76,9 @@ public:
     move(RAILS_FORWARD_TICKS, MOVE_FORWARD_SPEED);
   }
 
-  void moveForward(double weight) {
+  void moveForward(double weight, double maxSpeed) {
     double target = weight * RAILS_FORWARD_TICKS + (1 - weight) * RAILS_BACK_TICKS;
-    move(target);
+    move(target, maxSpeed);
   }
 
   void move(bool _isBack) {
