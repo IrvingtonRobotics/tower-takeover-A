@@ -45,6 +45,8 @@ class Lift {
   // WARNING: targetHeights MUST be sorted
   const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
   const int PORT = -LIFT_PORT;
+  // is this currently doing a hard stop?
+  bool stopping = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
@@ -272,6 +274,10 @@ public:
     Timer timeoutTimer = Timer();
     // delay whole code
     while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < LOWER_TO_BUTTON_TIMEOUT) {
+      if (stopping) {
+        stopping = !stopping;
+        return;
+      }
       pros::delay(10);
     }
     velController.setTarget(0);
@@ -319,5 +325,10 @@ public:
 
   void waitUntilSettled() {
     controller.waitUntilSettled();
+  }
+
+  void stop() {
+    move(getCurrentTicks());
+    stopping = true;
   }
 };

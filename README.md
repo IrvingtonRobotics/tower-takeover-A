@@ -15,8 +15,11 @@
 | Right/Left arrows | Lift up/down by small increments (hold for longer movement) |
 | A | Run foldout procedure for testing |
 | B | Re-tare lift |
-| X | Print out lift debug info |
+| X | Stop all movement (Emergency kill). Pressing this again will enable movement |
 | Y | Tare Rails |
+
+Note: The emergency kill will order all motors to stop moving and hold their position.
+It will not cut power to the motors. To do that, hold the power off button.
 
 ## Wiring
 

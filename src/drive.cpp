@@ -37,6 +37,10 @@ class Drive {
     return input;
   }
 
+  void moveTank(float left, float right) {
+    controller.tank(leftDriveSpeed, rightDriveSpeed);
+  }
+
 public:
   /**
    * Arcade drive based on controllerX and controllerY
@@ -48,7 +52,7 @@ public:
     float right = controllerY - controllerX;
     leftDriveSpeed = getNewDriveSpeed(leftDriveSpeed, left);
     rightDriveSpeed = getNewDriveSpeed(rightDriveSpeed, right);
-    controller.tank(leftDriveSpeed, rightDriveSpeed);
+    moveTank(leftDriveSpeed, rightDriveSpeed);
   }
 
   /**
@@ -58,5 +62,9 @@ public:
   void moveDistance(QLength length) {
     // might click
     controller.moveDistance(length);
+  }
+
+  void stop() {
+    moveTank(0, 0);
   }
 };

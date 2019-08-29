@@ -15,6 +15,7 @@ class Rails {
   const double MOVE_FORWARD_SPEED = 30;
   const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
   const int PORT = -ANGLE_RAILS_PORT;
+  bool stopping = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
@@ -95,6 +96,10 @@ public:
     Timer timeoutTimer = Timer();
     // delay whole code
     while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < BACK_TO_BUTTON_TIMEOUT) {
+      if (stopping) {
+        stopping = false;
+        return;
+      }
       pros::delay(10);
     }
     velController.setTarget(0);
@@ -107,7 +112,7 @@ public:
 
   /**
    * Switch between forward and backward
-   * Assume rails have not moved and remain being isBack
+   * Assume rails have not moved and remain being isBackdrive
    */
   void togglePosition() {
     move(!isBack());
@@ -122,5 +127,15 @@ public:
 
   void waitUntilSettled() {
     controller.waitUntilSettled();
+  }
+
+  float getCurrentTicks() {
+    // return controller.getTarget() + tareTicks;
+    return getTargetTicks() - controller.getError();
+  }
+
+  void stop() {
+    move(getCurrentTicks());
+    stopping = true;
   }
 };

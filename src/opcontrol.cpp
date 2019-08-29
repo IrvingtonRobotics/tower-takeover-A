@@ -8,10 +8,16 @@
 
 const int STANDARD_DELAY = 10;
 
+bool killed = false;
+
 /**
  * Run the Drive subsystem based on the joysticks
  */
 void runDrive() {
+  if (killed) {
+    drive.stop();
+    return;
+  }
   drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL);
 }
 
@@ -36,6 +42,10 @@ void runDriveFn(void* param) {
  * Controls querying for lift location
  */
 void runLift() {
+  if (killed) {
+    lift.stop();
+    return;
+  }
   lift.checkTare();
   bool smallUp = buttonLiftSmallUp.isPressed();
   bool up = buttonLiftUp.changedToPressed();
@@ -49,9 +59,6 @@ void runLift() {
   }
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
-  }
-  if (buttonQuery.changedToPressed()) {
-    lift.query();
   }
 }
 
@@ -67,6 +74,10 @@ void runLiftFn(void* param) {
  * Simply toggle between the two positions based on buttons
  */
 void runRails() {
+  if (killed) {
+    rails.stop();
+    return;
+  }
   if (buttonRailsToggle.changedToPressed() || buttonRailsToggle2.changedToPressed()) {
     rails.togglePosition();
   }
@@ -88,11 +99,18 @@ void runRailsFn(void* param) {
  * Intake, outtake, or stop based on buttons
  */
 void runIntake() {
+  if (killed) {
+    intake.stop();
+    return;
+  }
   if (buttonRunIntake.isPressed()) {
     intake.intake();
   } else if (buttonRunOuttake.isPressed()) {
     intake.outtake();
   } else {
+    intake.stop();
+  }
+  if (buttonKill.changedToPressed()) {
     intake.stop();
   }
 }
@@ -115,4 +133,10 @@ void opcontrol() {
   pros::Task runLiftTask(runLiftFn);
   pros::Task runRailsTask(runRailsFn);
   pros::Task runIntakeTask(runIntakeFn);
+  while (true) {
+    if (buttonKill.changedToPressed()) {
+      killed = !killed;
+    }
+    pros::delay(10);
+  }
 }
