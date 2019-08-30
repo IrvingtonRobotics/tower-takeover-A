@@ -14,6 +14,7 @@ class Rails {
   const double MOVE_BACK_SPEED = 45;
   const double MOVE_FORWARD_SPEED = 30;
   const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
+  const int DEFAULT_BACK_SPEED = 20;
   const int PORT = -ANGLE_RAILS_PORT;
   bool stopping = false;
   AsyncPosIntegratedController controller =
@@ -92,10 +93,10 @@ public:
   /**
    * BLOCKING
    */
-  void backToButton() {
+  void backToButton(int speed) {
     // move control to vel for smooth movement
     flipDisable();
-    velController.setTarget(-20);
+    velController.setTarget(-abs(speed));
     Timer timeoutTimer = Timer();
     // delay whole code
     while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < BACK_TO_BUTTON_TIMEOUT) {
@@ -111,6 +112,10 @@ public:
     tare();
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
+  }
+
+  void backToButton() {
+    backToButton(DEFAULT_BACK_SPEED);
   }
 
   /**

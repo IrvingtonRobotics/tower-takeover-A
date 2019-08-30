@@ -12,17 +12,16 @@
  */
 void foldout() {
   printf("fold out\n");
-  lift.move(7_in);
-  pros::delay(200);
-  lift.move(23_in);
+  rails.backToButton();
+  lift.move(27_in);
   intake.intake();
   lift.waitUntilSettled();
   intake.stop();
-  lift.lowerToButton();
-  rails.backToButton();
-  rails.moveForward(0.8, 100);
+  lift.lowerToButton(70);
+  rails.moveForward(0.95, 600);
   rails.waitUntilSettled();
-  rails.moveBack(100);
+  pros::delay(200);
+  rails.moveBack(600);
 }
 
 /**

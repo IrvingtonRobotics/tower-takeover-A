@@ -42,6 +42,7 @@ class Lift {
   static const int NUM_HEIGHTS = 4;
   // give up on lowering to button after this time if not hit limit switch
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
+  const int DEFEAULT_LOWER_SPEED = 30;
   // WARNING: targetHeights MUST be sorted
   const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
   const int PORT = -LIFT_PORT;
@@ -267,10 +268,10 @@ public:
    * as-is because completely stopping ensures precision and is a feature, not a
    * bug
    */
-  void lowerToButton() {
+  void lowerToButton(int speed) {
     // move control to vel for smooth movement
     flipDisable();
-    velController.setTarget(-30);
+    velController.setTarget(-abs(speed));
     Timer timeoutTimer = Timer();
     // delay whole code
     while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < LOWER_TO_BUTTON_TIMEOUT) {
@@ -286,6 +287,10 @@ public:
     tare();
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
+  }
+
+  void lowerToButton() {
+    lowerToButton(DEFEAULT_LOWER_SPEED);
   }
 
   /**

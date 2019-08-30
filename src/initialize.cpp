@@ -48,7 +48,7 @@ void initialize() {
    * Parts Configuration
    */
 
-  lift.setMaxVelocity(30);
+  lift.setMaxVelocity(70);
   lift.tare();
 
   rails.tare();
