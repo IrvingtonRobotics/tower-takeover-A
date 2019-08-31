@@ -18,10 +18,11 @@ void foldout() {
   lift.waitUntilSettled();
   intake.stop();
   lift.lowerToButton(70);
-  rails.moveForward(0.95, 600);
+  rails.moveForward(0.2, 40);
+  drive.moveDistance(3_in);
   rails.waitUntilSettled();
-  pros::delay(200);
-  rails.moveBack(600);
+  rails.moveBack(40);
+  drive.moveDistance(-3_in);
 }
 
 /**
