@@ -15,7 +15,7 @@ class Drive {
     {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
     {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
     AbstractMotor::gearset::green,
-    {4_in, 11.5_in}
+    {4_in, 14.5_in}
   );
 
   /**
