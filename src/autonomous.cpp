@@ -14,11 +14,11 @@
  */
 void foldout() {
   printf("fold out\n");
-  // home rails
-  rails.backToButton();
   // foldout
   lift.move(27_in);
   intake.intake();
+  // home rails while lifting
+  rails.backToButton();
   lift.waitUntilSettled();
   // return
   intake.stop();
