@@ -3,6 +3,8 @@
  * Each subsystem is not split into tasks because autonomous does one at a time.
  * If you want to multitask autonomous, put the tasks inside the subsystem
  * classes so they initialize when the subsystem classes
+ *
+ * All of this code assumes blue side and gets automatically flipped
  */
 
 #include "common.hpp"
@@ -12,17 +14,18 @@
  */
 void foldout() {
   printf("fold out\n");
+  // home rails
   rails.backToButton();
+  // foldout
   lift.move(27_in);
   intake.intake();
   lift.waitUntilSettled();
+  // return
   intake.stop();
   lift.lowerToButton(70);
-  rails.moveForward(0.2, 40);
-  drive.moveDistance(3_in);
-  rails.waitUntilSettled();
-  rails.moveBack(40);
+  // jiggle while homing rails
   drive.moveDistance(-3_in);
+  drive.moveDistance(3_in);
 }
 
 /**
@@ -38,7 +41,12 @@ void foldout() {
  */
 void autonomous() {
 	foldout();
-	pros::delay(1000);
+  pros::delay(300);
+  // push cube into endzone
+  drive.moveDistance(20_in);
+  drive.turnAngle(-10_deg);
+  drive.moveDistance(5_in);
+  drive.moveDistance(-10_in);
 	// printf("Moving 1\n");
 	// drive.moveDistance(1_in);
 	// printf("Done moving 1\n");

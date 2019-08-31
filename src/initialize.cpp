@@ -48,6 +48,8 @@ void initialize() {
    * Parts Configuration
    */
 
+  drive.setSide(is_red);
+
   lift.setMaxVelocity(70);
   lift.tare();
 
@@ -72,7 +74,9 @@ void initialize() {
  * the VEX Competition Switch, following either autonomous or opcontrol. When
  * the robot is enabled, this task will exit.
  */
-void disabled() {}
+void disabled() {
+  drive.straighten();
+}
 
 /**
  * Runs after initialize(), and before autonomous when connected to the Field

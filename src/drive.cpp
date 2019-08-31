@@ -10,6 +10,7 @@ class Drive {
   float rightDriveSpeed = 0;
   const float MAX_DRIVE_ACCEL = 0.01;
   const float MAX_DRIVE_DECEL = 0.05;
+  bool reversed = false;
   ChassisControllerIntegrated controller = ChassisControllerFactory::create(
     {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
     {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
@@ -56,6 +57,8 @@ public:
   }
 
   /**
+   * Synchronous
+   *
    * Move a specific distance.
    * No acceleration limits are applied, so this might cause chain to slip
    */
@@ -67,4 +70,25 @@ public:
   void stop() {
     moveTank(0, 0);
   }
+
+  /**
+   * Turn clockwise some angle, use negative to turn counterclockwise
+   */
+  void turnAngle(QAngle angle) {
+    controller.turnAngle(boolToSign(!reversed) * angle);
+  }
+
+  /**
+   * Set side to reverse angles
+   */
+  void setSide(bool isRed) {
+    reversed = isRed;
+  }
+
+  /**
+   * Reset to blue (nothing reversed)
+   */
+   void straighten() {
+     reversed = false;
+   }
 };
