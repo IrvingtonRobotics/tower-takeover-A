@@ -47,10 +47,4 @@ void autonomous() {
   drive.turnAngle(-10_deg);
   drive.moveDistance(5_in);
   drive.moveDistance(-10_in);
-	// printf("Moving 1\n");
-	// drive.moveDistance(1_in);
-	// printf("Done moving 1\n");
-	// printf("Moving 1\n");
-	// drive.moveDistance(1_in);
-	// printf("Done moving 1\n");
 }

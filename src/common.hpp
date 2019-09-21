@@ -18,7 +18,7 @@ extern Drive drive;
 extern Rails rails;
 extern Intake intake;
 
-extern bool is_red;
-extern bool is_back;
+extern bool isRed;
+extern bool isBack;
 
 #endif
