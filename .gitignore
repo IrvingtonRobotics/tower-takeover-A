@@ -2,3 +2,4 @@ bin
 temp.log
 compile_commands.json
 .vscode
+.DS_STORE
