@@ -15,7 +15,7 @@
 #define DRIVE_RIGHT_BACK_PORT 2
 #define ANGLE_RAILS_PORT 8
 #define INTAKE_LEFT_PORT 7
-#define INTAKE_RIGHT_PORT 11
+#define INTAKE_RIGHT_PORT 20
 #define LIFT_PORT 5
 
 // ADI (3-wire)
