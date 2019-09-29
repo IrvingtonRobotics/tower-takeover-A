@@ -9,23 +9,38 @@
 
 #include "common.hpp"
 
+// set this to true (for setup) to fold in instead of fold out
+// use pros upload --slot 2
+const bool isFoldin = false;
+
 /**
  * Run foldout at beginning of match
  */
 void foldout() {
   printf("fold out\n");
+  // home rails while lifting
+  rails.backToButton();
   // foldout
   lift.move(27_in);
   intake.intake();
-  // home rails while lifting
-  rails.backToButton();
   lift.waitUntilSettled();
   // return
+  lift.lowerToButton(120);
   intake.stop();
-  lift.lowerToButton(70);
-  // jiggle while homing rails
   drive.moveDistance(-3_in);
   drive.moveDistance(3_in);
+}
+
+void foldin() {
+  printf("fold in\n");
+  // lift.lowerToButton(120);
+  lift.move(12_in);
+  lift.waitUntilSettled();
+  rails.backToButton();
+  intake.outtake();
+  pros::delay(3000);
+  intake.stop();
+  lift.lowerToButton(120);
 }
 
 /**
@@ -40,7 +55,11 @@ void foldout() {
  * from where it left off.
  */
 void autonomous() {
-	foldout();
+  if (isFoldin) {
+    foldin();
+    return;
+  }
+  foldout();
   pros::delay(300);
   // push cube into endzone
   drive.moveDistance(20_in);
