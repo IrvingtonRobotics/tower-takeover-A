@@ -91,4 +91,13 @@ public:
    void straighten() {
      reversed = false;
    }
+
+   auto getProfileController() {
+     return AsyncControllerFactory::motionProfile(
+       0.2,
+       0.4,
+       2.0,
+       controller
+     );
+   }
 };

@@ -43,6 +43,17 @@ void foldin() {
   lift.lowerToButton(120);
 }
 
+
+void travelProfile(std::initializer_list<okapi::Point> iwaypoints, bool backwards) {
+  // hopefully little overhead here
+  auto profileController = drive.getProfileController();
+  string name = "current";
+  profileController.generatePath(iwaypoints, name);
+  profileController.setTarget(name, backwards);
+  profileController.waitUntilSettled();
+  profileController.removePath(name);
+}
+
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -59,11 +70,23 @@ void autonomous() {
     foldin();
     return;
   }
-  foldout();
+  // foldout();
   pros::delay(300);
+  travelProfile({
+    Point{3_in, 108_in, 0_deg},
+    Point{41_in, 108_in, 0_deg}
+  }, false);
+  travelProfile({
+    Point{41_in, 108_in, 0_deg},
+    Point{36_in, 81_in, 90_deg}
+  }, true);
+  travelProfile({
+    Point{36_in, 81_in, 90_deg},
+    Point{30_in, 127_in, 135_deg}
+  }, false);
   // push cube into endzone
-  drive.moveDistance(20_in);
-  drive.turnAngle(-10_deg);
-  drive.moveDistance(5_in);
-  drive.moveDistance(-10_in);
+  // drive.moveDistance(20_in);
+  // drive.turnAngle(-10_deg);
+  // drive.moveDistance(5_in);
+  // drive.moveDistance(-10_in);
 }
