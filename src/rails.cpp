@@ -15,7 +15,7 @@ class Rails {
   const double MOVE_FORWARD_SPEED = 30;
   const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
   const int DEFAULT_BACK_SPEED = 20;
-  const int PORT = -ANGLE_RAILS_PORT;
+  const int PORT = ANGLE_RAILS_PORT;
   bool stopping = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
