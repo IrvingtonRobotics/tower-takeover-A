@@ -23,7 +23,7 @@ class Lift {
   const double ARBITRARY_TICKS_FACTOR = 1.8;
   const int ticksPerRev = 1800 * ARBITRARY_TICKS_FACTOR;
   // height the arm caps out at
-  const QLength MAX_ARM_HEIGHT = 29_in;
+  const QLength MAX_ARM_HEIGHT = 31_in;
   // height the arm starts at
   const QLength MIN_ARM_HEIGHT = 2.5_in;
   // tolerance of position when calculating new targets
