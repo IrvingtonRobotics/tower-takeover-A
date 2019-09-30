@@ -78,11 +78,11 @@ void autonomous() {
   }, false);
   travelProfile({
     Point{41_in, 108_in, 0_deg},
-    Point{36_in, 81_in, 90_deg}
+    Point{41_in, 84_in, 90_deg}
   }, true);
   travelProfile({
-    Point{36_in, 81_in, 90_deg},
-    Point{30_in, 127_in, 135_deg}
+    Point{41_in, 84_in, 90_deg},
+    Point{8_in, 130_in, 135_deg} //estimated, not completely sure what I'm doing
   }, false);
   // push cube into endzone
   // drive.moveDistance(20_in);
