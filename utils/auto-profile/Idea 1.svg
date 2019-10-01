@@ -32,16 +32,16 @@
 <rect x="62.4773" y="181.923" width="11" height="11" transform="rotate(75 62.4773 181.923)" fill="#601CCF"/>
 <path d="M59.5073 194.138C59.866 194.346 60.3247 194.223 60.5318 193.864L63.9068 188.018C64.1139 187.659 63.991 187.201 63.6323 186.994C63.2736 186.787 62.8149 186.909 62.6078 187.268L59.6078 192.464L54.4116 189.464C54.0529 189.257 53.5942 189.38 53.3871 189.739C53.18 190.098 53.3029 190.556 53.6616 190.763L59.5073 194.138ZM55.2755 179.194L59.1578 193.683L60.6067 193.295L56.7244 178.806L55.2755 179.194Z" fill="#FF3030" fill-opacity="0.99"/>
 <circle cx="56" cy="179" r="0.25" transform="rotate(75 56 179)" fill="#C4C4C4" fill-opacity="0.98"/>
-<rect x="59.9117" y="254.456" width="32" height="32" transform="rotate(135 59.9117 254.456)" fill="#474747" fill-opacity="0.5"/>
-<rect x="59.9117" y="254.456" width="32" height="6" transform="rotate(135 59.9117 254.456)" fill="black"/>
-<rect x="41.5269" y="236.071" width="32" height="6" transform="rotate(135 41.5269 236.071)" fill="black"/>
-<rect x="59.9117" y="254.456" width="6" height="32" transform="rotate(135 59.9117 254.456)" fill="black"/>
-<rect x="50.7193" y="263.648" width="6" height="32" transform="rotate(135 50.7193 263.648)" fill="black"/>
-<rect x="45.0624" y="257.991" width="19" height="3" transform="rotate(135 45.0624 257.991)" fill="black"/>
-<rect x="35.8701" y="248.799" width="19" height="3" transform="rotate(135 35.8701 248.799)" fill="black"/>
-<rect x="37.9914" y="261.527" width="11" height="11" transform="rotate(135 37.9914 261.527)" fill="#601CCF"/>
-<path d="M25.9277 265.062C25.9277 265.477 26.2635 265.812 26.6777 265.812H33.4277C33.8419 265.812 34.1777 265.477 34.1777 265.062C34.1777 264.648 33.8419 264.312 33.4277 264.312H27.4277V258.312C27.4277 257.898 27.0919 257.562 26.6777 257.562C26.2635 257.562 25.9277 257.898 25.9277 258.312V265.062ZM36.7539 253.926L26.1473 264.532L27.208 265.593L37.8146 254.986L36.7539 253.926Z" fill="#FF3030" fill-opacity="0.99"/>
-<circle cx="37.2843" cy="254.456" r="0.25" transform="rotate(135 37.2843 254.456)" fill="#C4C4C4" fill-opacity="0.98"/>
+<rect x="60.9117" y="253.456" width="32" height="32" transform="rotate(135 60.9117 253.456)" fill="#474747" fill-opacity="0.5"/>
+<rect x="60.9117" y="253.456" width="32" height="6" transform="rotate(135 60.9117 253.456)" fill="black"/>
+<rect x="42.5269" y="235.071" width="32" height="6" transform="rotate(135 42.5269 235.071)" fill="black"/>
+<rect x="60.9117" y="253.456" width="6" height="32" transform="rotate(135 60.9117 253.456)" fill="black"/>
+<rect x="51.7193" y="262.648" width="6" height="32" transform="rotate(135 51.7193 262.648)" fill="black"/>
+<rect x="46.0624" y="256.991" width="19" height="3" transform="rotate(135 46.0624 256.991)" fill="black"/>
+<rect x="36.8701" y="247.799" width="19" height="3" transform="rotate(135 36.8701 247.799)" fill="black"/>
+<rect x="38.9914" y="260.527" width="11" height="11" transform="rotate(135 38.9914 260.527)" fill="#601CCF"/>
+<path d="M26.9277 264.062C26.9277 264.477 27.2635 264.812 27.6777 264.812L34.4277 264.812C34.8419 264.812 35.1777 264.477 35.1777 264.062C35.1777 263.648 34.8419 263.312 34.4277 263.312H28.4277V257.312C28.4277 256.898 28.0919 256.562 27.6777 256.562C27.2635 256.562 26.9277 256.898 26.9277 257.312L26.9277 264.062ZM37.7539 252.926L27.1473 263.532L28.208 264.593L38.8146 253.986L37.7539 252.926Z" fill="#FF3030" fill-opacity="0.99"/>
+<circle cx="38.2843" cy="253.456" r="0.25" transform="rotate(135 38.2843 253.456)" fill="#C4C4C4" fill-opacity="0.98"/>
 </g>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">

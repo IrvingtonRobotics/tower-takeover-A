@@ -73,16 +73,16 @@ void autonomous() {
   // foldout();
   pros::delay(300);
   travelProfile({
-    Point{3_in, 108_in, 0_deg},
-    Point{41_in, 108_in, 0_deg}
+  Point{11.0_in, 116.0_in, 0_deg},
+  Point{53.0_in, 116.0_in, 0_deg}
   }, false);
   travelProfile({
-    Point{41_in, 108_in, 0_deg},
-    Point{36_in, 81_in, 90_deg}
+    Point{53.0_in, 116.0_in, 0_deg},
+    Point{28.0_in, 89.5_in, 75.0_deg}
   }, true);
   travelProfile({
-    Point{36_in, 81_in, 90_deg},
-    Point{30_in, 127_in, 135_deg}
+    Point{28.0_in, 89.5_in, -75.0_deg},
+    Point{19.14215_in, 126.728_in, -45.0_deg}
   }, false);
   // push cube into endzone
   // drive.moveDistance(20_in);
