@@ -47,10 +47,12 @@ public:
    * Arcade drive based on controllerX and controllerY
    * Pass through controller.tank to use existing acceleration limit code
    */
-  float move(float controllerX, float controllerY) {
+  float move(float controllerX, float controllerY, float scl) {
     // compute tank left and right based on arcade x and y
     float left = controllerY + controllerX;
     float right = controllerY - controllerX;
+    left *= scl;
+    right *= scl;
     leftDriveSpeed = getNewDriveSpeed(leftDriveSpeed, left);
     rightDriveSpeed = getNewDriveSpeed(rightDriveSpeed, right);
     moveTank(leftDriveSpeed, rightDriveSpeed);

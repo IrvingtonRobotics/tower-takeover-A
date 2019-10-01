@@ -10,6 +10,8 @@ const int STANDARD_DELAY = 10;
 
 bool killed = false;
 
+bool slowToggleActive = false;
+bool slow = false;
 /**
  * Run the Drive subsystem based on the joysticks
  */
@@ -18,7 +20,15 @@ void runDrive() {
     drive.stop();
     return;
   }
-  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL);
+  if (driveSlowDistance() > 0.3) {
+    if (!slowToggleActive) {
+      slow = !slow;
+    }
+    slowToggleActive = true;
+  } else {
+    slowToggleActive = false;
+  }
+  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, slow ? 0.25 : 1);
 }
 
 /**

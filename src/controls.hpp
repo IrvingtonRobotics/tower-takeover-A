@@ -22,4 +22,10 @@ Controller masterController;
 #define DRIVE_X_CONTROL masterController.getAnalog(ControllerAnalog::rightX)
 #define DRIVE_Y_CONTROL masterController.getAnalog(ControllerAnalog::rightY)
 
+float driveSlowDistance() {
+  float x = masterController.getAnalog(ControllerAnalog::leftX);
+  float y = masterController.getAnalog(ControllerAnalog::leftY);
+  return x*x + y*y;
+}
+
 #endif
