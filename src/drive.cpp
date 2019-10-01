@@ -10,6 +10,8 @@ class Drive {
   float rightDriveSpeed = 0;
   const float MAX_DRIVE_ACCEL = 0.01;
   const float MAX_DRIVE_DECEL = 0.05;
+  const float TURN_LIMIT_THRESHOLD = 1.20;
+  const float TURN_LIMIT_SCALE = 0.85;
   bool reversed = false;
   ChassisControllerIntegrated controller = ChassisControllerFactory::create(
     {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
@@ -55,6 +57,11 @@ public:
     right *= scl;
     leftDriveSpeed = getNewDriveSpeed(leftDriveSpeed, left);
     rightDriveSpeed = getNewDriveSpeed(rightDriveSpeed, right);
+    float turnRate = abs(leftDriveSpeed - rightDriveSpeed);
+    if (turnRate > TURN_LIMIT_THRESHOLD) {
+      leftDriveSpeed *= TURN_LIMIT_SCALE;
+      rightDriveSpeed *= TURN_LIMIT_SCALE;
+    }
     moveTank(leftDriveSpeed, rightDriveSpeed);
   }
 
