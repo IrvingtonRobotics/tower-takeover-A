@@ -92,11 +92,11 @@ public:
      reversed = false;
    }
 
-   auto getProfileController() {
+   auto getProfileController(float speed) {
      return AsyncControllerFactory::motionProfile(
-       0.2,
-       0.4,
-       2.0,
+       1.0 * speed,
+       2.0 * speed,
+       10.0 * speed,
        controller
      );
    }

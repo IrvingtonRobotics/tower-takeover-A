@@ -44,9 +44,11 @@ void foldin() {
 }
 
 
-void travelProfile(std::initializer_list<okapi::Point> iwaypoints, bool backwards) {
+void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
+  bool backwards, float speed
+) {
   // hopefully little overhead here
-  auto profileController = drive.getProfileController();
+  auto profileController = drive.getProfileController(speed);
   string name = "current";
   profileController.generatePath(iwaypoints, name);
   profileController.setTarget(name, backwards);
@@ -71,19 +73,22 @@ void autonomous() {
     return;
   }
   // foldout();
-  pros::delay(300);
+  pros::delay(100);
+  // intake.intake();
+  // travelProfile({
+  //   Point{11.0_in, 116.0_in, 0_deg},
+  //   Point{54.5_in, 116.0_in, 0_deg}
+  // }, false, 0.3);
+  // travelProfile({
+  //   Point{54.5_in, 116.0_in, 0_deg},
+  //   Point{31.5_in, 91.5_in, 90.0_deg}
+  // }, true, 0.4);
+  // intake.stop();
   travelProfile({
-  Point{11.0_in, 116.0_in, 0_deg},
-  Point{53.0_in, 116.0_in, 0_deg}
-  }, false);
-  travelProfile({
-    Point{53.0_in, 116.0_in, 0_deg},
-    Point{28.0_in, 89.5_in, 75.0_deg}
-  }, true);
-  travelProfile({
-    Point{28.0_in, 89.5_in, -75.0_deg},
-    Point{19.14215_in, 126.728_in, -45.0_deg}
-  }, false);
+    Point{31.5_in, -91.5_in, -90.0_deg},
+    Point{19.14215_in, -126.728_in, -45.0_deg}
+  }, false, 0.4);
+  // rails.moveForward();
   // push cube into endzone
   // drive.moveDistance(20_in);
   // drive.turnAngle(-10_deg);
