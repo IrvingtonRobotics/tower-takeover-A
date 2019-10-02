@@ -88,8 +88,11 @@ void runRails() {
     rails.stop();
     return;
   }
-  if (buttonRailsToggle.changedToPressed() || buttonRailsToggle2.changedToPressed()) {
+  if (buttonRailsToggle.changedToPressed()) {
     rails.togglePosition();
+  }
+  if (buttonRailsToggleMid.changedToPressed()) {
+    rails.togglePositionMid();
   }
   if (buttonTareRails.changedToPressed()) {
     printf("taring rails\n");

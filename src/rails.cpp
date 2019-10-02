@@ -9,10 +9,13 @@
  **/
 class Rails {
   const double RAILS_BACK_TICKS = 0;
-  const double RAILS_FORWARD_TICKS = 1050*7/5;
+  const double RAILS_FORWARD_TICKS = 1470;
   const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
+  const double RAILS_MID_TICKS = 650;
   const double MOVE_BACK_SPEED = 45;
+  const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
   const double MOVE_FORWARD_SPEED = 30;
+  const double MOVE_MID_SPEED = 60;
   const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
   const int DEFAULT_BACK_SPEED = 20;
   const int PORT = ANGLE_RAILS_PORT;
@@ -47,11 +50,11 @@ class Rails {
   }
 
   bool isBack() {
-    if (getTargetTicks() < RAILS_MIDPOINT_TICKS) {
-      return true;
-    } else {
-      return false;
-    }
+    return getTargetTicks() < RAILS_MIDPOINT_TICKS;
+  }
+
+  bool isBackMid() {
+    return getTargetTicks() < RAILS_MID_MIDPOINT_TICKS;
   }
 
 public:
@@ -68,8 +71,17 @@ public:
     moveBack(MOVE_BACK_SPEED);
   }
 
+
   void moveBack(double maxSpeed) {
     move(RAILS_BACK_TICKS, maxSpeed);
+  }
+
+  void moveMid() {
+    moveMid(MOVE_MID_SPEED);
+  }
+
+  void moveMid(double maxSpeed) {
+    move(RAILS_MID_TICKS, maxSpeed);
   }
 
   void moveForward() {
@@ -87,6 +99,14 @@ public:
       moveBack();
     } else {
       moveForward();
+    }
+  }
+
+  void moveMid(bool _isBack) {
+    if (_isBack) {
+      moveBack();
+    } else {
+      moveMid();
     }
   }
 
@@ -124,6 +144,10 @@ public:
    */
   void togglePosition() {
     move(!isBack());
+  }
+
+  void togglePositionMid() {
+    moveMid(!isBackMid());
   }
 
   /**

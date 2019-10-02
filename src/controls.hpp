@@ -10,7 +10,7 @@ ControllerButton buttonLiftDown(ControllerDigital::down);
 ControllerButton buttonLiftSmallUp(ControllerDigital::right);
 ControllerButton buttonLiftSmallDown(ControllerDigital::left);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
-ControllerButton buttonRailsToggle2(ControllerDigital::R2);
+ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonRetareLift(ControllerDigital::B);
 ControllerButton buttonKill(ControllerDigital::X);
 ControllerButton buttonTareRails(ControllerDigital::Y);
