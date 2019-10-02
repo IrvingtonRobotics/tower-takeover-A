@@ -16,11 +16,19 @@ public:
   }
 
   void intake() {
-    move(SPEED);
+    intake(1);
+  }
+
+  void intake(float scl) {
+    move(SPEED * scl);
   }
 
   void outtake() {
-    move(-SPEED);
+    outtake(1);
+  }
+
+  void outtake(float scl) {
+    move(-SPEED * scl);
   }
 
   void stop() {

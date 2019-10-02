@@ -20,14 +20,6 @@ void runDrive() {
     drive.stop();
     return;
   }
-  if (driveSlowDistance() > 0.3) {
-    if (!slowToggleActive) {
-      slow = !slow;
-    }
-    slowToggleActive = true;
-  } else {
-    slowToggleActive = false;
-  }
   drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, slow ? 0.25 : 1);
 }
 
@@ -116,10 +108,11 @@ void runIntake() {
     intake.stop();
     return;
   }
+  float speed = slow ? 0.25 : 1;
   if (buttonRunIntake.isPressed()) {
-    intake.intake();
+    intake.intake(speed);
   } else if (buttonRunOuttake.isPressed()) {
-    intake.outtake();
+    intake.outtake(speed);
   } else {
     intake.stop();
   }
@@ -147,8 +140,18 @@ void opcontrol() {
   pros::Task runRailsTask(runRailsFn);
   pros::Task runIntakeTask(runIntakeFn);
   while (true) {
+    // kill if necessary
     if (buttonKill.changedToPressed()) {
       killed = !killed;
+    }
+    // slow if necessary
+    if (slowDistance() > 0.3) {
+      if (!slowToggleActive) {
+        slow = !slow;
+      }
+      slowToggleActive = true;
+    } else {
+      slowToggleActive = false;
     }
     pros::delay(10);
   }
