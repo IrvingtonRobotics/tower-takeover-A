@@ -7,6 +7,7 @@
 #include "utils.hpp"
 
 const int STANDARD_DELAY = 10;
+const RQuantity DOUBLE_PRESS_INTERVAL = 200_ms;
 
 bool killed = false;
 
@@ -99,6 +100,10 @@ void runRailsFn(void* param) {
   }
 }
 
+Timer intakePressedTimer = Timer();
+Timer outtakePressedTimer = Timer();
+bool isContinuousIntake = false;
+
 /**
  * Run the Intake subsytem.
  * Intake, outtake, or stop based on buttons
@@ -109,11 +114,19 @@ void runIntake() {
     return;
   }
   float speed = slow ? 0.25 : 1;
+  if (buttonRunIntake.changedToPressed()) {
+    isContinuousIntake = intakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
+  }
+  if (buttonRunOuttake.changedToPressed()) {
+    isContinuousIntake = outtakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
+  }
   if (buttonRunIntake.isPressed()) {
+    intakePressedTimer.placeMark();
     intake.intake(speed);
   } else if (buttonRunOuttake.isPressed()) {
+    outtakePressedTimer.placeMark();
     intake.outtake(speed);
-  } else {
+  } else if (!isContinuousIntake) {
     intake.stop();
   }
   if (buttonKill.changedToPressed()) {
@@ -134,6 +147,8 @@ void runIntakeFn(void* param) {
  * For thread safety, ensure that no task affects any other subsystem.
  */
 void opcontrol() {
+  intakePressedTimer.placeMark();
+  outtakePressedTimer.placeMark();
   // start all tasks
   pros::Task runDriveTask(runDriveFn);
   pros::Task runLiftTask(runLiftFn);
