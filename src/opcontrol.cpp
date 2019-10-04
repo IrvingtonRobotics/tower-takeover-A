@@ -8,6 +8,7 @@
 
 const int STANDARD_DELAY = 10;
 const RQuantity DOUBLE_PRESS_INTERVAL = 200_ms;
+const bool disableDoublePress = true;
 
 bool killed = false;
 
@@ -114,10 +115,10 @@ void runIntake() {
     return;
   }
   float speed = slow ? 0.25 : 1;
-  if (buttonRunIntake.changedToPressed()) {
+  if (!disableDoublePress && buttonRunIntake.changedToPressed()) {
     isContinuousIntake = intakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
   }
-  if (buttonRunOuttake.changedToPressed()) {
+  if (!disableDoublePress && buttonRunOuttake.changedToPressed()) {
     isContinuousIntake = outtakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
   }
   if (buttonRunIntake.isPressed()) {
@@ -126,7 +127,7 @@ void runIntake() {
   } else if (buttonRunOuttake.isPressed()) {
     outtakePressedTimer.placeMark();
     intake.outtake(speed);
-  } else if (!isContinuousIntake) {
+  } else if (disableDoublePress || !isContinuousIntake) {
     intake.stop();
   }
   if (buttonKill.changedToPressed()) {
