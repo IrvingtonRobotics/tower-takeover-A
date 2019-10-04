@@ -19,6 +19,12 @@ class Drive {
     AbstractMotor::gearset::green,
     {4_in, 14.5_in}
   );
+  ChassisControllerIntegrated controllerBack = ChassisControllerFactory::create(
+    DRIVE_LEFT_BACK_PORT,
+    -DRIVE_RIGHT_BACK_PORT,
+    AbstractMotor::gearset::green,
+    {4_in, 14.5_in}
+  );
 
   /**
    * Get new drive speed after one tick for one side of the robot,
@@ -41,15 +47,31 @@ class Drive {
   }
 
   void moveTank(float left, float right) {
-    controller.tank(leftDriveSpeed, rightDriveSpeed);
+    moveTank(left, right, false);
+  }
+
+  void moveTank(float left, float right, bool stopFront) {
+    // controller.flipDisable(false);
+    // controllerBack.flipDisable(true);
+    if (!stopFront) {
+      controllerBack.tank(0, 0);
+      controller.tank(leftDriveSpeed, rightDriveSpeed);
+    } else {
+      controller.tank(0, 0);
+      controllerBack.tank(leftDriveSpeed, rightDriveSpeed);
+    }
   }
 
 public:
+  // Drive() {
+  //   controllerBack.flipDisable(true);
+  // }
+
   /**
    * Arcade drive based on controllerX and controllerY
    * Pass through controller.tank to use existing acceleration limit code
    */
-  float move(float controllerX, float controllerY, float scl) {
+  float move(float controllerX, float controllerY, float scl, bool stopFront) {
     // compute tank left and right based on arcade x and y
     float left = controllerY + controllerX;
     float right = controllerY - controllerX;
@@ -62,7 +84,7 @@ public:
       leftDriveSpeed *= TURN_LIMIT_SCALE;
       rightDriveSpeed *= TURN_LIMIT_SCALE;
     }
-    moveTank(leftDriveSpeed, rightDriveSpeed);
+    moveTank(leftDriveSpeed, rightDriveSpeed, stopFront);
   }
 
   /**

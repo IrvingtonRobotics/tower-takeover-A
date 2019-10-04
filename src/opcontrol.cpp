@@ -21,7 +21,7 @@ void runDrive() {
     drive.stop();
     return;
   }
-  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, slow ? 0.25 : 1);
+  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, slow ? 0.25 : 1, slow);
 }
 
 /**
