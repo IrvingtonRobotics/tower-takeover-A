@@ -9,7 +9,7 @@
  **/
 class Rails {
   const double RAILS_BACK_TICKS = 0;
-  const double RAILS_FORWARD_TICKS = 1470;
+  const double RAILS_FORWARD_TICKS = 1400;
   const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
   const double RAILS_MID_TICKS = 650;
   const double MOVE_BACK_SPEED = 45;
