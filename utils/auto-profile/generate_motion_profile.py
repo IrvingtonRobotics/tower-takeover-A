@@ -52,7 +52,7 @@ def out_format(groups):
     for group in groups:
         reversed, positions = group
         m = 1 if reversed else -1
-        points = map(lambda x: indent + f"Point{{{x[0]}_in, {x[1]}_in, {m*x[2]}_deg}}", positions)
+        points = map(lambda x: indent + f"Point{{{x[0]}_in, {m*x[1]}_in, {m*x[2]}_deg}}", positions)
         points_str = ",\n".join(points)
-        s += "travelProfile({\n" + points_str + "\n}, " + ("true" if reversed else "false") + ");\n"
+        s += "travelProfile({\n" + points_str + "\n}, " + ("true" if reversed else "false, 0.5") + ");\n"
     return s

@@ -74,21 +74,22 @@ void autonomous() {
   }
   // foldout();
   pros::delay(100);
-  // intake.intake();
-  // travelProfile({
-  //   Point{11.0_in, 116.0_in, 0_deg},
-  //   Point{54.5_in, 116.0_in, 0_deg}
-  // }, false, 0.3);
-  // travelProfile({
-  //   Point{54.5_in, 116.0_in, 0_deg},
-  //   Point{31.5_in, 91.5_in, 90.0_deg}
-  // }, true, 0.4);
-  // intake.stop();
+  intake.intake();
+  travelProfile({
+    Point{11.0_in, -116.0_in, 0_deg},
+    Point{47.5_in, -116.0_in, 0_deg}
+  }, false, 0.5);
+  intake.stop();
+  travelProfile({
+    Point{47.5_in, 116.0_in, 0_deg},
+    Point{31.5_in, 91.5_in, 90.0_deg}
+  }, true, 0.5);
   travelProfile({
     Point{31.5_in, -91.5_in, -90.0_deg},
-    Point{19.14215_in, -126.728_in, -45.0_deg}
-  }, false, 0.4);
-  // rails.moveForward();
+    Point{19.14215_in, -124.228_in, -135.0_deg}
+  }, false, 0.5);
+  rails.moveForward();
+  drive.moveDistance(-5_in);
   // push cube into endzone
   // drive.moveDistance(20_in);
   // drive.turnAngle(-10_deg);
