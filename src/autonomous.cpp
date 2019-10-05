@@ -22,13 +22,13 @@ void foldout() {
   rails.backToButton();
   // foldout
   lift.move(27_in);
-  intake.intake();
+  intake.outtake();
   lift.waitUntilSettled();
   // return
-  lift.lowerToButton(120);
+  lift.move(0);
   intake.stop();
-  drive.moveDistance(-3_in);
-  drive.moveDistance(3_in);
+  drive.moveDistance(3.5_in);
+  drive.moveDistance(-3.5_in);
 }
 
 void foldin() {
@@ -37,10 +37,23 @@ void foldin() {
   lift.move(12_in);
   lift.waitUntilSettled();
   rails.backToButton();
-  intake.outtake();
+  intake.intake();
   pros::delay(3000);
   intake.stop();
-  lift.lowerToButton(120);
+  lift.lowerToButton(160);
+}
+
+
+void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
+  bool backwards, float speed
+) {
+  // hopefully little overhead here
+  auto profileController = drive.getProfileController(speed);
+  string name = "current";
+  profileController.generatePath(iwaypoints, name);
+  profileController.setTarget(name, backwards);
+  profileController.waitUntilSettled();
+  profileController.removePath(name);
 }
 
 /**
@@ -60,10 +73,37 @@ void autonomous() {
     return;
   }
   foldout();
-  pros::delay(300);
+  pros::delay(100);
+  // drive forward and suck
+  intake.move(600);
+  travelProfile({
+    Point{11.0_in, -116.0_in, 0_deg},
+    Point{49.0_in, -116.0_in, 0_deg}
+  }, false, 0.35);
+  intake.stop();
+  // drive backward and turn
+  travelProfile({
+    Point{49.0_in, 116.0_in, 0_deg},
+    Point{31.5_in, 91.5_in, 90.0_deg}
+  }, true, 0.45);
+  // drive forward to endzone
+  travelProfile({
+    Point{31.5_in, -91.5_in, -90.0_deg},
+    Point{19.14215_in, -121.728_in, -135.0_deg}
+  }, false, 0.4);
+  // release stack
+  intake.move(-40);
+  rails.moveForward(150);
+  rails.waitUntilSettled();
+  intake.stop();
+  // backup
+  travelProfile({
+    Point{19.14215_in, 121.728_in, 135.0_deg},
+    Point{23.3137_in, 117.8135_in, 135.0_deg}
+  }, true, 0.9);
   // push cube into endzone
-  drive.moveDistance(20_in);
-  drive.turnAngle(-10_deg);
-  drive.moveDistance(5_in);
-  drive.moveDistance(-10_in);
+  // drive.moveDistance(20_in);
+  // drive.turnAngle(-10_deg);
+  // drive.moveDistance(5_in);
+  // drive.moveDistance(-10_in);
 }

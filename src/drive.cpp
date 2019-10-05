@@ -122,4 +122,13 @@ public:
    void straighten() {
      reversed = false;
    }
+
+   auto getProfileController(float speed) {
+     return AsyncControllerFactory::motionProfile(
+       1.5 * speed,
+       4.0 * speed,
+       10.0 * speed,
+       controller
+     );
+   }
 };

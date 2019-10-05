@@ -27,7 +27,7 @@ void initialize() {
 
   drive.setSide(isRed);
 
-  lift.setMaxVelocity(70);
+  lift.setMaxVelocity(120);
   lift.tare();
 
   rails.tare();

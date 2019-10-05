@@ -8,7 +8,7 @@
 class Intake {
   double SPEED = 100;
   AsyncVelIntegratedController controller =
-    AsyncControllerFactory::velIntegrated({-INTAKE_LEFT_PORT, INTAKE_RIGHT_PORT});
+    AsyncControllerFactory::velIntegrated({INTAKE_LEFT_PORT, -INTAKE_RIGHT_PORT});
 
 public:
   void move(double speed) {
