@@ -94,8 +94,8 @@ public:
 
    auto getProfileController(float speed) {
      return AsyncControllerFactory::motionProfile(
-       1.0 * speed,
-       2.0 * speed,
+       1.5 * speed,
+       4.0 * speed,
        10.0 * speed,
        controller
      );

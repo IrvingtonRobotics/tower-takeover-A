@@ -14,7 +14,7 @@ class Rails {
   const double MOVE_BACK_SPEED = 45;
   const double MOVE_FORWARD_SPEED = 30;
   const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
-  const int DEFAULT_BACK_SPEED = 20;
+  const int DEFAULT_BACK_SPEED = 40;
   const int PORT = ANGLE_RAILS_PORT;
   bool stopping = false;
   AsyncPosIntegratedController controller =
@@ -73,8 +73,11 @@ public:
   }
 
   void moveForward() {
-    printf("Moving rails to front\n");
-    move(RAILS_FORWARD_TICKS, MOVE_FORWARD_SPEED);
+    moveForward(MOVE_FORWARD_SPEED);
+  }
+
+  void moveForward(double maxSpeed) {
+    moveForward(1, maxSpeed);
   }
 
   void moveForward(double weight, double maxSpeed) {

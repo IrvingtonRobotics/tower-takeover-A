@@ -22,13 +22,13 @@ void foldout() {
   rails.backToButton();
   // foldout
   lift.move(27_in);
-  intake.intake();
+  intake.outtake();
   lift.waitUntilSettled();
   // return
-  lift.lowerToButton(120);
+  lift.move(0);
   intake.stop();
-  drive.moveDistance(-3_in);
   drive.moveDistance(3_in);
+  drive.moveDistance(-3_in);
 }
 
 void foldin() {
@@ -37,10 +37,10 @@ void foldin() {
   lift.move(12_in);
   lift.waitUntilSettled();
   rails.backToButton();
-  intake.outtake();
+  intake.intake();
   pros::delay(3000);
   intake.stop();
-  lift.lowerToButton(120);
+  lift.lowerToButton(160);
 }
 
 
@@ -72,24 +72,35 @@ void autonomous() {
     foldin();
     return;
   }
-  // foldout();
+  foldout();
   pros::delay(100);
-  intake.intake();
+  // drive forward and suck
+  intake.move(300);
   travelProfile({
     Point{11.0_in, -116.0_in, 0_deg},
     Point{47.5_in, -116.0_in, 0_deg}
   }, false, 0.5);
   intake.stop();
+  // drive backward and turn
   travelProfile({
     Point{47.5_in, 116.0_in, 0_deg},
     Point{31.5_in, 91.5_in, 90.0_deg}
   }, true, 0.5);
+  // drive forward to endzone
   travelProfile({
     Point{31.5_in, -91.5_in, -90.0_deg},
     Point{19.14215_in, -124.228_in, -135.0_deg}
   }, false, 0.5);
-  rails.moveForward();
-  drive.moveDistance(-5_in);
+  // release stack
+  intake.move(-40);
+  rails.moveForward(120);
+  rails.waitUntilSettled();
+  intake.stop();
+  // backup
+  travelProfile({
+    Point{19.14215_in, 124.228_in, 135.0_deg},
+    Point{23.3137_in, 120.3135_in, 135.0_deg}
+  }, true, 1);
   // push cube into endzone
   // drive.moveDistance(20_in);
   // drive.turnAngle(-10_deg);
