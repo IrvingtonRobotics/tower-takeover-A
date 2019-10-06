@@ -79,7 +79,7 @@ void autonomous() {
   travelProfile({
     Point{11.0_in, -116.0_in, 0_deg},
     Point{49.0_in, -116.0_in, 0_deg}
-  }, false, 0.35);
+  }, false, 0.3);
   intake.stop();
   // drive backward and turn
   travelProfile({
@@ -90,7 +90,7 @@ void autonomous() {
   travelProfile({
     Point{31.5_in, -91.5_in, -90.0_deg},
     Point{19.14215_in, -121.728_in, -135.0_deg}
-  }, false, 0.4);
+  }, false, 0.35);
   // release stack
   intake.move(-40);
   rails.moveForward(150);
@@ -100,7 +100,7 @@ void autonomous() {
   travelProfile({
     Point{19.14215_in, 121.728_in, 135.0_deg},
     Point{23.3137_in, 117.8135_in, 135.0_deg}
-  }, true, 0.9);
+  }, true, 1.0);
   // push cube into endzone
   // drive.moveDistance(20_in);
   // drive.turnAngle(-10_deg);
