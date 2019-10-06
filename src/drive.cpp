@@ -1,6 +1,8 @@
 #include "main.h"
 #include "ports.hpp"
 
+#define controller (*controllerPtr)
+
 /**
  * Main class for the wheeled driving subsystem
  * Wraps around a ChassisControllerIntegrated with limited acceleration
@@ -12,19 +14,34 @@ class Drive {
   const float MAX_DRIVE_DECEL = 0.05;
   const float TURN_LIMIT_THRESHOLD = 1.20;
   const float TURN_LIMIT_SCALE = 0.85;
-  bool reversed = false;
-  ChassisControllerIntegrated controller = ChassisControllerFactory::create(
-    {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
-    {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
-    AbstractMotor::gearset::green,
-    {4_in, 14.5_in}
-  );
+  ChassisControllerIntegrated controllerStraight = getController(false);
+  ChassisControllerIntegrated controllerReversed = getController(true);
+  ChassisControllerIntegrated* controllerPtr = &controllerStraight;
+
   ChassisControllerIntegrated controllerBack = ChassisControllerFactory::create(
     DRIVE_LEFT_BACK_PORT,
     -DRIVE_RIGHT_BACK_PORT,
     AbstractMotor::gearset::green,
     {4_in, 14.5_in}
   );
+
+  ChassisControllerIntegrated getController(bool isReversed) {
+    if (isReversed) {
+      return ChassisControllerFactory::create(
+        {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
+        {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
+        AbstractMotor::gearset::green,
+        {4_in, 14.5_in}
+      );
+    } else {
+      return ChassisControllerFactory::create(
+        {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
+        {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
+        AbstractMotor::gearset::green,
+        {4_in, 14.5_in}
+      );
+    }
+  }
 
   /**
    * Get new drive speed after one tick for one side of the robot,
@@ -106,21 +123,25 @@ public:
    * Turn clockwise some angle, use negative to turn counterclockwise
    */
   void turnAngle(QAngle angle) {
-    controller.turnAngle(boolToSign(!reversed) * angle);
+    controller.turnAngle(angle);
   }
 
   /**
    * Set side to reverse angles
    */
   void setSide(bool isRed) {
-    reversed = isRed;
+    if (isRed) {
+      controllerPtr = &controllerStraight;
+    } else {
+      controllerPtr = &controllerReversed;
+    }
   }
 
   /**
-   * Reset to blue (nothing reversed)
+   * Reset to blue
    */
    void straighten() {
-     reversed = false;
+     setSide(false);
    }
 
    auto getProfileController(float speed) {
@@ -132,3 +153,5 @@ public:
      );
    }
 };
+
+#undef controller
