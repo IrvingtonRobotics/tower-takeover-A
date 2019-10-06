@@ -4,7 +4,7 @@ Instructions: open dev tools and paste/run the following whole block of code, th
   
 ```js
 s=document.createElement("style");
-s.innerHTML=`@media print {#readme * {font-size: 10px} #readme p {transform:translateX(-20px);} #readme .markdown-body .highlight pre, .markdown-body pre {overflow:hidden;} #readme hr {display: none} .container-lg {margin:0; max-width:none;} .Box-header, .repository-content > *:nth-last-child(n+3), .pagehead {display:none!important;} .repository-content > * {border:0;} #readme, #readme > * {padding:0!important;} #readme article > *:nth-child(2), #readme article > *:nth-child(3) {display: none;}}`;
+s.innerHTML=`@media print {#readme pre, #readme code {font-size: 10px} #readme p {transform:translateX(-20px);} #readme .markdown-body .highlight pre, .markdown-body pre {overflow:hidden;} #readme hr {display: none} .container-lg {margin:0; max-width:none;} .Box-header, .repository-content > *:nth-last-child(n+3), .pagehead {display:none!important;} .repository-content > * {border:0;} #readme, #readme > * {padding:0!important;} #readme article > *:nth-child(2), #readme article > *:nth-child(3) {display: none;}}`;
 document.body.appendChild(s);
 ```
 
