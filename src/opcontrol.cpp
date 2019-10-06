@@ -148,6 +148,7 @@ void runIntakeFn(void* param) {
  * For thread safety, ensure that no task affects any other subsystem.
  */
 void opcontrol() {
+  drive.straighten();
   intakePressedTimer.placeMark();
   outtakePressedTimer.placeMark();
   // start all tasks

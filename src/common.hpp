@@ -20,5 +20,6 @@ extern Intake intake;
 
 extern bool isRed;
 extern bool isBack;
+extern bool isSmallSide;
 
 #endif

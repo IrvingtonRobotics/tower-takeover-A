@@ -141,7 +141,7 @@ public:
    * Reset to blue
    */
    void straighten() {
-     setSide(false);
+     setSide(true);
    }
 
    auto getProfileController(float speed) {

@@ -6,9 +6,10 @@
 #include "config.cpp"
 
 // defaults
-bool isRed = true;
-bool isBack = true;
+bool isRed = false;
+bool isSmallSide = false;
 
+bool isBack = true;
 // Instantiate subsystem classes
 Lift lift = Lift();
 Drive drive = Drive();

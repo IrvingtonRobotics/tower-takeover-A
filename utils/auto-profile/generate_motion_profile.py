@@ -20,7 +20,7 @@ def solve_groups(body, scale):
         points.append((x, y))
         pos = complex(f"{x}+{y}j")
         points_complex.append(pos)
-        theta_match = re.search(r'rotate\((\d+(?:\.\d+)?)[^>]*', full)
+        theta_match = re.search(r'rotate\((-?\d+(?:\.\d+)?)[^>]*', full)
         if theta_match:
             theta = float(theta_match.group(1))
         else:
