@@ -32,26 +32,26 @@
 <rect x="68.5" y="187.5" width="11" height="11" transform="rotate(90 68.5 187.5)" fill="#601CCF"/>
 <path d="M62.4697 198.53C62.7626 198.823 63.2374 198.823 63.5303 198.53L68.3033 193.757C68.5962 193.464 68.5962 192.99 68.3033 192.697C68.0104 192.404 67.5355 192.404 67.2426 192.697L63 196.939L58.7574 192.697C58.4645 192.404 57.9896 192.404 57.6967 192.697C57.4038 192.99 57.4038 193.464 57.6967 193.757L62.4697 198.53ZM62.25 183V198H63.75V183H62.25Z" fill="#FF3030" fill-opacity="0.99"/>
 <circle cx="63" cy="183" r="0.25" transform="rotate(90 63 183)" fill="#C4C4C4" fill-opacity="0.98"/>
-<rect x="60.9117" y="243.456" width="32" height="32" transform="rotate(135 60.9117 243.456)" fill="#474747" fill-opacity="0.5"/>
-<rect x="60.9117" y="243.456" width="32" height="6" transform="rotate(135 60.9117 243.456)" fill="black"/>
-<rect x="42.5269" y="225.071" width="32" height="6" transform="rotate(135 42.5269 225.071)" fill="black"/>
-<rect x="60.9117" y="243.456" width="6" height="32" transform="rotate(135 60.9117 243.456)" fill="black"/>
-<rect x="51.7193" y="252.648" width="6" height="32" transform="rotate(135 51.7193 252.648)" fill="black"/>
-<rect x="46.0624" y="246.991" width="19" height="3" transform="rotate(135 46.0624 246.991)" fill="black"/>
-<rect x="36.8701" y="237.799" width="19" height="3" transform="rotate(135 36.8701 237.799)" fill="black"/>
-<rect x="38.9914" y="250.527" width="11" height="11" transform="rotate(135 38.9914 250.527)" fill="#601CCF"/>
-<path d="M26.9277 254.062C26.9277 254.477 27.2635 254.812 27.6777 254.812L34.4277 254.812C34.8419 254.812 35.1777 254.477 35.1777 254.062C35.1777 253.648 34.8419 253.312 34.4277 253.312H28.4277V247.312C28.4277 246.898 28.0919 246.562 27.6777 246.562C27.2635 246.562 26.9277 246.898 26.9277 247.312L26.9277 254.062ZM37.7539 242.926L27.1473 253.532L28.208 254.593L38.8146 243.986L37.7539 242.926Z" fill="#FF3030" fill-opacity="0.99"/>
-<circle cx="38.2843" cy="243.456" r="0.25" transform="rotate(135 38.2843 243.456)" fill="#C4C4C4" fill-opacity="0.98"/>
-<rect x="69.2548" y="235.627" width="32" height="32" transform="rotate(135 69.2548 235.627)" fill="#474747" fill-opacity="0.5"/>
-<rect x="69.2548" y="235.627" width="32" height="6" transform="rotate(135 69.2548 235.627)" fill="black"/>
-<rect x="50.8701" y="217.243" width="32" height="6" transform="rotate(135 50.8701 217.243)" fill="black"/>
-<rect x="69.2548" y="235.627" width="6" height="32" transform="rotate(135 69.2548 235.627)" fill="black"/>
-<rect x="60.0625" y="244.82" width="6" height="32" transform="rotate(135 60.0625 244.82)" fill="black"/>
-<rect x="54.4056" y="239.163" width="19" height="3" transform="rotate(135 54.4056 239.163)" fill="black"/>
-<rect x="45.2132" y="229.971" width="19" height="3" transform="rotate(135 45.2132 229.971)" fill="black"/>
-<rect x="47.3345" y="242.698" width="11" height="11" transform="rotate(135 47.3345 242.698)" fill="#601CCF"/>
-<path d="M35.2708 246.234C35.2708 246.648 35.6066 246.984 36.0208 246.984L42.7708 246.984C43.185 246.984 43.5208 246.648 43.5208 246.234C43.5208 245.82 43.185 245.484 42.7708 245.484H36.7708V239.484C36.7708 239.07 36.435 238.734 36.0208 238.734C35.6066 238.734 35.2708 239.07 35.2708 239.484L35.2708 246.234ZM46.0971 235.097L35.4905 245.704L36.5511 246.764L47.1577 236.158L46.0971 235.097Z" fill="#FF3030" fill-opacity="0.99"/>
-<circle cx="46.6274" cy="235.627" r="0.25" transform="rotate(135 46.6274 235.627)" fill="#C4C4C4" fill-opacity="0.98"/>
+<rect x="60.9117" y="238.456" width="32" height="32" transform="rotate(135 60.9117 238.456)" fill="#474747" fill-opacity="0.5"/>
+<rect x="60.9117" y="238.456" width="32" height="6" transform="rotate(135 60.9117 238.456)" fill="black"/>
+<rect x="42.5269" y="220.071" width="32" height="6" transform="rotate(135 42.5269 220.071)" fill="black"/>
+<rect x="60.9117" y="238.456" width="6" height="32" transform="rotate(135 60.9117 238.456)" fill="black"/>
+<rect x="51.7193" y="247.648" width="6" height="32" transform="rotate(135 51.7193 247.648)" fill="black"/>
+<rect x="46.0624" y="241.991" width="19" height="3" transform="rotate(135 46.0624 241.991)" fill="black"/>
+<rect x="36.8701" y="232.799" width="19" height="3" transform="rotate(135 36.8701 232.799)" fill="black"/>
+<rect x="38.9914" y="245.527" width="11" height="11" transform="rotate(135 38.9914 245.527)" fill="#601CCF"/>
+<path d="M26.9277 249.062C26.9277 249.477 27.2635 249.812 27.6777 249.812L34.4277 249.812C34.8419 249.812 35.1777 249.477 35.1777 249.062C35.1777 248.648 34.8419 248.312 34.4277 248.312H28.4277V242.312C28.4277 241.898 28.0919 241.562 27.6777 241.562C27.2635 241.562 26.9277 241.898 26.9277 242.312L26.9277 249.062ZM37.7539 237.926L27.1473 248.532L28.208 249.593L38.8146 238.986L37.7539 237.926Z" fill="#FF3030" fill-opacity="0.99"/>
+<circle cx="38.2843" cy="238.456" r="0.25" transform="rotate(135 38.2843 238.456)" fill="#C4C4C4" fill-opacity="0.98"/>
+<rect x="69.2548" y="230.627" width="32" height="32" transform="rotate(135 69.2548 230.627)" fill="#474747" fill-opacity="0.5"/>
+<rect x="69.2548" y="230.627" width="32" height="6" transform="rotate(135 69.2548 230.627)" fill="black"/>
+<rect x="50.8701" y="212.243" width="32" height="6" transform="rotate(135 50.8701 212.243)" fill="black"/>
+<rect x="69.2548" y="230.627" width="6" height="32" transform="rotate(135 69.2548 230.627)" fill="black"/>
+<rect x="60.0625" y="239.82" width="6" height="32" transform="rotate(135 60.0625 239.82)" fill="black"/>
+<rect x="54.4056" y="234.163" width="19" height="3" transform="rotate(135 54.4056 234.163)" fill="black"/>
+<rect x="45.2132" y="224.971" width="19" height="3" transform="rotate(135 45.2132 224.971)" fill="black"/>
+<rect x="47.3345" y="237.698" width="11" height="11" transform="rotate(135 47.3345 237.698)" fill="#601CCF"/>
+<path d="M35.2708 241.234C35.2708 241.648 35.6066 241.984 36.0208 241.984L42.7708 241.984C43.185 241.984 43.5208 241.648 43.5208 241.234C43.5208 240.82 43.185 240.484 42.7708 240.484H36.7708V234.484C36.7708 234.07 36.435 233.734 36.0208 233.734C35.6066 233.734 35.2708 234.07 35.2708 234.484L35.2708 241.234ZM46.0971 230.097L35.4905 240.704L36.5511 241.764L47.1577 231.158L46.0971 230.097Z" fill="#FF3030" fill-opacity="0.99"/>
+<circle cx="46.6274" cy="230.627" r="0.25" transform="rotate(135 46.6274 230.627)" fill="#C4C4C4" fill-opacity="0.98"/>
 </g>
 <defs>
 <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">

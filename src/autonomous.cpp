@@ -89,7 +89,7 @@ void autonomous() {
   // drive forward to endzone
   travelProfile({
     Point{31.5_in, -91.5_in, -90.0_deg},
-    Point{19.14215_in, -121.728_in, -135.0_deg}
+    Point{19.14215_in, -119.228_in, -135.0_deg}
   }, false, 0.35);
   // release stack
   intake.move(-40);
@@ -98,8 +98,8 @@ void autonomous() {
   intake.stop();
   // backup
   travelProfile({
-    Point{19.14215_in, 121.728_in, 135.0_deg},
-    Point{23.3137_in, 117.8135_in, 135.0_deg}
+    Point{19.14215_in, 119.228_in, 135.0_deg},
+    Point{23.3137_in, 115.3135_in, 135.0_deg}
   }, true, 1.0);
   // push cube into endzone
   // drive.moveDistance(20_in);
