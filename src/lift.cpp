@@ -8,10 +8,10 @@
  * to provide movement to precise locations and smooth movement when lowering
  * to the button/limit switch
  *
- * TODO: Use raw pros::MOTOR to utilize both velocity and position controls
+ * TODO: Use raw pros::MOTOR to utilize separate velocity and position controls
  * Maybe try Gyro (do we have one?)
  *   https://www.robotc.net/wikiarchive/VEX2_Sensors_Overview
- * This'll dencessitate thorough calibration
+ * This'll denecessitate thorough calibration
  */
 class Lift {
   const QLength ARM_LENGTH = 22_in;

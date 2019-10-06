@@ -2,8 +2,10 @@
  * Initialization, run before all other code as soon as the proram is started
  */
 
+// include everything with config attached
 #include "config.cpp"
 
+// defaults
 bool isRed = true;
 bool isBack = true;
 
