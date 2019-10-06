@@ -42,7 +42,7 @@ class Lift {
   static const int NUM_HEIGHTS = 4;
   // give up on lowering to button after this time if not hit limit switch
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
-  const int DEFEAULT_LOWER_SPEED = 30;
+  const int DEFAULT_LOWER_SPEED = 50;
   // WARNING: targetHeights MUST be sorted
   const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
   const int PORT = -LIFT_PORT;
@@ -290,7 +290,7 @@ public:
   }
 
   void lowerToButton() {
-    lowerToButton(DEFEAULT_LOWER_SPEED);
+    lowerToButton(DEFAULT_LOWER_SPEED);
   }
 
   /**

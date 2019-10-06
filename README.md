@@ -36,7 +36,7 @@ It will not cut power to the motors. To do that, hold the power off button.
 | 1 | Right front drive motor |
 | 2 | Right back drive motor |
 | 5 | Lift motor |
-| 7 | Left intake motor |
+| 6 | Left intake motor |
 | 8 | Rails angling motor |
 | 9 | Left back drive motor |
 | 10 | Left front drive motor |
