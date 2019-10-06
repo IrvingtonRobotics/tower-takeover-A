@@ -14,6 +14,7 @@ bool killed = false;
 
 bool slowToggleActive = false;
 bool slow = false;
+bool autonActive = false;
 /**
  * Run the Drive subsystem based on the joysticks
  */
@@ -34,7 +35,9 @@ void runDrive() {
  */
 void runDriveFn(void* param) {
   while (true) {
-    runDrive();
+    if (!autonActive) {
+      runDrive();
+    }
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -68,7 +71,9 @@ void runLift() {
 
 void runLiftFn(void* param) {
   while (true) {
-    runLift();
+    if (!autonActive) {
+      runLift();
+    }
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -96,7 +101,9 @@ void runRails() {
 
 void runRailsFn(void* param) {
   while (true) {
-    runRails();
+    if (!autonActive) {
+      runRails();
+    }
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -138,7 +145,9 @@ void runIntake() {
 
 void runIntakeFn(void* param) {
   while (true) {
-    runIntake();
+    if (!autonActive) {
+      runIntake();
+    }
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -172,10 +181,14 @@ void opcontrol() {
       slowToggleActive = false;
     }
     if (buttonFoldout.changedToPressed()) {
+      autonActive = true;
       foldout();
+      autonActive = false;
     }
     if (buttonFoldin.changedToPressed()) {
+      autonActive = true;
       foldin();
+      autonActive = false;
     }
     pros::delay(10);
   }
