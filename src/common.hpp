@@ -12,6 +12,7 @@
 #include "drive.cpp"
 #include "rails.cpp"
 #include "intake.cpp"
+#include "routines.hpp"
 
 extern Lift lift;
 extern Drive drive;

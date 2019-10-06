@@ -7,8 +7,11 @@
 
 ControllerButton buttonLiftUp(ControllerDigital::up);
 ControllerButton buttonLiftDown(ControllerDigital::down);
-ControllerButton buttonLiftSmallUp(ControllerDigital::right);
-ControllerButton buttonLiftSmallDown(ControllerDigital::left);
+ControllerButton buttonFoldout(ControllerDigital::right);
+ControllerButton buttonFoldin(ControllerDigital::left);
+// TODO: remove buttonLiftSmallUp and buttonLiftSmallDown
+ControllerButton buttonLiftSmallUp(ControllerDigital::A);
+ControllerButton buttonLiftSmallDown(ControllerDigital::A);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonRetareLift(ControllerDigital::B);

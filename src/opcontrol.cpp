@@ -115,6 +115,7 @@ void runIntake() {
     return;
   }
   float speed = slow ? 0.25 : 1;
+  bool released = buttonRunOuttake.changedToReleased() || buttonRunIntake.changedToReleased();
   if (!disableDoublePress && buttonRunIntake.changedToPressed()) {
     isContinuousIntake = intakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
   }
@@ -127,7 +128,7 @@ void runIntake() {
   } else if (buttonRunOuttake.isPressed()) {
     outtakePressedTimer.placeMark();
     intake.outtake(speed);
-  } else if (disableDoublePress || !isContinuousIntake) {
+  } else if (released && (disableDoublePress || !isContinuousIntake)) {
     intake.stop();
   }
   if (buttonKill.changedToPressed()) {
@@ -169,6 +170,12 @@ void opcontrol() {
       slowToggleActive = true;
     } else {
       slowToggleActive = false;
+    }
+    if (buttonFoldout.changedToPressed()) {
+      foldout();
+    }
+    if (buttonFoldin.changedToPressed()) {
+      foldin();
     }
     pros::delay(10);
   }

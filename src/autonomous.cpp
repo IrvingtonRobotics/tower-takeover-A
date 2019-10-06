@@ -13,37 +13,6 @@
 // use pros upload --slot 2
 const bool isFoldin = false;
 
-/**
- * Run foldout at beginning of match
- */
-void foldout() {
-  printf("fold out\n");
-  // home rails while lifting
-  rails.backToButton();
-  // foldout
-  lift.move(27_in);
-  intake.outtake();
-  lift.waitUntilSettled();
-  // return
-  lift.move(0);
-  intake.stop();
-  drive.moveDistance(3.5_in);
-  drive.moveDistance(-3.5_in);
-}
-
-void foldin() {
-  printf("fold in\n");
-  // lift.lowerToButton(120);
-  lift.move(12_in);
-  lift.waitUntilSettled();
-  rails.backToButton();
-  intake.intake();
-  pros::delay(3000);
-  intake.stop();
-  lift.lowerToButton(160);
-}
-
-
 void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   bool backwards, float speed
 ) {
@@ -114,7 +83,7 @@ void autonomous() {
     }, false, 0.35);
   }
   // release stack
-  intake.move(-40);
+  intake.move(-80);
   rails.moveForward(150);
   rails.waitUntilSettled();
   intake.stop();

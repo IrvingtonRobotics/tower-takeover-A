@@ -7,9 +7,10 @@
 
 // defaults
 bool isRed = false;
-bool isSmallSide = false;
+bool isSmallSide = true;
 
-bool isBack = true;
+bool isBack = false;
+
 // Instantiate subsystem classes
 Lift lift = Lift();
 Drive drive = Drive();
