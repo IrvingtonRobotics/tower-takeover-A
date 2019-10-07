@@ -4,6 +4,7 @@ namespace {
 class Config {
   static const lv_align_t ALIGNMENT = LV_ALIGN_IN_TOP_MID;
   static lv_obj_t * colorLabel;
+  static lv_obj_t * sizeLabel;
 
   static lv_obj_t * createLabel(lv_obj_t * parent, lv_coord_t x, lv_coord_t y,
     lv_align_t alignment, const char * title
@@ -64,10 +65,18 @@ class Config {
     char buffer[100];
     sprintf(buffer, "Color select: %s", isRed ? "red" : "blue");
     lv_label_set_text(colorLabel, buffer);
+    sprintf(buffer, "Goal size: %s", isSmallSide ? "small" : "large");
+    lv_label_set_text(sizeLabel, buffer);
   }
 
   static lv_res_t switch_color(lv_obj_t * button) {
     isRed = !isRed;
+    updateMessages();
+    return LV_RES_OK;
+  }
+
+  static lv_res_t switch_size(lv_obj_t * button) {
+    isSmallSide = !isSmallSide;
     updateMessages();
     return LV_RES_OK;
   }
@@ -94,10 +103,16 @@ public:
 
     colorLabel = createLabel(lv_scr_act(), 220, 25, LV_ALIGN_IN_TOP_LEFT, "");
 
+    static lv_obj_t * sizeButton = createButton(lv_scr_act(), 10, 70, 200, 50, 0,
+      "Switch Size", switch_size);
+
+    sizeLabel = createLabel(lv_scr_act(), 220, 85, LV_ALIGN_IN_TOP_LEFT, "");
+
     updateMessages();
   }
 };
 
 // initialize shared variables to avoid undefined errors
 lv_obj_t * Config::colorLabel;
+lv_obj_t * Config::sizeLabel;
 }
