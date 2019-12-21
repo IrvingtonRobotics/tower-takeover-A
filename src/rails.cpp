@@ -8,17 +8,22 @@
  * Need a limit because the rails can now start in the middle for space concerns
  **/
 class Rails {
+  // ticks all the way back
   const double RAILS_BACK_TICKS = 0;
-  const double RAILS_FORWARD_TICKS = 1400;
+  // ticks all the way forward
+  const double RAILS_FORWARD_TICKS = 2800;
+  // ticks half way between back and forward
   const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
-  const double RAILS_MID_TICKS = 550;
-  const double MOVE_BACK_SPEED = 75;
+  // ticks to rest in middle (moveMid)
+  const double RAILS_MID_TICKS = 1000;
+  // ticks half way between back and mid
   const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
-  const double MOVE_FORWARD_SPEED = 30;
-  const double MOVE_MID_SPEED = 60;
-  const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
-  const int DEFAULT_BACK_SPEED = 40;
-  const int PORT = ANGLE_RAILS_PORT;
+  const double MOVE_BACK_SPEED = 140;
+  const double MOVE_FORWARD_SPEED = 70;
+  const double MOVE_MID_SPEED = 110;
+  const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
+  const int DEFAULT_BACK_SPEED = 70;
+  const int PORT = -ANGLE_RAILS_PORT;
   bool stopping = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
