@@ -14,7 +14,9 @@
 | L1 | Run intake |
 | L2 | Run outtake |
 | Up/Down arrows | Lift up/down to presets |
-| A | Flip out |
+| Right arrow | Flip out |
+| Left arrow | Help fold in |
+| A | Smooth lift to top position |
 | B | Re-tare lift |
 | X | Stop all movement (Emergency kill). Pressing this again will enable movement |
 | Y | Tare Rails |
@@ -26,8 +28,8 @@ It will not cut power to the motors. To do that, hold the power off button.
 
 | Port | Description |
 |------------|----------|
-| ADI B | Rails limit |
-| ADI E | Lift limit |
+| ADI B | Rails limit switch |
+| ADI E | Lift limit switch |
 
 
 ### Motors

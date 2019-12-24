@@ -5,13 +5,13 @@
 #ifndef SRC_CONTROLS_H_
 #define SRC_CONTROLS_H_
 
+#include "main.h"
+
 ControllerButton buttonLiftUp(ControllerDigital::up);
 ControllerButton buttonLiftDown(ControllerDigital::down);
 ControllerButton buttonFoldout(ControllerDigital::right);
 ControllerButton buttonFoldin(ControllerDigital::left);
-// TODO: remove buttonLiftSmallUp and buttonLiftSmallDown
-ControllerButton buttonLiftSmallUp(ControllerDigital::A);
-ControllerButton buttonLiftSmallDown(ControllerDigital::A);
+ControllerButton buttonGlideup(ControllerDigital::A);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonRetareLift(ControllerDigital::B);

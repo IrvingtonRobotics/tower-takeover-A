@@ -107,10 +107,6 @@ class Lift {
    *  POS_TOLERANCE away
    */
   QLength getChangedHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
-    printf("---------\n");
-    printf("  getChangedHeight(%f, %d, %d)  \n", lastHeight / 0.0254,
-      isIncrease?1:0, isIncreaseSmall?1:0);
-    printf("---------\n");
     // printf("Last height %f\n", lastHeight.getValue());
     int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
@@ -131,8 +127,6 @@ class Lift {
         i += m;
       }
       i = std::clamp(i, 0, NUM_HEIGHTS - 1);
-      printf("clamped i %d\n", i);
-      printf("returning ... %f\n", targetHeights[i] / 0.0254);
       return targetHeights[i];
     }
   }
@@ -180,6 +174,9 @@ public:
 
   void move(int heightIndex) {
     // printf("Moving lift to height %d\n", heightIndex);
+    if (heightIndex < 0) {
+      heightIndex = NUM_HEIGHTS + heightIndex;
+    }
     QLength targetHeight = targetHeights[heightIndex];
     move(targetHeight);
   }

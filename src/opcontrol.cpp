@@ -54,15 +54,13 @@ void runLift() {
     return;
   }
   lift.checkTare();
-  bool smallUp = buttonLiftSmallUp.isPressed();
-  bool up = buttonLiftUp.changedToPressed();
-  bool smallDown = buttonLiftSmallDown.isPressed();
-  bool down = buttonLiftDown.changedToPressed();
-  bool isIncrease = smallUp || up;
-  bool isSmall = smallUp || smallDown;
-  if (smallUp || up || smallDown || down) {
-    // printf("moving %d %d\n", isIncrease, isSmall);
-    lift.move(isIncrease, isSmall);
+  bool isUp = buttonLiftUp.changedToPressed();
+  bool isDown = buttonLiftDown.changedToPressed();
+  if (isUp || isDown) {
+    lift.move(isUp, false);
+  }
+  if (buttonGlideup.changedToPressed()) {
+    lift.move(-1);
   }
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
