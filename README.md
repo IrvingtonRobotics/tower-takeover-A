@@ -8,8 +8,8 @@
 ### Primary Controller
 | Position | Description |
 |----------|-------------|
-| Left Y | Left drive control (Tank) |
-| Right Y | Right drive control (Tank) |
+| Right Joystick | Drive control (arcade) |
+| Left Joystick | Move to toggle slow mode |
 | R1 or R2 | Toggle Rails Angle |
 | L1 | Run intake |
 | L2 | Run outtake |
