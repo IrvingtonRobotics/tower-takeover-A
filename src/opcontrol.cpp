@@ -35,9 +35,7 @@ void runDrive() {
  */
 void runDriveFn(void* param) {
   while (true) {
-    if (!autonActive) {
-      runDrive();
-    }
+    runDrive();
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -59,8 +57,8 @@ void runLift() {
   if (isUp || isDown) {
     lift.move(isUp, false);
   }
-  if (buttonGlideup.changedToPressed()) {
-    lift.move(-1);
+  if (buttonGlide1.changedToPressed() || buttonGlide2.changedToPressed()) {
+    lift.moveToggle();
   }
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
@@ -69,9 +67,7 @@ void runLift() {
 
 void runLiftFn(void* param) {
   while (true) {
-    if (!autonActive) {
-      runLift();
-    }
+    runLift();
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -99,9 +95,7 @@ void runRails() {
 
 void runRailsFn(void* param) {
   while (true) {
-    if (!autonActive) {
-      runRails();
-    }
+    runRails();
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -143,9 +137,7 @@ void runIntake() {
 
 void runIntakeFn(void* param) {
   while (true) {
-    if (!autonActive) {
-      runIntake();
-    }
+    runIntake();
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -177,16 +169,6 @@ void opcontrol() {
       slowToggleActive = true;
     } else {
       slowToggleActive = false;
-    }
-    if (buttonFoldout.changedToPressed()) {
-      autonActive = true;
-      foldout();
-      autonActive = false;
-    }
-    if (buttonFoldin.changedToPressed()) {
-      autonActive = true;
-      foldin();
-      autonActive = false;
     }
     pros::delay(10);
   }

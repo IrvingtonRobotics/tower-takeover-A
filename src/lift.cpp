@@ -45,6 +45,7 @@ class Lift {
   const int DEFAULT_LOWER_SPEED = 50;
   // WARNING: targetHeights MUST be sorted
   const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
+  const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   const int PORT = -LIFT_PORT;
   // is this currently doing a hard stop?
   bool stopping = false;
@@ -155,6 +156,14 @@ public:
     tareHeight(MIN_ARM_HEIGHT);
   }
 
+  void moveToggle() {
+    if (getCurrentHeight() > MID_HEIGHT) {
+      move(0);
+    } else {
+      move(-1);
+    }
+  }
+  
   /**
    * Retare by assuming the current position is at height height
    */

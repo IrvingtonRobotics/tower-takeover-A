@@ -9,9 +9,8 @@
 
 ControllerButton buttonLiftUp(ControllerDigital::up);
 ControllerButton buttonLiftDown(ControllerDigital::down);
-ControllerButton buttonFoldout(ControllerDigital::right);
-ControllerButton buttonFoldin(ControllerDigital::left);
-ControllerButton buttonGlideup(ControllerDigital::A);
+ControllerButton buttonGlide1(ControllerDigital::right);
+ControllerButton buttonGlide2(ControllerDigital::left);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonRetareLift(ControllerDigital::B);
