@@ -16,7 +16,7 @@
 #define ANGLE_RAILS_PORT 8
 #define INTAKE_LEFT_PORT 17
 #define INTAKE_RIGHT_PORT 20
-#define LIFT_PORT 5
+#define LIFT_PORT 3
 
 // ADI (3-wire)
 // What does ADI Stand for? Analog Device Input?
