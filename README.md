@@ -35,11 +35,11 @@ It will not cut power to the motors. To do that, hold the power off button.
 ### Motors
 | Motor Port | Function |
 |------------|----------|
+| 10 | Left front drive motor |
+| 9 | Left back drive motor |
 | 1 | Right front drive motor |
 | 2 | Right back drive motor |
 | 3 | Lift motor |
-| 17 | Left intake motor |
 | 8 | Rails angling motor |
-| 9 | Left back drive motor |
-| 10 | Left front drive motor |
+| 17 | Left intake motor |
 | 20 | Right intake motor  |

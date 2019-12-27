@@ -10,13 +10,13 @@
 
 // motor ports
 #define DRIVE_LEFT_FRONT_PORT 10
-#define DRIVE_LEFT_BACK_PORT 9
-#define DRIVE_RIGHT_FRONT_PORT 1
-#define DRIVE_RIGHT_BACK_PORT 2
-#define ANGLE_RAILS_PORT 8
-#define INTAKE_LEFT_PORT 17
-#define INTAKE_RIGHT_PORT 20
-#define LIFT_PORT 3
+#define DRIVE_LEFT_BACK_PORT 2
+#define DRIVE_RIGHT_FRONT_PORT 9
+#define DRIVE_RIGHT_BACK_PORT 1
+#define LIFT_PORT 15
+#define ANGLE_RAILS_PORT 20
+#define INTAKE_LEFT_PORT 12
+#define INTAKE_RIGHT_PORT 13
 
 // ADI (3-wire)
 // What does ADI Stand for? Analog Device Input?
