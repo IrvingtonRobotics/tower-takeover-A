@@ -14,6 +14,7 @@ class Drive {
   const float MAX_DRIVE_DECEL = 0.05;
   const float TURN_LIMIT_THRESHOLD = 1.20;
   const float TURN_LIMIT_SCALE = 0.85;
+  const ChassisScales &scales = ChassisScales({4_in, 13_in});
   ChassisControllerIntegrated controllerStraight = getController(false);
   ChassisControllerIntegrated controllerReversed = getController(true);
   ChassisControllerIntegrated* controllerPtr = &controllerStraight;
@@ -22,7 +23,7 @@ class Drive {
     DRIVE_LEFT_BACK_PORT,
     -DRIVE_RIGHT_BACK_PORT,
     AbstractMotor::gearset::green,
-    {4_in, 14.5_in}
+    scales
   );
 
   ChassisControllerIntegrated getController(bool isReversed) {
@@ -31,14 +32,14 @@ class Drive {
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
         {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
         AbstractMotor::gearset::green,
-        {4_in, 14.5_in}
+        scales
       );
     } else {
       return ChassisControllerFactory::create(
         {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
         AbstractMotor::gearset::green,
-        {4_in, 14.5_in}
+        scales
       );
     }
   }
@@ -88,7 +89,7 @@ public:
    * Arcade drive based on controllerX and controllerY
    * Pass through controller.tank to use existing acceleration limit code
    */
-  float move(float controllerX, float controllerY, float scl, bool stopFront) {
+  void move(float controllerX, float controllerY, float scl, bool stopFront) {
     // compute tank left and right based on arcade x and y
     float left = controllerY + controllerX;
     float right = controllerY - controllerX;
