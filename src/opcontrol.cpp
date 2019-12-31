@@ -51,6 +51,7 @@ void runLift() {
     lift.stop();
     return;
   }
+  lift.step();
   lift.checkTare();
   bool isUp = buttonLiftUp.changedToPressed();
   bool isDown = buttonLiftDown.changedToPressed();
@@ -81,6 +82,7 @@ void runRails() {
     rails.stop();
     return;
   }
+  rails.step();
   if (buttonRailsToggle.changedToPressed()) {
     rails.togglePosition();
   }

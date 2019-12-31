@@ -24,12 +24,13 @@ class Rails {
   const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
   const int DEFAULT_BACK_SPEED = 70;
   const int PORT = -ANGLE_RAILS_PORT;
-  bool stopping = false;
+  bool isBacking = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(RAILS_LIMIT_PORT);
+  Timer timeoutTimer;
 
 
   void move(double ticks) {
@@ -117,29 +118,39 @@ public:
       moveMid();
     }
   }
-
-  /**
-   * BLOCKING
-   */
-  void backToButton(int speed) {
-    // move control to vel for smooth movement
-    flipDisable();
-    velController.setTarget(-abs(speed));
-    Timer timeoutTimer = Timer();
-    // delay whole code
-    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < BACK_TO_BUTTON_TIMEOUT) {
-      if (stopping) {
-        stopping = false;
-        return;
+  
+  void step() {
+    if (isBacking) {
+      if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= BACK_TO_BUTTON_TIMEOUT) {
+        stopBacking();
       }
-      pros::delay(10);
     }
-    velController.setTarget(0);
+  }
+  
+  void stopBacking() {
     // hand control back to pos
     flipDisable();
+    isBacking = false;
+    velController.setTarget(0);
     tare();
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
+  }
+  
+  void startBacking(int speed) {
+    // move control to vel for smooth movement
+    flipDisable();
+    isBacking = true;
+    timeoutTimer = Timer();
+    velController.setTarget(-abs(speed));
+  }
+
+  void backToButton(int speed) {
+    if (isBacking) {
+      stopBacking();
+    } else {
+      startBacking(speed);
+    }
   }
 
   void backToButton() {
@@ -175,7 +186,9 @@ public:
   }
 
   void stop() {
+    if (isBacking) {
+      stopBacking();
+    }
     move(getCurrentTicks());
-    stopping = true;
   }
 };

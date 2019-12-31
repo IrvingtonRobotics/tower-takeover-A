@@ -48,12 +48,13 @@ class Lift {
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   const int PORT = -LIFT_PORT;
   // is this currently doing a hard stop?
-  bool stopping = false;
+  bool isLowering = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(LIFT_LIMIT_PORT);
+  Timer timeoutTimer;
 
   /**
    * @param QLength height from ground
@@ -266,33 +267,38 @@ public:
     controller.setMaxVelocity(tps);
   }
 
-  /**
-   * BLOCKING: Completely locks out rest of program while lowering
-   * Should only be run at the beginning -- autonomous should never forget
-   * position, and opcontrol can just non-small movement down
-   * Can be transferred to state variable (isCurrentlyLowering) but I'm leaving
-   * as-is because completely stopping ensures precision and is a feature, not a
-   * bug
-   */
-  void lowerToButton(int speed) {
-    // move control to vel for smooth movement
-    flipDisable();
-    velController.setTarget(-abs(speed));
-    Timer timeoutTimer = Timer();
-    // delay whole code
-    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < LOWER_TO_BUTTON_TIMEOUT) {
-      if (stopping) {
-        stopping = !stopping;
-        return;
+  void step() {
+    if (isLowering) {
+      if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= LOWER_TO_BUTTON_TIMEOUT) {
+        stopLowering();
       }
-      pros::delay(10);
     }
-    velController.setTarget(0);
+  }
+  
+  void stopLowering() {
     // hand control back to pos
     flipDisable();
+    isLowering = true;
+    velController.setTarget(0);
     tare();
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
+  }
+  
+  void startLowering(int speed) {
+    // move control to vel for smooth movement
+    flipDisable();
+    isLowering = true;
+    Timer timeoutTimer = Timer();
+    velController.setTarget(-abs(speed));
+  }
+
+  void lowerToButton(int speed) {
+    if (isLowering) {
+      stopLowering();
+    } else {
+      startLowering(speed);
+    }
   }
 
   void lowerToButton() {
@@ -339,7 +345,9 @@ public:
   }
 
   void stop() {
+    if (isLowering) {
+      stopLowering();
+    }
     move(getCurrentTicks());
-    stopping = true;
   }
 };
