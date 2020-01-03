@@ -148,8 +148,9 @@ public:
   }
 
   void checkTare() {
-    if(buttonLimit.isPressed()) {
+    if (buttonLimit.changedToPressed()) {
       tare();
+      // controller.setTarget(0);
     }
   }
 
@@ -278,7 +279,7 @@ public:
   void stopLowering() {
     // hand control back to pos
     flipDisable();
-    isLowering = true;
+    isLowering = false;
     velController.setTarget(0);
     tare();
     // avoid the controller resuming to its previous location
@@ -289,7 +290,7 @@ public:
     // move control to vel for smooth movement
     flipDisable();
     isLowering = true;
-    Timer timeoutTimer = Timer();
+    timeoutTimer = Timer();
     velController.setTarget(-abs(speed));
   }
 

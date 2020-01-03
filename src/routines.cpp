@@ -11,11 +11,8 @@ void foldout() {
   // return
   lift.move(0);
   intake.stop();
-  rails.moveForward(600);
-  rails.waitUntilSettled();
-  rails.moveBack(600);
-  rails.waitUntilSettled();
-  rails.backToButton();
+  drive.moveDistance(2_in);
+  drive.moveDistance(-2_in);
 }
 
 void foldin() {

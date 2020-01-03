@@ -174,6 +174,7 @@ public:
    */
   void tare() {
     controller.tarePosition();
+    move((float) 0);
   }
 
   void waitUntilSettled() {
