@@ -15,7 +15,7 @@ class Rails {
   // ticks half way between back and forward
   const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
   // ticks to rest in middle (moveMid)
-  const double RAILS_MID_TICKS = 900;
+  const double RAILS_MID_TICKS = 750;
   // ticks half way between back and mid
   const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
   const double MOVE_BACK_SPEED = 140;

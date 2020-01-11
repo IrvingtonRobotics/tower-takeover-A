@@ -27,6 +27,8 @@ class Drive {
   );
 
   ChassisControllerIntegrated getController(bool isReversed) {
+    // we must change the controller instead of controller.setTurnsMirrored
+    // to let profileController work
     if (isReversed) {
       return ChassisControllerFactory::create(
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
@@ -63,7 +65,8 @@ class Drive {
     if (hi < input) return hi;
     return input;
   }
-
+  
+public:
   void moveTank(float left, float right) {
     moveTank(left, right, false);
   }
@@ -80,7 +83,6 @@ class Drive {
     }
   }
 
-public:
   // Drive() {
   //   controllerBack.flipDisable(true);
   // }
@@ -148,8 +150,8 @@ public:
    auto getProfileController(float speed) {
      return AsyncControllerFactory::motionProfile(
        1.5 * speed,
-       4.0 * speed,
-       10.0 * speed,
+       4.0,
+       10.0,
        controller
      );
    }

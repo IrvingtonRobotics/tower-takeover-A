@@ -6,10 +6,8 @@
 #include "config.cpp"
 
 // defaults
-bool isRed = false;
+bool isRed = true;
 bool isSmallSide = true;
-
-bool isBack = false;
 
 // Instantiate subsystem classes
 Lift lift = Lift();
@@ -31,7 +29,6 @@ void initialize() {
 
   drive.setSide(isRed);
 
-  lift.setMaxVelocity(120);
   lift.tare();
 
   rails.tare();

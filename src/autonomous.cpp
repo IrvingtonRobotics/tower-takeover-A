@@ -33,6 +33,13 @@ void runChecksFn(void* param) {
   }
 }
 
+void timeoutFn(void* param) {
+  pros::delay(14200);
+  // backup
+  drive.moveDistance(-8_in);
+  intake.stop();
+}
+
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -50,55 +57,64 @@ void autonomous() {
     foldin();
     return;
   }
+  pros::Task timeoutTask(timeoutFn);
   foldout();
-  // pros::delay(100);
-  // intake.move(600);
-  // if (isSmallSide) {
-  //   // drive forward and suck
-  //   travelProfile({
-  //     Point{11.0_in, -116.0_in, 0_deg},
-  //     Point{49.0_in, -116.0_in, 0_deg}
-  //   }, false, 0.3);
-  //   intake.stop();
-  //   // drive backward and turn
-  //   travelProfile({
-  //     Point{49.0_in, 116.0_in, 0_deg},
-  //     Point{31.5_in, 91.5_in, 90.0_deg}
-  //   }, true, 0.45);
-  //   // drive forward to endzone
-  //   travelProfile({
-  //     Point{31.5_in, -91.5_in, -90.0_deg},
-  //     Point{19.14215_in, -119.228_in, -135.0_deg}
-  //   }, false, 0.35);
-  // } else {
-  //   drive.moveDistance(-1_in);
-  //   travelProfile({
-  //     Point{9.5127_in, -46.0127_in, -0.0910796_deg},
-  //     Point{27.0_in, -46.5_in, 0_deg}
-  //   }, false, 0.35);
-  //   travelProfile({
-  //     Point{27.0_in, 46.5_in, 0_deg},
-  //     Point{14.788_in, 57.288_in, -41.1375_deg}
-  //   }, true, 0.35);
-  // 
-  //   travelProfile({
-  //     Point{14.788_in, -57.288_in, 41.1375_deg},
-  //     Point{28.57565_in, -31.57565_in, 107.945_deg},
-  //   }, false, 0.35);
-  //   intake.stop();
-  //   travelProfile({
-  //     Point{28.57565_in, -31.57565_in, 107.945_deg},
-  //     Point{21.80325_in, -19.30325_in, 132.535_deg}
-  //   }, false, 0.35);
-  // }
-  // // release stack
-  // intake.move(-80);
-  // rails.moveForward(150);
-  // rails.waitUntilSettled();
-  // intake.stop();
-  // // backup
-  // travelProfile({
-  //   Point{19.14215_in, 119.228_in, 135.0_deg},
-  //   Point{23.3137_in, 115.3135_in, 135.0_deg}
-  // }, true, 1.0);
+  pros::delay(30);
+  intake.move(900);
+  // pick up cubes and go to goal zone
+  if (isSmallSide) {
+    // // drive forward and suck
+    // travelProfile({
+    //   Point{11.0_in, -116.0_in, 0_deg},
+    //   Point{49.0_in, -116.0_in, 0_deg}
+    // }, false, 0.3);
+    // intake.stop();
+    // // drive backward and turn
+    // travelProfile({
+    //   Point{49.0_in, 116.0_in, 0_deg},
+    //   Point{31.5_in, 91.5_in, 90.0_deg}
+    // }, true, 0.45);
+    // // drive forward to endzone
+    // travelProfile({
+    //   Point{31.5_in, -91.5_in, -90.0_deg},
+    //   Point{19.14215_in, -119.228_in, -135.0_deg}
+    // }, false, 0.35);
+    
+    // small side 2
+    travelProfile({
+      Point{11.0_in, -116.0_in, 0_deg},
+      Point{49.0_in, -116.0_in, 0_deg}
+    }, false, 0.3);
+    intake.stop();
+    drive.turnAngle(180_deg);
+    travelProfile({
+      Point{49.5_in, -116.0_in, 180_deg},
+      Point{18.8137_in, -121.3135_in, -135.0_deg}
+    }, false, 0.5);
+  } else {
+    drive.moveDistance(-1_in);
+    travelProfile({
+      Point{9.5127_in, -46.0127_in, -0.0910796_deg},
+      Point{27.0_in, -46.5_in, 0_deg}
+    }, false, 0.35);
+    travelProfile({
+      Point{27.0_in, 46.5_in, 0_deg},
+      Point{14.788_in, 57.288_in, -41.1375_deg}
+    }, true, 0.35);
+    travelProfile({
+      Point{14.788_in, -57.288_in, 41.1375_deg},
+      Point{28.57565_in, -31.57565_in, 107.945_deg},
+    }, false, 0.35);
+    intake.stop();
+    travelProfile({
+      Point{28.57565_in, -31.57565_in, 107.945_deg},
+      Point{21.80325_in, -19.30325_in, 132.535_deg}
+    }, false, 0.35);
+  }
+  // keep drive forward
+  drive.moveTank(1, 1);
+  // release stack
+  intake.move(-80);
+  rails.moveForward(150);
+  rails.waitUntilSettled();
 }

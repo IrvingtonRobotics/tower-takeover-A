@@ -42,10 +42,14 @@ class Lift {
   // give up on lowering to button after this time if not hit limit switch
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
   const int DEFAULT_LOWER_SPEED = 50;
-  static const int NUM_HEIGHTS = 5;
+  static const int NUM_HEIGHTS = 6;
   // WARNING: targetHeights MUST be sorted
-  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, MIN_ARM_HEIGHT+5_in, 16_in, 24.5_in, MAX_ARM_HEIGHT};
+  // TODO: one of these is redundant
+  // {min, allows rails to push easily (bad), small tower, small tower, med tower push out, med tower}
+  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, MIN_ARM_HEIGHT+5_in, 16_in, 24.5_in, 27.5_in, MAX_ARM_HEIGHT};
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
+  // ticks per second
+  const int DEFAULT_MAX_VELOCITY = 120;
   const int PORT = -LIFT_PORT;
   // is this currently doing a hard stop?
   bool isLowering = false;
@@ -145,6 +149,7 @@ public:
   Lift() {
     // turn off velController so it doesn't conflict with posController
     velController.flipDisable();
+    resetMaxVelocity();
   }
 
   void checkTare() {
@@ -262,6 +267,11 @@ public:
    */
   QLength getTargetHeight() {
     return getHeight(getTargetTicks());
+  }
+
+  
+  void resetMaxVelocity() {
+    setMaxVelocity(DEFAULT_MAX_VELOCITY);
   }
 
   void setMaxVelocity(double tps) {
