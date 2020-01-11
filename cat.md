@@ -17,9 +17,10 @@ document.body.appendChild(s);
 // include everything with config attached
 #include "config.cpp"
 
-// defaults
+/* ---- CONFIG ---- */
+// default start settings
 bool isRed = true;
-bool isBack = true;
+bool isSmallSide = true;
 
 // Instantiate subsystem classes
 Lift lift = Lift();
@@ -41,7 +42,6 @@ void initialize() {
 
   drive.setSide(isRed);
 
-  lift.setMaxVelocity(120);
   lift.tare();
 
   rails.tare();
@@ -90,6 +90,7 @@ void competition_initialize() {}
 #include "drive.cpp"
 #include "rails.cpp"
 #include "intake.cpp"
+#include "routines.hpp"
 
 extern Lift lift;
 extern Drive drive;
@@ -97,7 +98,7 @@ extern Rails rails;
 extern Intake intake;
 
 extern bool isRed;
-extern bool isBack;
+extern bool isSmallSide;
 
 #endif
 ```
@@ -119,37 +120,6 @@ extern bool isBack;
 // use pros upload --slot 2
 const bool isFoldin = false;
 
-/**
- * Run foldout at beginning of match
- */
-void foldout() {
-  printf("fold out\n");
-  // home rails while lifting
-  rails.backToButton();
-  // foldout
-  lift.move(27_in);
-  intake.outtake();
-  lift.waitUntilSettled();
-  // return
-  lift.move(0);
-  intake.stop();
-  drive.moveDistance(3.5_in);
-  drive.moveDistance(-3.5_in);
-}
-
-void foldin() {
-  printf("fold in\n");
-  // lift.lowerToButton(120);
-  lift.move(12_in);
-  lift.waitUntilSettled();
-  rails.backToButton();
-  intake.intake();
-  pros::delay(3000);
-  intake.stop();
-  lift.lowerToButton(160);
-}
-
-
 void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   bool backwards, float speed
 ) {
@@ -160,6 +130,21 @@ void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   profileController.setTarget(name, backwards);
   profileController.waitUntilSettled();
   profileController.removePath(name);
+}
+
+void runChecksFn(void* param) {
+  while (true) {
+    lift.checkTare();
+    rails.step();
+    pros::delay(10);
+  }
+}
+
+void timeoutFn(void* param) {
+  pros::delay(14200);
+  // backup
+  drive.moveDistance(-8_in);
+  intake.stop();
 }
 
 /**
@@ -174,44 +159,71 @@ void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
  * from where it left off.
  */
 void autonomous() {
+  pros::Task runChecksTask(runChecksFn);
   if (isFoldin) {
     foldin();
     return;
   }
+  pros::Task timeoutTask(timeoutFn);
   foldout();
-  pros::delay(100);
-  // drive forward and suck
-  intake.move(600);
-  travelProfile({
-    Point{11.0_in, -116.0_in, 0_deg},
-    Point{49.0_in, -116.0_in, 0_deg}
-  }, false, 0.3);
-  intake.stop();
-  // drive backward and turn
-  travelProfile({
-    Point{49.0_in, 116.0_in, 0_deg},
-    Point{31.5_in, 91.5_in, 90.0_deg}
-  }, true, 0.45);
-  // drive forward to endzone
-  travelProfile({
-    Point{31.5_in, -91.5_in, -90.0_deg},
-    Point{19.14215_in, -121.728_in, -135.0_deg}
-  }, false, 0.35);
+  pros::delay(30);
+  intake.move(900);
+  // pick up cubes and go to goal zone
+  if (isSmallSide) {
+    // // drive forward and suck
+    // travelProfile({
+    //   Point{11.0_in, -116.0_in, 0_deg},
+    //   Point{49.0_in, -116.0_in, 0_deg}
+    // }, false, 0.3);
+    // intake.stop();
+    // // drive backward and turn
+    // travelProfile({
+    //   Point{49.0_in, 116.0_in, 0_deg},
+    //   Point{31.5_in, 91.5_in, 90.0_deg}
+    // }, true, 0.45);
+    // // drive forward to endzone
+    // travelProfile({
+    //   Point{31.5_in, -91.5_in, -90.0_deg},
+    //   Point{19.14215_in, -119.228_in, -135.0_deg}
+    // }, false, 0.35);
+    
+    // small side 2
+    travelProfile({
+      Point{11.0_in, -116.0_in, 0_deg},
+      Point{49.0_in, -116.0_in, 0_deg}
+    }, false, 0.3);
+    intake.stop();
+    drive.turnAngle(180_deg);
+    travelProfile({
+      Point{49.5_in, -116.0_in, 180_deg},
+      Point{18.8137_in, -121.3135_in, -135.0_deg}
+    }, false, 0.5);
+  } else {
+    drive.moveDistance(-1_in);
+    travelProfile({
+      Point{9.5127_in, -46.0127_in, -0.0910796_deg},
+      Point{27.0_in, -46.5_in, 0_deg}
+    }, false, 0.35);
+    travelProfile({
+      Point{27.0_in, 46.5_in, 0_deg},
+      Point{14.788_in, 57.288_in, -41.1375_deg}
+    }, true, 0.35);
+    travelProfile({
+      Point{14.788_in, -57.288_in, 41.1375_deg},
+      Point{28.57565_in, -31.57565_in, 107.945_deg},
+    }, false, 0.35);
+    intake.stop();
+    travelProfile({
+      Point{28.57565_in, -31.57565_in, 107.945_deg},
+      Point{21.80325_in, -19.30325_in, 132.535_deg}
+    }, false, 0.35);
+  }
+  // keep drive forward
+  drive.moveTank(1, 1);
   // release stack
-  intake.move(-40);
+  intake.move(-80);
   rails.moveForward(150);
   rails.waitUntilSettled();
-  intake.stop();
-  // backup
-  travelProfile({
-    Point{19.14215_in, 121.728_in, 135.0_deg},
-    Point{23.3137_in, 117.8135_in, 135.0_deg}
-  }, true, 1.0);
-  // push cube into endzone
-  // drive.moveDistance(20_in);
-  // drive.turnAngle(-10_deg);
-  // drive.moveDistance(5_in);
-  // drive.moveDistance(-10_in);
 }
 ```
 - - - - -
@@ -233,6 +245,7 @@ bool killed = false;
 
 bool slowToggleActive = false;
 bool slow = false;
+bool autonActive = false;
 /**
  * Run the Drive subsystem based on the joysticks
  */
@@ -269,16 +282,15 @@ void runLift() {
     lift.stop();
     return;
   }
+  lift.step();
   lift.checkTare();
-  bool smallUp = buttonLiftSmallUp.isPressed();
-  bool up = buttonLiftUp.changedToPressed();
-  bool smallDown = buttonLiftSmallDown.isPressed();
-  bool down = buttonLiftDown.changedToPressed();
-  bool isIncrease = smallUp || up;
-  bool isSmall = smallUp || smallDown;
-  if (smallUp || up || smallDown || down) {
-    // printf("moving %d %d\n", isIncrease, isSmall);
-    lift.move(isIncrease, isSmall);
+  bool isUp = buttonLiftUp.changedToPressed();
+  bool isDown = buttonLiftDown.changedToPressed();
+  if (isUp || isDown) {
+    lift.move(isUp, false);
+  }
+  if (buttonGlide1.changedToPressed() || buttonGlide2.changedToPressed()) {
+    lift.moveToggle();
   }
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
@@ -301,6 +313,7 @@ void runRails() {
     rails.stop();
     return;
   }
+  rails.step();
   if (buttonRailsToggle.changedToPressed()) {
     rails.togglePosition();
   }
@@ -334,6 +347,7 @@ void runIntake() {
     return;
   }
   float speed = slow ? 0.25 : 1;
+  bool released = buttonRunOuttake.changedToReleased() || buttonRunIntake.changedToReleased();
   if (!disableDoublePress && buttonRunIntake.changedToPressed()) {
     isContinuousIntake = intakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
   }
@@ -346,7 +360,7 @@ void runIntake() {
   } else if (buttonRunOuttake.isPressed()) {
     outtakePressedTimer.placeMark();
     intake.outtake(speed);
-  } else if (disableDoublePress || !isContinuousIntake) {
+  } else if (released && (disableDoublePress || !isContinuousIntake)) {
     intake.stop();
   }
   if (buttonKill.changedToPressed()) {
@@ -367,6 +381,7 @@ void runIntakeFn(void* param) {
  * For thread safety, ensure that no task affects any other subsystem.
  */
 void opcontrol() {
+  drive.straighten();
   intakePressedTimer.placeMark();
   outtakePressedTimer.placeMark();
   // start all tasks
@@ -402,10 +417,12 @@ void opcontrol() {
 #ifndef SRC_CONTROLS_H_
 #define SRC_CONTROLS_H_
 
+#include "main.h"
+
 ControllerButton buttonLiftUp(ControllerDigital::up);
 ControllerButton buttonLiftDown(ControllerDigital::down);
-ControllerButton buttonLiftSmallUp(ControllerDigital::right);
-ControllerButton buttonLiftSmallDown(ControllerDigital::left);
+ControllerButton buttonGlide1(ControllerDigital::right);
+ControllerButton buttonGlide2(ControllerDigital::left);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonRetareLift(ControllerDigital::B);
@@ -436,6 +453,7 @@ namespace {
 class Config {
   static const lv_align_t ALIGNMENT = LV_ALIGN_IN_TOP_MID;
   static lv_obj_t * colorLabel;
+  static lv_obj_t * sizeLabel;
 
   static lv_obj_t * createLabel(lv_obj_t * parent, lv_coord_t x, lv_coord_t y,
     lv_align_t alignment, const char * title
@@ -496,10 +514,18 @@ class Config {
     char buffer[100];
     sprintf(buffer, "Color select: %s", isRed ? "red" : "blue");
     lv_label_set_text(colorLabel, buffer);
+    sprintf(buffer, "Goal size: %s", isSmallSide ? "small" : "large");
+    lv_label_set_text(sizeLabel, buffer);
   }
 
   static lv_res_t switch_color(lv_obj_t * button) {
     isRed = !isRed;
+    updateMessages();
+    return LV_RES_OK;
+  }
+
+  static lv_res_t switch_size(lv_obj_t * button) {
+    isSmallSide = !isSmallSide;
     updateMessages();
     return LV_RES_OK;
   }
@@ -526,12 +552,18 @@ public:
 
     colorLabel = createLabel(lv_scr_act(), 220, 25, LV_ALIGN_IN_TOP_LEFT, "");
 
+    static lv_obj_t * sizeButton = createButton(lv_scr_act(), 10, 70, 200, 50, 0,
+      "Switch Size", switch_size);
+
+    sizeLabel = createLabel(lv_scr_act(), 220, 85, LV_ALIGN_IN_TOP_LEFT, "");
+
     updateMessages();
   }
 };
 
 // initialize shared variables to avoid undefined errors
 lv_obj_t * Config::colorLabel;
+lv_obj_t * Config::sizeLabel;
 }
 ```
 - - - - -
@@ -549,13 +581,13 @@ lv_obj_t * Config::colorLabel;
 
 // motor ports
 #define DRIVE_LEFT_FRONT_PORT 10
-#define DRIVE_LEFT_BACK_PORT 9
-#define DRIVE_RIGHT_FRONT_PORT 1
-#define DRIVE_RIGHT_BACK_PORT 2
-#define ANGLE_RAILS_PORT 8
-#define INTAKE_LEFT_PORT 7
-#define INTAKE_RIGHT_PORT 20
-#define LIFT_PORT 5
+#define DRIVE_LEFT_BACK_PORT 2
+#define DRIVE_RIGHT_FRONT_PORT 9
+#define DRIVE_RIGHT_BACK_PORT 1
+#define LIFT_PORT 15
+#define ANGLE_RAILS_PORT 18
+#define INTAKE_LEFT_PORT 12
+#define INTAKE_RIGHT_PORT 13
 
 // ADI (3-wire)
 // What does ADI Stand for? Analog Device Input?
@@ -577,12 +609,21 @@ lv_obj_t * Config::colorLabel;
  * Wraps around a ChassisControllerIntegrated with limited acceleration
  */
 class Drive {
-  float leftDriveSpeed = 0;
-  float rightDriveSpeed = 0;
+  /* ---- CONFIG ---- */
   const float MAX_DRIVE_ACCEL = 0.01;
   const float MAX_DRIVE_DECEL = 0.05;
+  // at turn speed (right speed - left speed) greater than TURN_LIMIT_THRESHOLD,
+  // decrease movement rate by TURN_LIMIT_SCALE
   const float TURN_LIMIT_THRESHOLD = 1.20;
   const float TURN_LIMIT_SCALE = 0.85;
+  // wheel diameter and width of wheelbase
+  const ChassisScales &scales = ChassisScales({4_in, 13_in});
+  //https://pros.cs.purdue.edu/v5/okapi/api/device/motor/abstract-abstract-motor.html#gearset
+  static const auto gearset = AbstractMotor::gearset::green;
+  
+  /* ---- No need to edit ---- */
+  float leftDriveSpeed = 0;
+  float rightDriveSpeed = 0;
   ChassisControllerIntegrated controllerStraight = getController(false);
   ChassisControllerIntegrated controllerReversed = getController(true);
   ChassisControllerIntegrated* controllerPtr = &controllerStraight;
@@ -590,24 +631,26 @@ class Drive {
   ChassisControllerIntegrated controllerBack = ChassisControllerFactory::create(
     DRIVE_LEFT_BACK_PORT,
     -DRIVE_RIGHT_BACK_PORT,
-    AbstractMotor::gearset::green,
-    {4_in, 14.5_in}
+    gearset,
+    scales
   );
 
   ChassisControllerIntegrated getController(bool isReversed) {
+    // we must change the controller instead of controller.setTurnsMirrored
+    // to let profileController work
     if (isReversed) {
       return ChassisControllerFactory::create(
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
         {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
         AbstractMotor::gearset::green,
-        {4_in, 14.5_in}
+        scales
       );
     } else {
       return ChassisControllerFactory::create(
         {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
         AbstractMotor::gearset::green,
-        {4_in, 14.5_in}
+        scales
       );
     }
   }
@@ -631,7 +674,8 @@ class Drive {
     if (hi < input) return hi;
     return input;
   }
-
+  
+public:
   void moveTank(float left, float right) {
     moveTank(left, right, false);
   }
@@ -648,7 +692,6 @@ class Drive {
     }
   }
 
-public:
   // Drive() {
   //   controllerBack.flipDisable(true);
   // }
@@ -657,7 +700,7 @@ public:
    * Arcade drive based on controllerX and controllerY
    * Pass through controller.tank to use existing acceleration limit code
    */
-  float move(float controllerX, float controllerY, float scl, bool stopFront) {
+  void move(float controllerX, float controllerY, float scl, bool stopFront) {
     // compute tank left and right based on arcade x and y
     float left = controllerY + controllerX;
     float right = controllerY - controllerX;
@@ -710,14 +753,14 @@ public:
    * Reset to blue
    */
    void straighten() {
-     setSide(false);
+     setSide(true);
    }
 
    auto getProfileController(float speed) {
      return AsyncControllerFactory::motionProfile(
        1.5 * speed,
-       4.0 * speed,
-       10.0 * speed,
+       4.0,
+       10.0,
        controller
      );
    }
@@ -738,12 +781,13 @@ public:
  * to provide movement to precise locations and smooth movement when lowering
  * to the button/limit switch
  *
- * TODO: Use raw pros::MOTOR to utilize both velocity and position controls
+ * TODO: Use raw pros::MOTOR to utilize separate velocity and position controls
  * Maybe try Gyro (do we have one?)
  *   https://www.robotc.net/wikiarchive/VEX2_Sensors_Overview
- * This'll dencessitate thorough calibration
+ * This'll denecessitate thorough calibration
  */
 class Lift {
+  /* ---- CONFIG ---- */
   const QLength ARM_LENGTH = 22_in;
   // height of arm pivot above ground
   const QLength ARM_ELEVATION = 16_in;
@@ -758,31 +802,39 @@ class Lift {
   const QLength MIN_ARM_HEIGHT = 2.5_in;
   // tolerance of position when calculating new targets
   const QLength POS_TOLERANCE = 0.5_in;
-  double tareTicks = 0;
   // size of opcontrol small movements
   const QLength SMALL_MOVE_SIZE = 0.5_in;
   // just leave this very small
   const QLength MIN_THRESHOLD = -1000_in;
-  // threshold until the target is reached for opcontrol small movements
-  QLength smallMoveThreshold;
   // tolerance when doing small movements: just reach within this of the threshold
   const QLength SMALL_MOVE_TOLERANCE = 0.2_in;
-  // direction currently (or last) moved in for small movements
-  int smallMoveDir = 1;
-  static const int NUM_HEIGHTS = 4;
   // give up on lowering to button after this time if not hit limit switch
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
-  const int DEFEAULT_LOWER_SPEED = 30;
+  const int DEFAULT_LOWER_SPEED = 50;
+  static const int NUM_HEIGHTS = 6;
   // WARNING: targetHeights MUST be sorted
-  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 16_in, 24.5_in, MAX_ARM_HEIGHT};
+  // TODO: one of these is redundant
+  // {min, allows rails to push easily (bad), small tower, small tower, med tower push out, med tower}
+  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, MIN_ARM_HEIGHT+5_in, 16_in, 24.5_in, 27.5_in, MAX_ARM_HEIGHT};
+  const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
+  // ticks per second
+  const int DEFAULT_MAX_VELOCITY = 120;
+  
+  /* ---- No need to edit ---- */
+  double tareTicks = 0;
+  // threshold until the target is reached for opcontrol small movements
+  QLength smallMoveThreshold;
+  // direction currently (or last) moved in for small movements
+  int smallMoveDir = 1;
   const int PORT = -LIFT_PORT;
   // is this currently doing a hard stop?
-  bool stopping = false;
+  bool isLowering = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(LIFT_LIMIT_PORT);
+  Timer timeoutTimer;
 
   /**
    * @param QLength height from ground
@@ -837,10 +889,6 @@ class Lift {
    *  POS_TOLERANCE away
    */
   QLength getChangedHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
-    printf("---------\n");
-    printf("  getChangedHeight(%f, %d, %d)  \n", lastHeight / 0.0254,
-      isIncrease?1:0, isIncreaseSmall?1:0);
-    printf("---------\n");
     // printf("Last height %f\n", lastHeight.getValue());
     int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
@@ -861,8 +909,6 @@ class Lift {
         i += m;
       }
       i = std::clamp(i, 0, NUM_HEIGHTS - 1);
-      printf("clamped i %d\n", i);
-      printf("returning ... %f\n", targetHeights[i] / 0.0254);
       return targetHeights[i];
     }
   }
@@ -879,11 +925,13 @@ public:
   Lift() {
     // turn off velController so it doesn't conflict with posController
     velController.flipDisable();
+    resetMaxVelocity();
   }
 
   void checkTare() {
-    if(buttonLimit.isPressed()) {
+    if (buttonLimit.changedToPressed()) {
       tare();
+      // controller.setTarget(0);
     }
   }
 
@@ -891,6 +939,14 @@ public:
     tareHeight(MIN_ARM_HEIGHT);
   }
 
+  void moveToggle() {
+    if (getCurrentHeight() > MID_HEIGHT) {
+      move(0);
+    } else {
+      move(-1);
+    }
+  }
+  
   /**
    * Retare by assuming the current position is at height height
    */
@@ -910,6 +966,9 @@ public:
 
   void move(int heightIndex) {
     // printf("Moving lift to height %d\n", heightIndex);
+    if (heightIndex < 0) {
+      heightIndex = NUM_HEIGHTS + heightIndex;
+    }
     QLength targetHeight = targetHeights[heightIndex];
     move(targetHeight);
   }
@@ -986,41 +1045,51 @@ public:
     return getHeight(getTargetTicks());
   }
 
+  
+  void resetMaxVelocity() {
+    setMaxVelocity(DEFAULT_MAX_VELOCITY);
+  }
+
   void setMaxVelocity(double tps) {
     controller.setMaxVelocity(tps);
   }
 
-  /**
-   * BLOCKING: Completely locks out rest of program while lowering
-   * Should only be run at the beginning -- autonomous should never forget
-   * position, and opcontrol can just non-small movement down
-   * Can be transferred to state variable (isCurrentlyLowering) but I'm leaving
-   * as-is because completely stopping ensures precision and is a feature, not a
-   * bug
-   */
-  void lowerToButton(int speed) {
-    // move control to vel for smooth movement
-    flipDisable();
-    velController.setTarget(-abs(speed));
-    Timer timeoutTimer = Timer();
-    // delay whole code
-    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < LOWER_TO_BUTTON_TIMEOUT) {
-      if (stopping) {
-        stopping = !stopping;
-        return;
+  void step() {
+    if (isLowering) {
+      if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= LOWER_TO_BUTTON_TIMEOUT) {
+        stopLowering();
       }
-      pros::delay(10);
     }
-    velController.setTarget(0);
+  }
+  
+  void stopLowering() {
     // hand control back to pos
     flipDisable();
+    isLowering = false;
+    velController.setTarget(0);
     tare();
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
   }
+  
+  void startLowering(int speed) {
+    // move control to vel for smooth movement
+    flipDisable();
+    isLowering = true;
+    timeoutTimer = Timer();
+    velController.setTarget(-abs(speed));
+  }
+
+  void lowerToButton(int speed) {
+    if (isLowering) {
+      stopLowering();
+    } else {
+      startLowering(speed);
+    }
+  }
 
   void lowerToButton() {
-    lowerToButton(DEFEAULT_LOWER_SPEED);
+    lowerToButton(DEFAULT_LOWER_SPEED);
   }
 
   /**
@@ -1063,8 +1132,10 @@ public:
   }
 
   void stop() {
+    if (isLowering) {
+      stopLowering();
+    }
     move(getCurrentTicks());
-    stopping = true;
   }
 };
 ```
@@ -1079,7 +1150,8 @@ public:
  * Thinly wraps around AsyncVelIntegratedController
  **/
 class Intake {
-  double SPEED = 100;
+  /* ---- CONFIG ---- */
+  double SPEED = 200;
   AsyncVelIntegratedController controller =
     AsyncControllerFactory::velIntegrated({INTAKE_LEFT_PORT, -INTAKE_RIGHT_PORT});
 
@@ -1118,28 +1190,36 @@ public:
 /**
  * Main class for the Rails angling subsystem
  * Wraps around AsyncPosIntegratedController and AsyncVelIntegratedController
- * in the manner of Lift (some of the code is transferred)
+ * in the manner of Lift (some of the code is transferred -- sad)
  * Need a limit because the rails can now start in the middle for space concerns
  **/
 class Rails {
+  /* ---- CONFIG ---- */
+  // ticks all the way back
   const double RAILS_BACK_TICKS = 0;
-  const double RAILS_FORWARD_TICKS = 1400;
+  // ticks to rest in middle (moveMid)
+  const double RAILS_MID_TICKS = 750;
+  // ticks all the way forward
+  const double RAILS_FORWARD_TICKS = 2500;
+  const double MOVE_BACK_SPEED = 140;
+  const double MOVE_FORWARD_SPEED = 70;
+  const double MOVE_MID_SPEED = 110;
+  const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
+  const int DEFAULT_BACK_SPEED = 70;
+  
+  /* ---- No need to edit ---- */
+  // ticks half way between back and forward
   const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
-  const double RAILS_MID_TICKS = 650;
-  const double MOVE_BACK_SPEED = 45;
+  // ticks half way between back and mid
   const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
-  const double MOVE_FORWARD_SPEED = 30;
-  const double MOVE_MID_SPEED = 60;
-  const QTime BACK_TO_BUTTON_TIMEOUT = 5_s;
-  const int DEFAULT_BACK_SPEED = 40;
-  const int PORT = ANGLE_RAILS_PORT;
-  bool stopping = false;
+  const int PORT = -ANGLE_RAILS_PORT;
+  bool isBacking = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(RAILS_LIMIT_PORT);
-
+  Timer timeoutTimer;
 
   void move(double ticks) {
     printf("Moving rails to %f ticks\n", ticks);
@@ -1226,29 +1306,39 @@ public:
       moveMid();
     }
   }
-
-  /**
-   * BLOCKING
-   */
-  void backToButton(int speed) {
-    // move control to vel for smooth movement
-    flipDisable();
-    velController.setTarget(-abs(speed));
-    Timer timeoutTimer = Timer();
-    // delay whole code
-    while(!buttonLimit.isPressed() && timeoutTimer.getDtFromStart() < BACK_TO_BUTTON_TIMEOUT) {
-      if (stopping) {
-        stopping = false;
-        return;
+  
+  void step() {
+    if (isBacking) {
+      if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= BACK_TO_BUTTON_TIMEOUT) {
+        stopBacking();
       }
-      pros::delay(10);
     }
-    velController.setTarget(0);
+  }
+  
+  void stopBacking() {
     // hand control back to pos
     flipDisable();
+    isBacking = false;
+    velController.setTarget(0);
     tare();
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
+  }
+  
+  void startBacking(int speed) {
+    // move control to vel for smooth movement
+    flipDisable();
+    isBacking = true;
+    timeoutTimer = Timer();
+    velController.setTarget(-abs(speed));
+  }
+
+  void backToButton(int speed) {
+    if (isBacking) {
+      stopBacking();
+    } else {
+      startBacking(speed);
+    }
   }
 
   void backToButton() {
@@ -1272,6 +1362,7 @@ public:
    */
   void tare() {
     controller.tarePosition();
+    move((float) 0);
   }
 
   void waitUntilSettled() {
@@ -1284,8 +1375,10 @@ public:
   }
 
   void stop() {
+    if (isBacking) {
+      stopBacking();
+    }
     move(getCurrentTicks());
-    stopping = true;
   }
 };
 ```
