@@ -6,6 +6,7 @@
  * Thinly wraps around AsyncVelIntegratedController
  **/
 class Intake {
+  /* ---- CONFIG ---- */
   double SPEED = 200;
   AsyncVelIntegratedController controller =
     AsyncControllerFactory::velIntegrated({INTAKE_LEFT_PORT, -INTAKE_RIGHT_PORT});

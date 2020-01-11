@@ -5,7 +5,8 @@
 // include everything with config attached
 #include "config.cpp"
 
-// defaults
+/* ---- CONFIG ---- */
+// default start settings
 bool isRed = true;
 bool isSmallSide = true;
 

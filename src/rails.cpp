@@ -4,25 +4,28 @@
 /**
  * Main class for the Rails angling subsystem
  * Wraps around AsyncPosIntegratedController and AsyncVelIntegratedController
- * in the manner of Lift (some of the code is transferred)
+ * in the manner of Lift (some of the code is transferred -- sad)
  * Need a limit because the rails can now start in the middle for space concerns
  **/
 class Rails {
+  /* ---- CONFIG ---- */
   // ticks all the way back
   const double RAILS_BACK_TICKS = 0;
-  // ticks all the way forward
-  const double RAILS_FORWARD_TICKS = 2500;
-  // ticks half way between back and forward
-  const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
   // ticks to rest in middle (moveMid)
   const double RAILS_MID_TICKS = 750;
-  // ticks half way between back and mid
-  const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
+  // ticks all the way forward
+  const double RAILS_FORWARD_TICKS = 2500;
   const double MOVE_BACK_SPEED = 140;
   const double MOVE_FORWARD_SPEED = 70;
   const double MOVE_MID_SPEED = 110;
   const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
   const int DEFAULT_BACK_SPEED = 70;
+  
+  /* ---- No need to edit ---- */
+  // ticks half way between back and forward
+  const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
+  // ticks half way between back and mid
+  const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
   const int PORT = -ANGLE_RAILS_PORT;
   bool isBacking = false;
   AsyncPosIntegratedController controller =
@@ -31,7 +34,6 @@ class Rails {
     AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(RAILS_LIMIT_PORT);
   Timer timeoutTimer;
-
 
   void move(double ticks) {
     printf("Moving rails to %f ticks\n", ticks);

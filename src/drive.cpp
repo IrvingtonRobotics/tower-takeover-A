@@ -8,13 +8,21 @@
  * Wraps around a ChassisControllerIntegrated with limited acceleration
  */
 class Drive {
-  float leftDriveSpeed = 0;
-  float rightDriveSpeed = 0;
+  /* ---- CONFIG ---- */
   const float MAX_DRIVE_ACCEL = 0.01;
   const float MAX_DRIVE_DECEL = 0.05;
+  // at turn speed (right speed - left speed) greater than TURN_LIMIT_THRESHOLD,
+  // decrease movement rate by TURN_LIMIT_SCALE
   const float TURN_LIMIT_THRESHOLD = 1.20;
   const float TURN_LIMIT_SCALE = 0.85;
+  // wheel diameter and width of wheelbase
   const ChassisScales &scales = ChassisScales({4_in, 13_in});
+  //https://pros.cs.purdue.edu/v5/okapi/api/device/motor/abstract-abstract-motor.html#gearset
+  static const auto gearset = AbstractMotor::gearset::green;
+  
+  /* ---- No need to edit ---- */
+  float leftDriveSpeed = 0;
+  float rightDriveSpeed = 0;
   ChassisControllerIntegrated controllerStraight = getController(false);
   ChassisControllerIntegrated controllerReversed = getController(true);
   ChassisControllerIntegrated* controllerPtr = &controllerStraight;
@@ -22,7 +30,7 @@ class Drive {
   ChassisControllerIntegrated controllerBack = ChassisControllerFactory::create(
     DRIVE_LEFT_BACK_PORT,
     -DRIVE_RIGHT_BACK_PORT,
-    AbstractMotor::gearset::green,
+    gearset,
     scales
   );
 

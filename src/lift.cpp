@@ -14,6 +14,7 @@
  * This'll denecessitate thorough calibration
  */
 class Lift {
+  /* ---- CONFIG ---- */
   const QLength ARM_LENGTH = 22_in;
   // height of arm pivot above ground
   const QLength ARM_ELEVATION = 16_in;
@@ -28,17 +29,12 @@ class Lift {
   const QLength MIN_ARM_HEIGHT = 2.5_in;
   // tolerance of position when calculating new targets
   const QLength POS_TOLERANCE = 0.5_in;
-  double tareTicks = 0;
   // size of opcontrol small movements
   const QLength SMALL_MOVE_SIZE = 0.5_in;
   // just leave this very small
   const QLength MIN_THRESHOLD = -1000_in;
-  // threshold until the target is reached for opcontrol small movements
-  QLength smallMoveThreshold;
   // tolerance when doing small movements: just reach within this of the threshold
   const QLength SMALL_MOVE_TOLERANCE = 0.2_in;
-  // direction currently (or last) moved in for small movements
-  int smallMoveDir = 1;
   // give up on lowering to button after this time if not hit limit switch
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
   const int DEFAULT_LOWER_SPEED = 50;
@@ -50,6 +46,13 @@ class Lift {
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   // ticks per second
   const int DEFAULT_MAX_VELOCITY = 120;
+  
+  /* ---- No need to edit ---- */
+  double tareTicks = 0;
+  // threshold until the target is reached for opcontrol small movements
+  QLength smallMoveThreshold;
+  // direction currently (or last) moved in for small movements
+  int smallMoveDir = 1;
   const int PORT = -LIFT_PORT;
   // is this currently doing a hard stop?
   bool isLowering = false;
