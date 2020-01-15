@@ -46,7 +46,7 @@ class Lift {
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   // ticks per second
   const int DEFAULT_MAX_VELOCITY = 120;
-  
+
   /* ---- No need to edit ---- */
   double tareTicks = 0;
   // threshold until the target is reached for opcontrol small movements
@@ -173,7 +173,7 @@ public:
       move(-1);
     }
   }
-  
+
   /**
    * Retare by assuming the current position is at height height
    */
@@ -272,7 +272,7 @@ public:
     return getHeight(getTargetTicks());
   }
 
-  
+
   void resetMaxVelocity() {
     setMaxVelocity(DEFAULT_MAX_VELOCITY);
   }
@@ -288,7 +288,7 @@ public:
       }
     }
   }
-  
+
   void stopLowering() {
     // hand control back to pos
     flipDisable();
@@ -298,7 +298,7 @@ public:
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
   }
-  
+
   void startLowering(int speed) {
     // move control to vel for smooth movement
     flipDisable();

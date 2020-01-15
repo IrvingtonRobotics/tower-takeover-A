@@ -79,7 +79,7 @@ void autonomous() {
     //   Point{31.5_in, -91.5_in, -90.0_deg},
     //   Point{19.14215_in, -119.228_in, -135.0_deg}
     // }, false, 0.35);
-    
+
     // small side 2
     travelProfile({
       Point{11.0_in, -116.0_in, 0_deg},

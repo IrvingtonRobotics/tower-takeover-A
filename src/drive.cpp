@@ -19,7 +19,7 @@ class Drive {
   const ChassisScales &scales = ChassisScales({4_in, 13_in});
   //https://pros.cs.purdue.edu/v5/okapi/api/device/motor/abstract-abstract-motor.html#gearset
   static const auto gearset = AbstractMotor::gearset::green;
-  
+
   /* ---- No need to edit ---- */
   float leftDriveSpeed = 0;
   float rightDriveSpeed = 0;
@@ -73,7 +73,7 @@ class Drive {
     if (hi < input) return hi;
     return input;
   }
-  
+
 public:
   void moveTank(float left, float right) {
     moveTank(left, right, false);

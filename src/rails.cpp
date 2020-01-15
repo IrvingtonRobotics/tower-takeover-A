@@ -20,7 +20,7 @@ class Rails {
   const double MOVE_MID_SPEED = 110;
   const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
   const int DEFAULT_BACK_SPEED = 220;
-  
+
   /* ---- No need to edit ---- */
   // ticks half way between back and forward
   const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
@@ -120,7 +120,7 @@ public:
       moveMid();
     }
   }
-  
+
   void step() {
     if (isBacking) {
       if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= BACK_TO_BUTTON_TIMEOUT) {
@@ -128,7 +128,7 @@ public:
       }
     }
   }
-  
+
   void stopBacking() {
     // hand control back to pos
     flipDisable();
@@ -138,7 +138,7 @@ public:
     // avoid the controller resuming to its previous location
     controller.setTarget(0);
   }
-  
+
   void startBacking(int speed) {
     // move control to vel for smooth movement
     flipDisable();
