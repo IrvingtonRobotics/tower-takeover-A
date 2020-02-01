@@ -199,6 +199,10 @@ public:
     move(targetHeight);
   }
 
+  void glide(bool isUp) {
+    move(isUp ? -1 : 0);
+  }
+
   /**
    * @param ticks from center
    */

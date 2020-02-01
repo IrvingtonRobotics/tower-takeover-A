@@ -58,8 +58,10 @@ void runLift() {
   if (isUp || isDown) {
     lift.move(isUp, false);
   }
-  if (buttonGlide1.changedToPressed() || buttonGlide2.changedToPressed()) {
-    lift.moveToggle();
+  bool isFastUp = buttonGlideUp.changedToPressed();
+  bool isFastDown = buttonGlideDown.changedToPressed();
+  if (isFastUp || isFastDown) {
+    lift.glide(isFastUp);
   }
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
