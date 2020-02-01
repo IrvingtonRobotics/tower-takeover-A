@@ -22,5 +22,6 @@
 // What does ADI Stand for? Analog Device Input?
 #define LIFT_LIMIT_PORT 'E'
 #define RAILS_LIMIT_PORT 'B'
+#define POTENTIOMETER_PORT 'G'
 
 #endif

@@ -106,6 +106,7 @@ void autonomous() {
   drive.moveTank(1, 1);
   // release stack
   intake.move(-80);
-  rails.moveForward(150);
+  pros::delay(50);
+  rails.moveForward(190);
   rails.waitUntilSettled();
 }

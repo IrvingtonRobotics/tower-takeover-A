@@ -2,12 +2,14 @@
  * Initialization, run before all other code as soon as the proram is started
  */
 
-// include everything with config attached
-#include "config.cpp"
+#include "common.hpp"
+
+#define POT_RED_POS 1612
+#define POT_BLUE_POS 1123
 
 /* ---- CONFIG ---- */
 // default start settings
-bool isRed = false;
+bool isRed = true;
 bool isSmallSide = true;
 
 // Instantiate subsystem classes
@@ -15,7 +17,6 @@ Lift lift = Lift();
 Drive drive = Drive();
 Rails rails = Rails();
 Intake intake = Intake();
-Config config = Config();
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -34,11 +35,9 @@ void initialize() {
 
   rails.tare();
 
-  /**
-   * LCD Configuration
-   */
-
-   config.initialize();
+  pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
+  int potValue = pot.get_value();
+  isRed = abs(potValue - POT_RED_POS) < abs(potValue - POT_BLUE_POS);
 }
 
 /**
