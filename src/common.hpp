@@ -19,6 +19,8 @@ extern Drive drive;
 extern Rails rails;
 extern Intake intake;
 
+extern Timer autonTimer;
+
 extern bool isRed;
 extern bool isSmallSide;
 

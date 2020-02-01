@@ -13,6 +13,9 @@
 // use pros upload --slot 2
 const bool isFoldin = false;
 
+/**
+ * Helper function to move between points
+ */
 void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   bool backwards, float speed
 ) {
@@ -34,7 +37,9 @@ void runChecksFn(void* param) {
 }
 
 void timeoutFn(void* param) {
+  printf("TIMEOUT STARTED %f\n", autonTimer.getDtFromStart().getValue());
   pros::delay(14200);
+  printf("TIMEOUT RESOLVED %f\n", autonTimer.getDtFromStart().getValue());
   // backup
   drive.moveDistance(-8_in);
   intake.stop();
@@ -52,6 +57,7 @@ void timeoutFn(void* param) {
  * from where it left off.
  */
 void autonomous() {
+  autonTimer = Timer();
   pros::Task runChecksTask(runChecksFn);
   if (isFoldin) {
     foldin();
@@ -60,37 +66,22 @@ void autonomous() {
   pros::Task timeoutTask(timeoutFn);
   foldout();
   pros::delay(30);
+  printf("DONE DELAYING %f\n", autonTimer.getDtFromStart().getValue());
   intake.move(900);
+  printf("INTAKE ON %f\n", autonTimer.getDtFromStart().getValue());
   // pick up cubes and go to goal zone
   if (isSmallSide) {
-    // // drive forward and suck
-    // travelProfile({
-    //   Point{11.0_in, -116.0_in, 0_deg},
-    //   Point{49.0_in, -116.0_in, 0_deg}
-    // }, false, 0.3);
-    // intake.stop();
-    // // drive backward and turn
-    // travelProfile({
-    //   Point{49.0_in, 116.0_in, 0_deg},
-    //   Point{31.5_in, 91.5_in, 90.0_deg}
-    // }, true, 0.45);
-    // // drive forward to endzone
-    // travelProfile({
-    //   Point{31.5_in, -91.5_in, -90.0_deg},
-    //   Point{19.14215_in, -119.228_in, -135.0_deg}
-    // }, false, 0.35);
-
     // small side 2
     travelProfile({
       Point{11.0_in, -116.0_in, 0_deg},
       Point{49.0_in, -116.0_in, 0_deg}
-    }, false, 0.3);
+    }, false, 0.16);
     intake.stop();
     drive.turnAngle(180_deg);
     travelProfile({
       Point{49.5_in, -116.0_in, 180_deg},
-      Point{18.8137_in, -121.3135_in, -135.0_deg}
-    }, false, 0.5);
+      Point{18.8137_in, -126.3135_in, -135.0_deg}
+    }, false, 0.4);
   } else {
     drive.moveDistance(-1_in);
     travelProfile({

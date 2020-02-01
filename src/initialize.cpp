@@ -7,7 +7,7 @@
 
 /* ---- CONFIG ---- */
 // default start settings
-bool isRed = true;
+bool isRed = false;
 bool isSmallSide = true;
 
 // Instantiate subsystem classes

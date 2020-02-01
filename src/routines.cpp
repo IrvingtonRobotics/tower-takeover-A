@@ -1,7 +1,9 @@
 #include "common.hpp"
 
+Timer autonTimer;
+
 void foldout() {
-  printf("fold out\n");
+  printf("FOLD OUT START %f\n", autonTimer.getDtFromStart().getValue());
   // home rails while lifting
   rails.backToButton();
   // foldout
@@ -13,9 +15,13 @@ void foldout() {
   lift.setMaxVelocity(500);
   lift.move(0);
   intake.stop();
+  printf("INTAKE STOPPED %f\n", autonTimer.getDtFromStart().getValue());
   drive.moveDistance(2_in);
+  printf("DRIVE FORWARD\n");
   drive.moveDistance(-2_in);
+  printf("DRIVE BACKWARD\n");
   lift.resetMaxVelocity();
+  printf("FINISHED FOLDOUT\n");
 }
 
 void foldin() {
