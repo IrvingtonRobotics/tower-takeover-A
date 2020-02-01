@@ -7,10 +7,10 @@
 
 #include "main.h"
 
-ControllerButton buttonLiftUp(ControllerDigital::up);
-ControllerButton buttonLiftDown(ControllerDigital::down);
-ControllerButton buttonGlide1(ControllerDigital::right);
-ControllerButton buttonGlide2(ControllerDigital::left);
+ControllerButton buttonLiftUp(ControllerDigital::right);
+ControllerButton buttonLiftDown(ControllerDigital::left);
+ControllerButton buttonGlide1(ControllerDigital::up);
+ControllerButton buttonGlide2(ControllerDigital::down);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonRetareLift(ControllerDigital::B);

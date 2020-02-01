@@ -38,11 +38,10 @@ class Lift {
   // give up on lowering to button after this time if not hit limit switch
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
   const int DEFAULT_LOWER_SPEED = 50;
-  static const int NUM_HEIGHTS = 6;
+  static const int NUM_HEIGHTS = 3;
   // WARNING: targetHeights MUST be sorted
-  // TODO: one of these is redundant
-  // {min, allows rails to push easily (bad), small tower, small tower, med tower push out, med tower}
-  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, MIN_ARM_HEIGHT+5_in, 16_in, 24.5_in, 27.5_in, MAX_ARM_HEIGHT};
+  // {min, small tower, med tower}
+  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 24.5_in, MAX_ARM_HEIGHT};
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   // ticks per second
   const int DEFAULT_MAX_VELOCITY = 120;
