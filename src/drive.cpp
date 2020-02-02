@@ -13,8 +13,8 @@ class Drive {
   const float MAX_DRIVE_DECEL = 0.08;
   // at turn speed (right speed - left speed) greater than TURN_LIMIT_THRESHOLD,
   // scale movement rate by TURN_LIMIT_SCALE
-  const float TURN_LIMIT_THRESHOLD = 1.50;
-  const float TURN_LIMIT_SCALE = 0.9;
+  const float TURN_LIMIT_THRESHOLD = 1.10;
+  const float TURN_LIMIT_SCALE = 0.75;
   // wheel diameter and width of wheelbase
   const ChassisScales &scales = ChassisScales({4_in, 13_in});
   //https://pros.cs.purdue.edu/v5/okapi/api/device/motor/abstract-abstract-motor.html#gearset
