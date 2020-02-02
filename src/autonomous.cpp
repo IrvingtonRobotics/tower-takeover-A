@@ -10,24 +10,11 @@
 #include "common.hpp"
 #include "ultrasonic.hpp"
 
-// set this to true (for setup) to fold in instead of fold out
-// use pros upload --slot 2
-const bool isFoldin = false;
+#define SMALL_SIDE 1
+#define BIG_SIDE 2
+#define SKILLS 3
 
-/**
- * Helper function to move between points
- */
-void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
-  bool backwards, float speed
-) {
-  // hopefully little overhead here
-  auto profileController = drive.getProfileController(speed);
-  string name = "current";
-  profileController.generatePath(iwaypoints, name);
-  profileController.setTarget(name, backwards);
-  profileController.waitUntilSettled();
-  profileController.removePath(name);
-}
+#define MODE SMALL_SIDE
 
 void runChecksFn(void* param) {
   while (true) {
@@ -46,6 +33,28 @@ void timeoutFn(void* param) {
   intake.stop();
 }
 
+void smallSideAuton() {
+  // small side 2
+  travelProfile({
+    Point{11.0_in, -116.0_in, getAngle()},
+    Point{49.0_in, -116.0_in, 0_deg}
+  }, false, 0.16);
+  intake.stop();
+  drive.turnAngle(180_deg);
+  travelProfile({
+    Point{49.5_in, -116.0_in, 180_deg},
+    Point{19.3137_in, -125.3135_in, -135.0_deg}
+  }, false, 0.4);
+}
+
+void bigSideAuton() {
+
+}
+
+void skillsAuton() {
+
+}
+
 /**
  * Runs the user autonomous code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -60,48 +69,21 @@ void timeoutFn(void* param) {
 void autonomous() {
   autonTimer = Timer();
   pros::Task runChecksTask(runChecksFn);
-  if (isFoldin) {
-    foldin();
-    return;
-  }
   pros::Task timeoutTask(timeoutFn);
   foldout();
-  pros::delay(30);
-  printf("DONE DELAYING %f\n", autonTimer.getDtFromStart().getValue());
+  pros::delay(50);
   intake.move(900);
-  printf("INTAKE ON %f\n", autonTimer.getDtFromStart().getValue());
   // pick up cubes and go to goal zone
-  if (isSmallSide) {
-    // small side 2
-    travelProfile({
-      Point{11.0_in, -116.0_in, getAngle()},
-      Point{49.0_in, -116.0_in, 0_deg}
-    }, false, 0.16);
-    intake.stop();
-    drive.turnAngle(180_deg);
-    travelProfile({
-      Point{49.5_in, -116.0_in, 180_deg},
-      Point{19.3137_in, -125.3135_in, -135.0_deg}
-    }, false, 0.4);
-  } else {
-    drive.moveDistance(-1_in);
-    travelProfile({
-      Point{9.5127_in, -46.0127_in, -0.0910796_deg},
-      Point{27.0_in, -46.5_in, 0_deg}
-    }, false, 0.35);
-    travelProfile({
-      Point{27.0_in, 46.5_in, 0_deg},
-      Point{14.788_in, 57.288_in, -41.1375_deg}
-    }, true, 0.35);
-    travelProfile({
-      Point{14.788_in, -57.288_in, 41.1375_deg},
-      Point{28.57565_in, -31.57565_in, 107.945_deg},
-    }, false, 0.35);
-    intake.stop();
-    travelProfile({
-      Point{28.57565_in, -31.57565_in, 107.945_deg},
-      Point{21.80325_in, -19.30325_in, 132.535_deg}
-    }, false, 0.35);
+  switch (MODE) {
+    case SMALL_SIDE:
+      smallSideAuton();
+      break;
+    case BIG_SIDE:
+      bigSideAuton();
+      break;
+    case SKILLS:
+      skillsAuton();
+      break;
   }
   // keep drive forward
   drive.moveTank(1, 1);

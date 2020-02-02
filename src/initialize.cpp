@@ -10,7 +10,6 @@
 /* ---- CONFIG ---- */
 // default start settings
 bool isRed = true;
-bool isSmallSide = true;
 
 // Instantiate subsystem classes
 Lift lift = Lift();

@@ -36,3 +36,18 @@ void foldin() {
   intake.stop();
   lift.lowerToButton(160);
 }
+
+/**
+ * Helper function to move between points
+ */
+void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
+  bool backwards, float speed
+) {
+  // hopefully little overhead here
+  auto profileController = drive.getProfileController(speed);
+  string name = "current";
+  profileController.generatePath(iwaypoints, name);
+  profileController.setTarget(name, backwards);
+  profileController.waitUntilSettled();
+  profileController.removePath(name);
+}

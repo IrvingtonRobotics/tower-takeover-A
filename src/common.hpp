@@ -22,6 +22,5 @@ extern Intake intake;
 extern Timer autonTimer;
 
 extern bool isRed;
-extern bool isSmallSide;
 
 #endif

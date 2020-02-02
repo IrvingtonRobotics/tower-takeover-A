@@ -3,5 +3,8 @@
 
 void foldout();
 void foldin();
+void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
+  bool backwards, float speed
+);
 
 #endif
