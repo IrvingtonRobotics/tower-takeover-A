@@ -8,6 +8,7 @@
  */
 
 #include "common.hpp"
+#include "ultrasonic.hpp"
 
 // set this to true (for setup) to fold in instead of fold out
 // use pros upload --slot 2
@@ -73,7 +74,7 @@ void autonomous() {
   if (isSmallSide) {
     // small side 2
     travelProfile({
-      Point{11.0_in, -116.0_in, 0_deg},
+      Point{11.0_in, -116.0_in, getAngle()},
       Point{49.0_in, -116.0_in, 0_deg}
     }, false, 0.16);
     intake.stop();

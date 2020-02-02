@@ -121,6 +121,8 @@
           "src/rails.cpp",
           "src/routines.cpp",
           "src/routines.hpp",
+          "src/ultrasonic.cpp",
+          "src/ultrasonic.hpp",
           "src/utils.hpp",
           "src/opcontrol.c",
           "src/opcontrol.cc",
