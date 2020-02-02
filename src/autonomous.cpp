@@ -80,7 +80,7 @@ void autonomous() {
     drive.turnAngle(180_deg);
     travelProfile({
       Point{49.5_in, -116.0_in, 180_deg},
-      Point{18.8137_in, -126.3135_in, -135.0_deg}
+      Point{19.3137_in, -125.3135_in, -135.0_deg}
     }, false, 0.4);
   } else {
     drive.moveDistance(-1_in);
