@@ -23,7 +23,6 @@ The flags can of course be mixed and matched.
 | Position | Description |
 |----------|-------------|
 | Right Joystick | Drive control (arcade) |
-| Left Joystick | Move to toggle slow mode |
 | R1 or R2 | Toggle Rails Angle |
 | L1 | Run intake |
 | L2 | Run outtake |

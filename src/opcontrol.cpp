@@ -12,8 +12,6 @@ const bool disableDoublePress = true;
 
 bool killed = false;
 
-bool slowToggleActive = false;
-bool slow = false;
 bool autonActive = false;
 /**
  * Run the Drive subsystem based on the joysticks
@@ -23,7 +21,7 @@ void runDrive() {
     drive.stop();
     return;
   }
-  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, slow ? 0.25 : 1, slow);
+  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, 1, false);
 }
 
 /**
@@ -117,7 +115,7 @@ void runIntake() {
     intake.stop();
     return;
   }
-  float speed = slow ? 0.25 : 1;
+  float speed = 1;
   bool released = buttonRunOuttake.changedToReleased() || buttonRunIntake.changedToReleased();
   if (!disableDoublePress && buttonRunIntake.changedToPressed()) {
     isContinuousIntake = intakePressedTimer.getDtFromMark() < DOUBLE_PRESS_INTERVAL;
@@ -164,15 +162,6 @@ void opcontrol() {
     // kill if necessary
     if (buttonKill.changedToPressed()) {
       killed = !killed;
-    }
-    // slow if necessary
-    if (slowDistance() > 0.3) {
-      if (!slowToggleActive) {
-        slow = !slow;
-      }
-      slowToggleActive = true;
-    } else {
-      slowToggleActive = false;
     }
     pros::delay(10);
   }
