@@ -4,7 +4,10 @@ import argparse
 import subprocess
 import json
 import os
-from colorama import Fore, Style
+from colorama import Fore, Style, init
+import re
+
+init()
 
 opts = {
   "small": {
@@ -40,10 +43,13 @@ opts = {
 pp_start = "project.pros"
 pp_bak = ".project.pros.bak"
 
-def brightprint(*args, **kwargs):
-  print(Fore.CYAN)
+def colorprint(color, *args, **kwargs):
+  print(color, end='')
   print(*args, **kwargs)
-  print(Style.RESET_ALL)
+  print(Fore.WHITE)
+
+def brightprint(*args, **kwargs):
+  colorprint(Fore.CYAN, *args, **kwargs)
 
 already_reverted = True
 def revert():
@@ -105,6 +111,44 @@ def run_safe(make_all, upload_immediate, terminal, mode):
   finally:
     revert()
 
+def check_ports():
+  with open("src/ports.hpp", "r") as f:
+    lines = f.readlines()
+  expected_wires = []
+  expected_motors = []
+  for line in lines:
+    e = re.search(r"#define \S* (\d+|'[A-H]')", line)
+    if e:
+      ass = e.group(1)
+      if ass[0] == "'":
+        expected_wires.append(f"ADI {ass[1:-1]}")
+      else:
+        expected_motors.append(ass)
+
+  with open("README.md", "r") as f:
+    lines = f.readlines()
+    status = None
+    header_rows_left = 0
+    for i, line in enumerate(lines):
+      if "# Wiring" in line:
+        status = expected_wires
+        header_rows_left = 2
+      elif "# Motors" in line:
+        status = expected_motors
+        header_rows_left = 2
+      else:
+        if header_rows_left > 0:
+          header_rows_left -= 1
+          continue
+        e = re.match(r'\| ([^|]+) \|', line)
+        if e and status:
+          port = e.group(1)
+          exp_port = status.pop(0)
+          if port != exp_port:
+            colorprint(Fore.YELLOW, "Warning: ", end='')
+            print(f"mismatched ports in README:{i+1} based on ports.hpp")
+            print(f"  Got port `{port}` but expected `{exp_port}`")
+            break
 
 # ./proj.py -m small
 parser = argparse.ArgumentParser(description="Autogenerate motion profile from SVG.")
@@ -115,7 +159,10 @@ group.add_argument("--quick", "-q", action="store_true", help="Make quick")
 group.add_argument("--all", "-a", action="store_true", help="Make all, not just quick")
 parser.add_argument("--upload-immediate", "-u", action="store_true", help="Upload without a confirmation")
 parser.add_argument("--terminal", "-t", action="store_true", help="Open terminal after uploading")
+parser.add_argument("--no-ports", "-p", action="store_true", help="Disable checking consistent README ports")
 
 args = parser.parse_args()
+if not args.no_ports:
+  check_ports()
 all = args.all and not args.quick
 run_safe(all, args.upload_immediate, args.terminal, args.mode)

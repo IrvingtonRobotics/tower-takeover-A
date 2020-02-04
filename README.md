@@ -39,12 +39,15 @@ Note: The emergency kill will order all motors to stop moving and hold their pos
 It will not cut power to the motors. To do that, hold the power off button.
 
 ## Wiring
-
 | Port | Description |
 |------------|----------|
-| ADI B | Rails limit switch |
 | ADI E | Lift limit switch |
-
+| ADI C | Rails limit bumper |
+| ADI F | Auton selector potentiometer |
+| ADI A | Left ultra PING (OUTPUT) |
+| ADI B | Left ultra ECHO (INPUT) |
+| ADI G | Right ultra PING (OUTPUT) |
+| ADI H | Right ultra ECHO (INPUT) |
 
 ### Motors
 | Motor Port | Function |

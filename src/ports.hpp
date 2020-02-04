@@ -25,11 +25,11 @@
 #define POTENTIOMETER_PORT 'F'
 // (OUTPUT wire) must be odd (ACEG/1357)
 #define LEFT_ULTRA_PING_PORT 'A'
-// (INPUT wire) must be 1 more than the ping
-#define LEFT_ULTRA_ECHO_PORT (LEFT_ULTRA_PING_PORT+1)
+// (INPUT wire) must be 1 more than the ping?
+#define LEFT_ULTRA_ECHO_PORT 'B'
 // (OUTPUT wire) must be odd (ACEG/1357)
 #define RIGHT_ULTRA_PING_PORT 'G'
-// (INPUT wire) must be 1 more than the ping
-#define RIGHT_ULTRA_ECHO_PORT (RIGHT_ULTRA_PING_PORT+1)
+// (INPUT wire) must be 1 more than the ping?
+#define RIGHT_ULTRA_ECHO_PORT 'H'
 
 #endif
