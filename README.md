@@ -1,7 +1,21 @@
 # VEX Tower Takeover Code
 **Team 44730A Bluescreens**
 
-[Code joined together](cat.md)
+## Uploading
+You can make and upload just with the standard `pros make all` and `pros upload`, but to utilize default slots, do the following:
+
+```bash
+# make quick, then upload small side auton after a confirmation
+./proj.py small
+# make all, then upload big side auton after a confirmation
+./proj.py big -a
+# make all, then upload programming skills side auton after no confirmation
+./proj.py skills -au
+# make all, then upload driver skills (flipout in auton) after no confirmation, then open terminal
+./proj.py driver -aut
+```
+
+The flags can of course be mixed and matched.
 
 ## Controls
 
@@ -43,13 +57,3 @@ It will not cut power to the motors. To do that, hold the power off button.
 | 18 | Rails angling motor |
 | 12 | Left intake motor |
 | 13 | Right intake motor  |
-
-## Project Structure
-Inside the `src/` folder is all of the juicy stuff.
-
-Of course, `autonomous.cpp` is where most of the autonomous lies, but the foldout
-routine is in `routines.cpp`. The default color is in `initialize.cpp`.
-
-Subsystem configuration is available at the top of the class declaration in
-`drive.cpp`, `intake.cpp`, `lift.cpp`, and `rails.cpp`. The portion directly
-under a `---- CONFIG ----` heading is all you need to edit to tweak values.

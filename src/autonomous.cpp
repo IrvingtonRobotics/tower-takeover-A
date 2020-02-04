@@ -14,7 +14,12 @@
 #define BIG_SIDE 2
 #define SKILLS 3
 
+// to override MODE
+#include "config.hpp"
+
+#ifndef MODE
 #define MODE SMALL_SIDE
+#endif
 
 void runChecksFn(void* param) {
   while (true) {

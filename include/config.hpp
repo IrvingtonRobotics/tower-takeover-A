@@ -1,0 +1,1 @@
+#define MODE SMALL_SIDE

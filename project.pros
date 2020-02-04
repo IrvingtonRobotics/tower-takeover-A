@@ -130,6 +130,7 @@
           "src/autonomous.c",
           "src/autonomous.cc",
           "src/initialize.cc",
+          "include/config.hpp",
           "include/main.hh",
           "Makefile",
           "src/initialize.c",
