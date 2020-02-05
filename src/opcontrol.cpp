@@ -70,7 +70,7 @@ void runLift() {
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
   }
-  if (buttonOutLift.changedToPressed()) {
+  if (outliftTriggered()) {
     // move up ASAP -- hopefully outtake keeps up
     isOutlifting = true;
     outliftTimer = Timer();

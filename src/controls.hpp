@@ -25,4 +25,10 @@ Controller masterController;
 #define DRIVE_X_CONTROL masterController.getAnalog(ControllerAnalog::rightX)
 #define DRIVE_Y_CONTROL masterController.getAnalog(ControllerAnalog::rightY)
 
+float outliftTriggered() {
+  float x = masterController.getAnalog(ControllerAnalog::leftX);
+  float y = masterController.getAnalog(ControllerAnalog::leftY);
+  return buttonOutLift.changedToPressed() || (x*x + y*y > 0.3);
+}
+
 #endif

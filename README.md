@@ -27,7 +27,7 @@ The flags can of course be mixed and matched.
 | R2 | Toggle rails angle between fully back and midway forward |
 | Up/Down arrows | Lift up/down to top/bottom |
 | Left/Right arrow | Lift up/down one notch |
-| A | Lift and outtake for smooth action |
+| A / Flick left joystick | Outtake lift |
 | B | Re-tare lift |
 | X | Stop all movement (Emergency kill). Pressing this again will enable movement |
 | Y | Tare Rails |

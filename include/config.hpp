@@ -1,1 +1,1 @@
-#define MODE DRIVER
+#define MODE SMALL_SIDE
