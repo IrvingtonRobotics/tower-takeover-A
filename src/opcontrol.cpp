@@ -9,9 +9,14 @@
 const int STANDARD_DELAY = 10;
 const RQuantity DOUBLE_PRESS_INTERVAL = 200_ms;
 const bool disableDoublePress = true;
+const RQuantity OUTLIFT_OUT_TIME = 200_ms;
 
 bool killed = false;
-
+Timer intakePressedTimer = Timer();
+Timer outtakePressedTimer = Timer();
+bool isContinuousIntake = false;
+Timer outliftTimer = Timer();
+bool isOutlifting = false;
 bool autonActive = false;
 /**
  * Run the Drive subsystem based on the joysticks
@@ -64,6 +69,12 @@ void runLift() {
   if (buttonRetareLift.changedToPressed()) {
     lift.lowerToButton();
   }
+  if (buttonOutLift.changedToPressed()) {
+    // move up ASAP -- hopefully outtake keeps up
+    isOutlifting = true;
+    outliftTimer = Timer();
+    lift.glide(true);
+  }
 }
 
 void runLiftFn(void* param) {
@@ -102,10 +113,6 @@ void runRailsFn(void* param) {
   }
 }
 
-Timer intakePressedTimer = Timer();
-Timer outtakePressedTimer = Timer();
-bool isContinuousIntake = false;
-
 /**
  * Run the Intake subsytem.
  * Intake, outtake, or stop based on buttons
@@ -131,6 +138,9 @@ void runIntake() {
     intake.outtake(speed);
   } else if (released && (disableDoublePress || !isContinuousIntake)) {
     intake.stop();
+  }
+  if (isOutlifting) {
+    intake.outtake(0.25);
   }
   if (buttonKill.changedToPressed()) {
     intake.stop();
@@ -162,6 +172,10 @@ void opcontrol() {
     // kill if necessary
     if (buttonKill.changedToPressed()) {
       killed = !killed;
+    }
+    if (isOutlifting && outliftTimer.getDtFromStart() > OUTLIFT_OUT_TIME) {
+      isOutlifting = false;
+      intake.stop();
     }
     pros::delay(10);
   }

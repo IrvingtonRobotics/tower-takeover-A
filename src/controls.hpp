@@ -13,6 +13,7 @@ ControllerButton buttonGlideUp(ControllerDigital::up);
 ControllerButton buttonGlideDown(ControllerDigital::down);
 ControllerButton buttonRailsToggle(ControllerDigital::R1);
 ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
+ControllerButton buttonOutLift(ControllerDigital::A);
 ControllerButton buttonRetareLift(ControllerDigital::B);
 ControllerButton buttonKill(ControllerDigital::X);
 ControllerButton buttonTareRails(ControllerDigital::Y);

@@ -23,16 +23,16 @@ The flags can of course be mixed and matched.
 | Position | Description |
 |----------|-------------|
 | Right Joystick | Drive control (arcade) |
-| R1 or R2 | Toggle Rails Angle |
-| L1 | Run intake |
-| L2 | Run outtake |
-| Up/Down arrows | Lift up/down to presets |
-| Right arrow | Flip out |
-| Left arrow | Help fold in |
-| A | Smooth lift to top position |
+| R1 | Toggle rails angle between fully back and fully forward |
+| R2 | Toggle rails angle between fully back and midway forward |
+| Up/Down arrows | Lift up/down to top/bottom |
+| Left/Right arrow | Lift up/down one notch |
+| A | Lift and outtake for smooth action |
 | B | Re-tare lift |
 | X | Stop all movement (Emergency kill). Pressing this again will enable movement |
 | Y | Tare Rails |
+| L1 | Run intake |
+| L2 | Run outtake |
 
 Note: The emergency kill will order all motors to stop moving and hold their position.
 It will not cut power to the motors. To do that, hold the power off button.
