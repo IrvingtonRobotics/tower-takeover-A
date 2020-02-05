@@ -1,11 +1,14 @@
 #include "common.hpp"
+#include "config.hpp"
 
 Timer autonTimer;
 
 void foldout() {
   printf("FOLD OUT START %f\n", autonTimer.getDtFromStart().getValue());
   // home rails while lifting
-  rails.backToButton();
+  if (MODE != DRIVER) {
+    rails.backToButton();
+  }
   // foldout
   lift.move(27_in);
   intake.outtake();

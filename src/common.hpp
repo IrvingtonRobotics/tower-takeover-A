@@ -7,6 +7,11 @@
 #ifndef SRC_COMMON_H_
 #define SRC_COMMON_H_
 
+#define SMALL_SIDE 1
+#define BIG_SIDE 2
+#define SKILLS 3
+#define DRIVER 4
+
 #include "main.h"
 #include "lift.cpp"
 #include "drive.cpp"

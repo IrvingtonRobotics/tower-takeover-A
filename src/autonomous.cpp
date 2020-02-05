@@ -10,10 +10,6 @@
 #include "common.hpp"
 #include "ultrasonic.hpp"
 
-#define SMALL_SIDE 1
-#define BIG_SIDE 2
-#define SKILLS 3
-
 // to override MODE
 #include "config.hpp"
 
