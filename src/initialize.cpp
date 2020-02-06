@@ -28,15 +28,15 @@ void initialize() {
    * Parts Configuration
    */
 
+  pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
+  int potValue = pot.get_value();
+  isRed = abs(potValue - POT_RED_POS) < abs(potValue - POT_BLUE_POS);
+
   drive.setSide(isRed);
 
   lift.tare();
 
   rails.tare();
-
-  pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
-  int potValue = pot.get_value();
-  isRed = abs(potValue - POT_RED_POS) < abs(potValue - POT_BLUE_POS);
 }
 
 /**
