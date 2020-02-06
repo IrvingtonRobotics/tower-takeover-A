@@ -16,8 +16,8 @@ class Rails {
   // ticks all the way forward
   const double RAILS_FORWARD_TICKS = 2600;
   const double MOVE_BACK_SPEED = 320;
-  const double MOVE_FORWARD_SPEED = 70;
-  const double MOVE_MID_SPEED = 110;
+  const double MOVE_FORWARD_SPEED = 130;
+  const double MOVE_MID_SPEED = 160;
   const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
   const int DEFAULT_BACK_SPEED = 220;
 

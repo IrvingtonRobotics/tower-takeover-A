@@ -41,14 +41,14 @@ class Drive {
       return ChassisControllerFactory::create(
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
         {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
-        AbstractMotor::gearset::green,
+        gearset,
         scales
       );
     } else {
       return ChassisControllerFactory::create(
         {DRIVE_LEFT_FRONT_PORT, DRIVE_LEFT_BACK_PORT},
         {-DRIVE_RIGHT_FRONT_PORT, -DRIVE_RIGHT_BACK_PORT},
-        AbstractMotor::gearset::green,
+        gearset,
         scales
       );
     }
