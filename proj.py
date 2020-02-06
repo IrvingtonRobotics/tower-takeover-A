@@ -6,6 +6,7 @@ import json
 import os
 from colorama import Fore, Style, init
 import re
+from datetime import datetime
 
 init()
 
@@ -67,7 +68,8 @@ def run(make_all, upload_immediate, terminal, mode):
   os.rename(pp_start, pp_bak)
   opt = opts[mode]
   with open(pp_start, "w+") as f:
-    project["py/state"]["project_name"] = opt["name"]
+    name = datetime.now().strftime("%m-%d %H:%M") + " " + opt["name"]
+    project["py/state"]["project_name"] = name
     json.dump(project, f)
   brightprint("Making...")
   # change config files
