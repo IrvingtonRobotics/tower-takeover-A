@@ -54,8 +54,12 @@ def groups(points, points_complex, angles):
     reversing = False
     for pt, point, angle, next_point in zip(points, points_complex, angles, points_complex[1:]):
         if len(groups[-1][1]) > 0 and similar_point(groups[-1][1][-1], pt):
-          groups.append((f"drive.turnAngle({f(angle - groups[-1][1][-1][-1])});",))
-          groups.append((reversing, [groups[-2][1][-1]]))
+          groups.append((\
+            "intake.stop();\n"
+            f"drive.turnAngle({f(angle - groups[-1][1][-1][-1])}_deg);\n"
+            "intake.move(QUICK_SUCK_SPEED);",))
+          groups.append((reversing, []))
+          add_pos(pt, angle)
         else:
           add_pos(pt, angle)
         move_angle_degrees = cmath.phase(next_point - point) * 180/math.pi
