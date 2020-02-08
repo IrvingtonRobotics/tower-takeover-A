@@ -100,6 +100,11 @@ public:
    * Pass through controller.tank to use existing acceleration limit code
    */
   void move(float controllerX, float controllerY, float scl, bool stopFront) {
+    // Dead Zone check
+    if (controllerX*controllerX + controllerY*controllerY < 0.2) {
+      controllerX = 0;
+      controllerY = 0;
+    }
     // compute tank left and right based on arcade x and y
     float left = controllerY + controllerX;
     float right = controllerY - controllerX;
