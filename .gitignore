@@ -4,3 +4,4 @@ compile_commands.json
 .vscode
 .DS_STORE
 *.pyc
+include/config.hpp
