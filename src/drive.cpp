@@ -15,6 +15,7 @@ class Drive {
   // scale movement rate by TURN_LIMIT_SCALE
   const float TURN_LIMIT_THRESHOLD = 1.10;
   const float TURN_LIMIT_SCALE = 0.75;
+  const float ARMS_UP_TURN_SCALE = 0.3;
   const float DEAD_ZONE_WIDTH = 0.15;
   // wheel diameter and width of wheelbase
   const ChassisScales &scales = ChassisScales({4_in, 13_in});
@@ -92,15 +93,11 @@ public:
     }
   }
 
-  // Drive() {
-  //   controllerBack.flipDisable(true);
-  // }
-
   /**
    * Arcade drive based on controllerX and controllerY
    * Pass through controller.tank to use existing acceleration limit code
    */
-  void move(float controllerX, float controllerY, float scl, bool stopFront) {
+  void move(float controllerX, float controllerY, float scl, bool stopFront, bool armsUp) {
     // Dead Zone check
     float dist = sqrt(controllerX*controllerX + controllerY*controllerY);
     float distWanted = (dist - DEAD_ZONE_WIDTH)/(1 - DEAD_ZONE_WIDTH);
@@ -109,6 +106,9 @@ public:
     }
     controllerX *= distWanted/dist;
     controllerY *= distWanted/dist;
+    if (armsUp) {
+      controllerX *= ARMS_UP_TURN_SCALE;
+    }
     // compute tank left and right based on arcade x and y
     float left = controllerY + controllerX;
     float right = controllerY - controllerX;

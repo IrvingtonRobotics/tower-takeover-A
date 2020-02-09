@@ -27,7 +27,8 @@ void runDrive() {
     drive.stop();
     return;
   }
-  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, 1, false);
+  bool armsUp = lift.getCurrentHeight() > 10_in;
+  drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, 1, false, armsUp);
 }
 
 /**
