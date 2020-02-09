@@ -59,7 +59,6 @@ class Lift {
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
-  ADIButton buttonLimit = ADIButton(LIFT_LIMIT_PORT);
   Timer timeoutTimer;
 
   /**
@@ -154,13 +153,6 @@ public:
     resetMaxVelocity();
   }
 
-  void checkTare() {
-    if (buttonLimit.changedToPressed()) {
-      tare();
-      // controller.setTarget(0);
-    }
-  }
-
   void tare() {
     tareHeight(MIN_ARM_HEIGHT);
   }
@@ -232,7 +224,6 @@ public:
 
   void move(bool isIncrease, bool isSmall) {
     // printf("\n");
-    // printf("Button limit status: %d\n", buttonLimit.isPressed() ? 1 : 0);
     // printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
     // printf("Last height %f\n", lastTargetHeight.getValue());
     if (!isSmall) {
@@ -286,7 +277,7 @@ public:
 
   void step() {
     if (isLowering) {
-      if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= LOWER_TO_BUTTON_TIMEOUT) {
+      if (timeoutTimer.getDtFromStart() >= LOWER_TO_BUTTON_TIMEOUT) {
         stopLowering();
       }
     }

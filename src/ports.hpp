@@ -20,8 +20,7 @@
 
 // ADI (3-wire)
 // What does ADI Stand for? Analog Device Input?
-#define LIFT_LIMIT_PORT 'E'
-#define RAILS_LIMIT_PORT 'C'
+#define RAILS_LIMIT_PORT 'E'
 #define POTENTIOMETER_PORT 'F'
 // (OUTPUT wire) must be odd (ACEG/1357)
 #define LEFT_ULTRA_PING_PORT 'A'

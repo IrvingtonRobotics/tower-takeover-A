@@ -57,7 +57,6 @@ void runLift() {
     return;
   }
   lift.step();
-  lift.checkTare();
   bool isUp = buttonLiftUp.changedToPressed();
   bool isDown = buttonLiftDown.changedToPressed();
   if (isUp || isDown) {

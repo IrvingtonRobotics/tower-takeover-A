@@ -40,8 +40,7 @@ It will not cut power to the motors. To do that, hold the power off button.
 ## Wiring
 | Port | Description |
 |------------|----------|
-| ADI E | Lift limit switch |
-| ADI C | Rails limit bumper |
+| ADI E | Rails limit bumper |
 | ADI F | Auton selector potentiometer |
 | ADI A | Left ultra PING (OUTPUT) |
 | ADI B | Left ultra ECHO (INPUT) |
