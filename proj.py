@@ -166,5 +166,5 @@ parser.add_argument("--no-ports", "-p", action="store_true", help="Disable check
 args = parser.parse_args()
 if not args.no_ports:
   check_ports()
-all = args.all and not args.quick
+all = args.all or not args.quick
 run_safe(all, args.upload_immediate, args.terminal, args.mode)

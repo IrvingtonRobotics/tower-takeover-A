@@ -6,13 +6,13 @@ You can make and upload just with the standard `pros make all` and `pros upload`
 
 ```bash
 # make quick, then upload small side auton after a confirmation
-./proj.py small
+./proj.py small -q
 # make all, then upload big side auton after a confirmation
-./proj.py big -a
+./proj.py big
 # make all, then upload programming skills side auton after no confirmation
-./proj.py skills -au
+./proj.py skills -u
 # make all, then upload driver skills (flipout in auton) after no confirmation, then open terminal
-./proj.py driver -aut
+./proj.py driver -ut
 ```
 
 The flags can of course be mixed and matched.
