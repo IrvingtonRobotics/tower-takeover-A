@@ -88,11 +88,8 @@ def run(make_all, upload_immediate, terminal, mode):
   brightprint("Done making.")
   # maybe: wait to upload
   if not upload_immediate:
-    brightprint("Press enter when you are ready to upload or anything else to cancel:", end='')
+    brightprint("Press enter when you are ready to upload: ", end='')
     response = input()
-    if response != "":
-      # response is not empty (just hit enter)
-      raise Exception("User said no")
   brightprint("Uploading...")
   p2 = subprocess.run(["prosv5", "upload", "--slot", str(opt["slot"])])
   if p2.returncode != 0:
