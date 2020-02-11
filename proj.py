@@ -142,7 +142,7 @@ def check_ports():
         e = re.match(r'\| ([^|]+) \|', line)
         if e and status:
           port = e.group(1)
-          exp_port = status.pop(0)
+          exp_port = "`" + status.pop(0) + "`";
           if port != exp_port:
             colorprint(Fore.YELLOW, "Warning: ", end='')
             print(f"mismatched ports in README:{i+1} based on ports.hpp")
