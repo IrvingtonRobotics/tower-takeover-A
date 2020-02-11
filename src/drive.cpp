@@ -154,9 +154,9 @@ public:
    */
   void setSide(bool isRed) {
     if (isRed) {
-      controllerPtr = &controllerStraight;
-    } else {
       controllerPtr = &controllerReversed;
+    } else {
+      controllerPtr = &controllerStraight;
     }
   }
 
