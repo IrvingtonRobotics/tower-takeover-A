@@ -11,12 +11,10 @@ class Drive {
   /* ---- CONFIG ---- */
   const float MAX_DRIVE_ACCEL = 0.02;
   const float MAX_DRIVE_DECEL = 0.08;
-  // at turn speed (right speed - left speed) greater than TURN_LIMIT_THRESHOLD,
-  // scale movement rate by TURN_LIMIT_SCALE
-  const float TURN_LIMIT_THRESHOLD = 1.10;
-  const float TURN_LIMIT_SCALE = 0.75;
-  const float ARMS_UP_TURN_SCALE = 0.3;
-  const float DEAD_ZONE_WIDTH = 0.15;
+  const float ARMS_UP_TURN_SCALE = 0.6;
+  const float DEAD_ZONE_WIDTH = 0.2;
+  // range at top where will be full speed
+  const float UNDEAD_ZONE_WIDTH = 0.15;
   // wheel diameter and width of wheelbase
   const ChassisScales &scales = ChassisScales({4_in, 13_in});
   //https://pros.cs.purdue.edu/v5/okapi/api/device/motor/abstract-abstract-motor.html#gearset
@@ -100,27 +98,32 @@ public:
   void move(float controllerX, float controllerY, float scl, bool stopFront, bool armsUp) {
     // Dead Zone check
     float dist = sqrt(controllerX*controllerX + controllerY*controllerY);
-    float distWanted = (dist - DEAD_ZONE_WIDTH)/(1 - DEAD_ZONE_WIDTH);
+    float distWanted = (dist - DEAD_ZONE_WIDTH)/(1 - DEAD_ZONE_WIDTH - UNDEAD_ZONE_WIDTH);
     if (distWanted < 0) {
       distWanted = 0;
     }
+    if (distWanted > 1) {
+      distWanted = 1;
+    }
     controllerX *= distWanted/dist;
     controllerY *= distWanted/dist;
+    float turnRate = controllerX;
+    // move to positive value
+    int turnMult = turnRate > 0 ? 1 : -1;
+    turnRate *= turnMult;
     if (armsUp) {
-      controllerX *= ARMS_UP_TURN_SCALE;
+      turnRate *= ARMS_UP_TURN_SCALE;
     }
+    // smoothening curve
+    turnRate = turnRate*(0.1+turnRate*(0.3+turnRate*0.6));
+    turnRate *= turnMult;
     // compute tank left and right based on arcade x and y
-    float left = controllerY + controllerX;
-    float right = controllerY - controllerX;
+    float left = controllerY + turnRate;
+    float right = controllerY - turnRate;
     left *= scl;
     right *= scl;
     leftDriveSpeed = getNewDriveSpeed(leftDriveSpeed, left);
     rightDriveSpeed = getNewDriveSpeed(rightDriveSpeed, right);
-    float turnRate = abs(leftDriveSpeed - rightDriveSpeed);
-    if (turnRate > TURN_LIMIT_THRESHOLD) {
-      leftDriveSpeed *= TURN_LIMIT_SCALE;
-      rightDriveSpeed *= TURN_LIMIT_SCALE;
-    }
     moveTank(leftDriveSpeed, rightDriveSpeed, stopFront);
   }
 
