@@ -52,7 +52,7 @@ class Macro:
       yield "travelProfile({"
       m = 1 if reversed else -1
       for pos in positions:
-        yield INDENT + f"Point{{{f(pos.x)}_in, {f(m*pos.y)}_in, {f(m*pos.theta)}_deg}}"
+        yield INDENT + f"Point{{{f(pos.x)}_in, {f(m*pos.y)}_in, {f(m*pos.theta)}_deg}},"
       yield "}, " + ("true" if reversed else "false") + ", " + f(speed) + ");"
     elif self.command == "turn":
       assert len(positions) == 2 and "Need two points to turn between"
