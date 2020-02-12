@@ -44,7 +44,7 @@ class Lift {
   const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 24.5_in, MAX_ARM_HEIGHT};
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   // ticks per second
-  const int DEFAULT_MAX_VELOCITY = 300;
+  const int DEFAULT_MAX_VELOCITY = 500;
 
   /* ---- No need to edit ---- */
   double tareTicks = 0;

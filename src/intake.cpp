@@ -8,7 +8,7 @@ extern Timer cumTimer;
  **/
 class Intake {
   /* ---- CONFIG ---- */
-  double SPEED = 600;
+  double SPEED = 900;
   AsyncVelIntegratedController controller =
     AsyncControllerFactory::velIntegrated({INTAKE_LEFT_PORT, -INTAKE_RIGHT_PORT});
   Motor leftMotor = Motor(INTAKE_LEFT_PORT);

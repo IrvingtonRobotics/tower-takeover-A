@@ -3,7 +3,7 @@
 
 Timer autonTimer;
 
-void foldout() {
+void foldout(bool doBackward) {
   printf("FOLD OUT START %f\n", autonTimer.getDtFromStart().getValue());
   // home rails while lifting
   if (MODE != DRIVER) {
@@ -21,23 +21,19 @@ void foldout() {
   printf("INTAKE STOPPED %f\n", autonTimer.getDtFromStart().getValue());
   drive.moveDistance(2_in);
   printf("DRIVE FORWARD\n");
-  drive.moveDistance(-2_in);
+  if (doBackward) {
+    drive.moveDistance(-2_in);
+  }
   printf("DRIVE BACKWARD\n");
   lift.resetMaxVelocity();
   printf("FINISHED FOLDOUT\n");
+
+  // time to wobble to a stop
+  pros::delay(50);
 }
 
-void foldin() {
-  printf("fold in\n");
-  // lift.lowerToButton(120);
-  lift.move(12_in);
-  lift.waitUntilSettled();
-  printf("settled\n");
-  rails.backToButton();
-  intake.intake();
-  pros::delay(3000);
-  intake.stop();
-  lift.lowerToButton(160);
+void foldout() {
+  foldout(true);
 }
 
 /**
@@ -53,4 +49,27 @@ void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   profileController.setTarget(name, backwards);
   profileController.waitUntilSettled();
   profileController.removePath(name);
+}
+
+void stack() {
+  /**
+   * Start with cube above goal
+   * End with intake outtaking:
+   *  - need to back up instantly
+   */
+  // release stack
+  // intake while stacking
+  intake.move(150);
+  pros::delay(50);
+  intake.move(-50);
+  pros::delay(120);
+  rails.moveForward(190);
+  pros::delay(200);
+  intake.stop();
+  rails.waitUntilSettled();
+  // let the stack wobble
+  pros::delay(200);
+  // outtake after stacking
+  intake.move(-200);
+  rails.moveBack(200);
 }
