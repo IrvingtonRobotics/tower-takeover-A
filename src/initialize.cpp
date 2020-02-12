@@ -16,6 +16,7 @@ Lift lift = Lift();
 Drive drive = Drive();
 Rails rails = Rails();
 Intake intake = Intake();
+Timer cumTimer;
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -24,9 +25,7 @@ Intake intake = Intake();
  * to keep execution time for this mode under a few seconds.
  */
 void initialize() {
-  /**
-   * Parts Configuration
-   */
+  cumTimer = Timer();
 
   pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
   int potValue = pot.get_value();

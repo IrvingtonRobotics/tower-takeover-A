@@ -25,6 +25,7 @@ extern Rails rails;
 extern Intake intake;
 
 extern Timer autonTimer;
+extern Timer cumTimer;
 
 extern bool isRed;
 

@@ -181,6 +181,7 @@ void opcontrol() {
       isOutlifting = false;
       intake.stop();
     }
+    intake.logState();
     pros::delay(10);
   }
 }
