@@ -155,6 +155,17 @@ void runIntakeFn(void* param) {
   }
 }
 
+void driverTimeoutFn(void* param) {
+  printf("TIMEOUT STARTED %f\n", autonTimer.getDtFromStart().getValue());
+  if (MODE == DRIVER) {
+    pros::delay(59200);
+    printf("DRIVER TIMEOUT RESOLVED %f\n", autonTimer.getDtFromStart().getValue());
+    // backup
+    drive.moveDistance(-8_in);
+    intake.stop();
+  }
+}
+
 /**
  * Initiate all opcontrol subsystem tasks.
  * Each is in its own task, so subsystems cannot stop each other.
@@ -162,6 +173,7 @@ void runIntakeFn(void* param) {
  */
 void opcontrol() {
   if (MODE == DRIVER) {
+    pros::Task timeoutTask(driverTimeoutFn);
     foldout();
   }
   drive.straighten();
