@@ -18,6 +18,7 @@
 #include "rails.cpp"
 #include "intake.cpp"
 #include "routines.hpp"
+#include "ultrasonic.hpp"
 
 extern Lift lift;
 extern Drive drive;
@@ -28,5 +29,16 @@ extern Timer autonTimer;
 extern Timer cumTimer;
 
 extern bool isRed;
+
+struct posAngle {
+  QLength x;
+  QLength y;
+  QAngle theta;
+};
+
+#define WEST 0
+#define SOUTH 1
+#define EAST 2
+#define NORTH 3
 
 #endif

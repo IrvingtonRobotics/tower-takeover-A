@@ -29,6 +29,9 @@ class Position:
   def __str__(self):
     return f"Position({self.x}, {self.y}, {self.theta})"
 
+hasPosInfo = False;
+hasAngleInfo = False;
+
 class Macro:
   def __init__(self, start, command, parameters):
     self.type = Tag.MACRO
@@ -37,32 +40,89 @@ class Macro:
     self.parameters = parameters
 
   def run(self, positions):
+    global hasPosInfo
+    global hasAngleInfo
     params = self.parameters
+
     if self.command == "suck":
-      assert len(positions) <= 1 and "Should not have a position stack on suck"
-      assert len(params) == 0 and "Suck speed not implemented"
+      assert len(positions) <= 1, "Should not have a position stack on suck"
+      assert len(params) == 0, "Suck speed not implemented"
       yield "intake.move(QUICK_SUCK_SPEED);"
+
     elif self.command in ["forward", "back"]:
-      assert len(positions) > 1 and "Should move between several points"
-      assert len(params) <= 1 and "Too many arguments for movement operation"
+      assert len(positions) > 1, "Should move between several points"
+      assert len(params) <= 1, "Too many arguments for movement operation"
       speed = float(params[0]) if len(params) == 1 else DEFAULT_SPEED
       for i in range(len(positions)-1):
-        assert positions[i].dist(positions[i+1]) > DISTANCE_TOL and "Should have a meaningful distance between moves"
+        assert positions[i].dist(positions[i+1]) > DISTANCE_TOL, "Should have a meaningful distance between moves"
       reversed = self.command != "forward"
       yield "travelProfile({"
       m = 1 if reversed else -1
       for pos in positions:
-        yield INDENT + f"Point{{{f(pos.x)}_in, {f(m*pos.y)}_in, {f(m*pos.theta)}_deg}},"
+        x = f(pos.x) + "_in"
+        y = f(m*pos.y) + "_in"
+        if hasPosInfo:
+          x = "expectedPA.x"
+          y = f"{m}*expectedPA.y"
+        theta = f(m*pos.theta) + "_deg"
+        if hasAngleInfo:
+          theta = f"{m}*expectedPA.theta"
+        hasPosInfo = hasAngleInfo = False
+        yield INDENT + f"Point{{{x}, {y}, {theta}}},"
       yield "}, " + ("true" if reversed else "false") + ", " + f(speed) + ");"
+
     elif self.command == "turn":
-      assert len(positions) == 2 and "Need two points to turn between"
-      assert len(params) == 0 and "Turn speed not implemented"
-      yield f"drive.turnAngle({f(positions[1].theta - positions[0].theta)}_deg);"
+      assert len(positions) == 2, "Need two points to turn between"
+      assert len(params) <= 1, "Turn speed not implemented"
+      preferLeft = False
+      preferRight = False
+      if len(params) == 1:
+        assert params[0] in ["left", "right"]
+        preferLeft = params[0] == "left"
+        preferRight = params[0] == "right"
+      angle = positions[1].theta - positions[0].theta
+      # make angle positive
+      angle = angle % 360
+      if preferLeft:
+        angle -= 360
+      elif not preferRight:
+        # minimize angle to move
+        if angle > 180:
+          angle -= 360
+      angle = f(angle)
+      yield f"drive.turnAngle({angle}_deg);"
+      if hasAngleInfo:
+        yield f"expectedPA.theta += {angle}_deg;"
+
+    elif self.command == "check":
+      assert len(params) == 2
+      # "#check pos bottom angle left"
+      # or just "#check angle left" if pos is inaccessible
+      sides = {
+        "south": "SOUTH",
+        "bottom": "SOUTH",
+        "left": "WEST",
+        "west": "WEST",
+        "top": "NORTH",
+        "north": "NORTH",
+        "right": "EAST",
+        "east": "EAST"
+      }
+      # side (param[1]) should refer to the direction the two back sensors are facing
+      dir = sides[params[1]]
+      if params[0] == "pa":
+        hasPosInfo = True
+        hasAngleInfo = True
+        yield f"expectedPA = getPosAngle({dir});"
+      elif params[0] == "a":
+        hasAngleInfo = True
+        yield f"expectedPA.theta = getAngle({dir});"
+
     else:
       assert False, f"Tag '{self.command}' not implemented"
 
   def __str__(self):
-    return f"Macro({self.command}, {self.params})"
+    return f"Macro({self.command}, {self.parameters})"
 
 class Verbatim:
   def __init__(self, start, text):

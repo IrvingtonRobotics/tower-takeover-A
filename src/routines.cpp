@@ -10,16 +10,16 @@ void foldout(bool doBackward) {
     rails.backToButton();
   }
   // foldout
-  lift.move(27_in);
+  lift.move(31_in);
   intake.outtake();
   lift.waitUntilSettled();
-  pros::delay(200);
+  pros::delay(400);
   // return
   lift.setMaxVelocity(500);
   lift.move(0);
-  intake.stop();
   printf("INTAKE STOPPED %f\n", autonTimer.getDtFromStart().getValue());
   drive.moveDistance(2_in);
+  intake.stop();
   printf("DRIVE FORWARD\n");
   if (doBackward) {
     drive.moveDistance(-2_in);
@@ -59,17 +59,16 @@ void stack() {
    */
   // release stack
   // intake while stacking
-  intake.move(150);
-  pros::delay(50);
-  intake.move(-50);
-  pros::delay(120);
-  rails.moveForward(190);
-  pros::delay(200);
+  intake.move(-150);
+  pros::delay(450);
+  intake.move(100);
+  rails.moveForward(120);
+  pros::delay(150);
   intake.stop();
   rails.waitUntilSettled();
   // let the stack wobble
-  pros::delay(200);
+  pros::delay(400);
   // outtake after stacking
-  intake.move(-200);
+  intake.move(-60);
   rails.moveBack(200);
 }

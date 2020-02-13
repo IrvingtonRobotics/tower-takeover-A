@@ -8,14 +8,9 @@
  */
 
 #include "common.hpp"
-#include "ultrasonic.hpp"
 
 // to override MODE
 #include "config.hpp"
-
-#ifndef MODE
-#define MODE SMALL_SIDE
-#endif
 
 #define QUICK_SUCK_SPEED 900
 
@@ -43,7 +38,7 @@ void smallSideAuton() {
   // suck up cubes
   intake.move(QUICK_SUCK_SPEED);
   travelProfile({
-    Point{11.0_in, -116.0_in, getAngle()},
+    Point{11.0_in, -116.0_in, 0_deg},
     Point{49.0_in, -116.0_in, 0_deg}
   }, false, 0.16);
   intake.stop();
@@ -90,70 +85,76 @@ void skillsAuton() {
   if (isRed) {
     return;
   }
-  const QLength EXPECTED_POS = 693_mm;
-  if ((getSideDist() - EXPECTED_POS) > 6_in) {
-    return;
-  }
-  printf("Side dist%f", getSideDist().getValue());
-  printf("Angle%f", getAngle().getValue());
+  posAngle expectedPA;
 
   // autogen
   foldout(true);
   intake.move(QUICK_SUCK_SPEED);
   // pick up first 8-9 cubes
+  expectedPA = getPosAngle(EAST);
   travelProfile({
-    Point{13.0_in, -117.0_in, 0_deg},
-    Point{49.0_in, -117.0_in, 0_deg},
-    Point{71.5_in, -118.5_in, 0_deg},
+    Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
+    Point{95.0_in, -117.0_in, -180.0_deg},
+    Point{73.5_in, -118.0_in, -180.0_deg},
   }, false, 0.18);
+  intake.move(-150);
+  pros::delay(100);
+  intake.stop();
   travelProfile({
-    Point{71.5_in, -118.5_in, 0_deg},
-    Point{89.826_in, -117.738_in, -0.0_deg},
-    Point{128.5_in, -117.0_in, -0.0_deg},
+    Point{73.5_in, -118.0_in, -180.0_deg},
+    Point{65.0_in, -118.5_in, -180.0_deg},
+  }, false, 0.15);
+  intake.move(QUICK_SUCK_SPEED);
+  travelProfile({
+    Point{65.0_in, -118.5_in, -180.0_deg},
+    Point{13.5_in, -115.5_in, -180.0_deg},
   }, false, 0.15);
   travelProfile({
-    Point{128.5_in, 117.0_in, 0.0_deg},
-    Point{118.0_in, 117.0_in, 0.0_deg},
+    Point{13.5_in, 115.5_in, 180.0_deg},
+    Point{22.0_in, 115.5_in, 180.0_deg},
   }, true, 0.15);
+  intake.stop();
   travelProfile({
-    Point{118.0_in, -117.0_in, -0.0_deg},
-    Point{133.728_in, -126.728_in, -45.0_deg},
+    Point{22.0_in, -115.5_in, -180.0_deg},
+    Point{6.7721_in, -125.728_in, -135.0_deg},
   }, false, 0.14);
   stack();
   travelProfile({
-    Point{133.728_in, 126.728_in, 45.0_deg},
-    Point{126.228_in, 119.228_in, 45.0_deg},
-  }, true, 0.25);
+    Point{6.7721_in, 125.728_in, 135.0_deg},
+    Point{21.7279_in, 112.228_in, 135.0_deg},
+  }, true, 0.1);
   // stop outtaking from stacking
   intake.stop();
+  // stabilize position
+  drive.turnAngle(-225.0_deg);
+  expectedPA = getPosAngle(SOUTH);
   // tower 1
-  drive.turnAngle(-180.0_deg);
   intake.move(QUICK_SUCK_SPEED);
   travelProfile({
-    Point{127.228_in, -119.228_in, 135.0_deg},
-    Point{82.1275_in, -107.8135_in, -180.0_deg},
+    Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
+    Point{24.7761_in, -86.0995_in, 90.0572_deg},
   }, false, 0.25);
   travelProfile({
-    Point{82.1275_in, 107.8135_in, 180.0_deg},
-    Point{88.6275_in, 107.8135_in, 180.0_deg},
+    Point{24.7761_in, 86.0995_in, -90.0572_deg},
+    Point{24.7826_in, 92.5995_in, -90.0572_deg},
   }, true, 0.25);
-  // lift cube
   intake.move(-100);
-  pros::delay(100);
+  pros::delay(300);
   intake.stop();
-  lift.move(1); // small tower
+  // lift cube
+  lift.move(2); // med tower
   lift.waitUntilSettled();
-  intake.move(-150);
   travelProfile({
-    Point{88.6275_in, -107.8135_in, -180.0_deg},
-    Point{84.6275_in, -107.8135_in, -180.0_deg},
+    Point{24.7826_in, -92.5995_in, 90.0572_deg},
+    Point{24.7786_in, -88.5995_in, 90.0572_deg},
   }, false, 0.15);
-  intake.stop();
+  intake.move(-150);
+  pros::delay(100);
   travelProfile({
-    Point{84.6275_in, 107.8135_in, 180.0_deg},
-    Point{91.1275_in, 107.8135_in, 180.0_deg},
+    Point{24.7786_in, 88.5995_in, -90.0572_deg},
+    Point{25.0_in, 99.0_in, -90.0_deg},
   }, true, 0.25);
-
+  intake.stop();
   // end autogen
 }
 
