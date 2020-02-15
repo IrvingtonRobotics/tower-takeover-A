@@ -14,12 +14,20 @@ const QLength CENTER_RIGHT_HORIZ = 15.5_in/2 - 3.5_in;
 const QLength CENTER_SIDE_PERP = 15.5_in/2 - 107_mm + 2_in;
 const QLength CENTER_SIDE_HORIZ = 17.5_in/2 - 5.5_in;
 
-QLength leftDist() {
+QLength _leftDist() {
   return left_ultra.get_value() * 1_mm + CENTER_LR_PERP;
 }
 
-QLength rightDist() {
+QLength _rightDist() {
   return right_ultra.get_value() * 1_mm + CENTER_LR_PERP;
+}
+
+QLength leftDist() {
+  return isRed ? _leftDist() : _rightDist();
+}
+
+QLength rightDist() {
+  return isRed ? _rightDist() : _leftDist();
 }
 
 QLength sideDist() {
