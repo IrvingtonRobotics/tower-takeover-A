@@ -14,7 +14,7 @@ class Rails {
   // ticks to rest in middle (moveMid)
   const double RAILS_MID_TICKS = 750;
   // ticks all the way forward
-  const double RAILS_FORWARD_TICKS = 2600;
+  const double RAILS_FORWARD_TICKS = 2500;
   const double MOVE_BACK_SPEED = 320;
   const double MOVE_FORWARD_SPEED = 130;
   const double MOVE_MID_SPEED = 160;
