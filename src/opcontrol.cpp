@@ -172,6 +172,7 @@ void driverTimeoutFn(void* param) {
  * For thread safety, ensure that no task affects any other subsystem.
  */
 void opcontrol() {
+  pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
   if (MODE == DRIVER) {
     pros::Task timeoutTask(driverTimeoutFn);
     foldout();
@@ -193,7 +194,8 @@ void opcontrol() {
       isOutlifting = false;
       intake.stop();
     }
-    printPAPos();
+    // printPAPos();
+    // printf("Pot value %d\n", pot.get_value());
     pros::delay(10);
   }
 }

@@ -9,6 +9,13 @@
 
 #include "common.hpp"
 
+#define POT_RED_POS 1100
+#define POT_BLUE_POS 1600
+
+/* ---- CONFIG ---- */
+// default start settings
+bool isRed = true;
+
 // to override MODE
 #include "config.hpp"
 
@@ -41,16 +48,16 @@ void smallSideAuton() {
   foldout(true);
   intake.move(QUICK_SUCK_SPEED);
   pros::delay(150);
-  expectedPA = getPosAngle(EAST);
+  expectedPA.theta = getAngle(EAST);
   travelProfile({
-    Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
+    Point{133.7505_in, -116.5_in, -1*expectedPA.theta},
     Point{95.7505_in, -118.5_in, -180.0_deg},
   }, false, 0.2);
   drive.turnAngle(-159.3419_deg);
   intake.move(-55);
   travelProfile({
     Point{95.7505_in, -118.4905_in, -20.6581_deg},
-    Point{130.1995_in, -133.2895_in, -31.5202_deg},
+    Point{127.6995_in, -134.7895_in, -31.5202_deg},
   }, false, 0.6);
   stack(4, false);
 }
@@ -186,6 +193,19 @@ void autonomous() {
   autonTimer = Timer();
   pros::Task runChecksTask(runChecksFn);
   pros::Task timeoutTask(timeoutFn);
+
+  int potValue = 0;
+  do {
+    pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
+    potValue = pot.get_value();
+    pros::delay(10);
+  } while (potValue == 0);
+  printf("Pot value %d\n", potValue);
+  isRed = abs(potValue - POT_RED_POS) < abs(potValue - POT_BLUE_POS);
+
+  printf("Drive setSide isRed=%s (disabled)\n", isRed ? "true" : "false");
+  drive.setSide(isRed);
+
   // pick up cubes and go to goal zone
   switch (MODE) {
     case SMALL_SIDE:

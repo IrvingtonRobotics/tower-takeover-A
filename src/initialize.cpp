@@ -4,13 +4,6 @@
 
 #include "common.hpp"
 
-#define POT_RED_POS 1612
-#define POT_BLUE_POS 1123
-
-/* ---- CONFIG ---- */
-// default start settings
-bool isRed = true;
-
 // Instantiate subsystem classes
 Lift lift = Lift();
 Drive drive = Drive();
@@ -27,12 +20,6 @@ Timer cumTimer;
 void initialize() {
   cumTimer = Timer();
 
-  pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
-  int potValue = pot.get_value();
-  isRed = abs(potValue - POT_RED_POS) < abs(potValue - POT_BLUE_POS);
-
-  drive.setSide(isRed);
-
   lift.tare();
 
   rails.tare();
@@ -44,6 +31,7 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
+  printf("Drive straighten (disabled)\n");
   drive.straighten();
 }
 
