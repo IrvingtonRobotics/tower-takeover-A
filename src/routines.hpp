@@ -6,6 +6,7 @@ void foldout();
 void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   bool backwards, float speed
 );
-void stack();
+void stack(int cubes);
+void stack(int cubes, bool outtakeLoad);
 
 #endif

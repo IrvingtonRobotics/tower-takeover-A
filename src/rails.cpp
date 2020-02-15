@@ -101,6 +101,9 @@ public:
   }
 
   void moveForward(double weight, double maxSpeed) {
+    if (weight < 0) {
+      return;
+    }
     double target = weight * RAILS_FORWARD_TICKS + (1 - weight) * RAILS_BACK_TICKS;
     move(target, maxSpeed);
   }

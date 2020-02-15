@@ -5,5 +5,6 @@ struct posAngle;
 QAngle getAngle(int dir);
 posAngle getPosAngle(int dir);
 void printUSStatus();
+void printPAPos();
 
 #endif

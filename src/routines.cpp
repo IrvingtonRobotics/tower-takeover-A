@@ -51,24 +51,29 @@ void travelProfile(std::initializer_list<okapi::Point> iwaypoints,
   profileController.removePath(name);
 }
 
-void stack() {
+void stack(int cubes, bool outtakeLoad) {
   /**
    * Start with cube above goal
    * End with intake outtaking:
    *  - need to back up instantly
    */
   // release stack
-  // intake while stacking
-  intake.move(-150);
-  pros::delay(450);
+  if (outtakeLoad) {
+    // outtake prep while stacking
+    intake.move(-150);
+    pros::delay(750);
+  }
   intake.move(100);
-  rails.moveForward(120);
+  rails.moveForward(1 + 0.01*cubes, 300 - 20*cubes);
   pros::delay(150);
   intake.stop();
   rails.waitUntilSettled();
   // let the stack wobble
-  pros::delay(400);
+  pros::delay(1000);
   // outtake after stacking
-  intake.move(-60);
-  rails.moveBack(200);
+  intake.move(-120);
+}
+
+void stack(int cubes) {
+  stack(cubes, true);
 }

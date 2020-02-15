@@ -14,6 +14,8 @@
 
 #define QUICK_SUCK_SPEED 900
 
+posAngle expectedPA;
+
 void runChecksFn(void* param) {
   while (true) {
     rails.step();
@@ -24,9 +26,12 @@ void runChecksFn(void* param) {
 void timeoutFn(void* param) {
   printf("TIMEOUT STARTED %f\n", autonTimer.getDtFromStart().getValue());
   if (MODE == SMALL_SIDE || MODE == BIG_SIDE) {
-    pros::delay(14200);
+    pros::delay(14000);
     printf("TIMEOUT RESOLVED %f\n", autonTimer.getDtFromStart().getValue());
     // backup
+    intake.move(-300);
+    drive.moveTank(-0.5, -0.5);
+    pros::delay(400);
     drive.moveDistance(-8_in);
     intake.stop();
   }
@@ -34,21 +39,20 @@ void timeoutFn(void* param) {
 
 void smallSideAuton() {
   foldout(true);
-  // small side 2
-  // suck up cubes
   intake.move(QUICK_SUCK_SPEED);
+  pros::delay(150);
+  expectedPA = getPosAngle(EAST);
   travelProfile({
-    Point{11.0_in, -116.0_in, 0_deg},
-    Point{49.0_in, -116.0_in, 0_deg}
-  }, false, 0.16);
-  intake.stop();
-  // move to stack
-  drive.turnAngle(180_deg);
+    Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
+    Point{95.7505_in, -118.5_in, -180.0_deg},
+  }, false, 0.2);
+  drive.turnAngle(-159.3419_deg);
+  intake.move(-55);
   travelProfile({
-    Point{49.5_in, -116.0_in, 180_deg},
-    Point{19.3137_in, -125.3135_in, -135.0_deg}
-  }, false, 0.4);
-  stack();
+    Point{95.7505_in, -118.4905_in, -20.6581_deg},
+    Point{130.1995_in, -133.2895_in, -31.5202_deg},
+  }, false, 0.6);
+  stack(4, false);
 }
 
 void bigSideAuton() {
@@ -78,19 +82,19 @@ void bigSideAuton() {
     Point{28.4632_in, -24.3996_in, 131.484_deg},
     Point{22.9851_in, -17.7386_in, 134.766_deg}
   }, false, 0.5);
-  stack();
+  stack(3);
 }
 
 void skillsAuton() {
   if (isRed) {
     return;
   }
-  posAngle expectedPA;
 
   // autogen
   foldout(true);
   intake.move(QUICK_SUCK_SPEED);
   // pick up first 8-9 cubes
+  pros::delay(150);
   expectedPA = getPosAngle(EAST);
   travelProfile({
     Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
@@ -99,14 +103,15 @@ void skillsAuton() {
   }, false, 0.18);
   intake.move(-150);
   pros::delay(100);
+  expectedPA.theta = getAngle(EAST);
   intake.stop();
   travelProfile({
-    Point{73.5_in, -118.0_in, -180.0_deg},
-    Point{65.0_in, -118.5_in, -180.0_deg},
+    Point{73.5_in, -118.0_in, -1*expectedPA.theta},
+    Point{64.5_in, -118.0_in, 175.475_deg},
   }, false, 0.15);
   intake.move(QUICK_SUCK_SPEED);
   travelProfile({
-    Point{65.0_in, -118.5_in, -180.0_deg},
+    Point{64.5_in, -118.0_in, 175.475_deg},
     Point{13.5_in, -115.5_in, -180.0_deg},
   }, false, 0.15);
   travelProfile({
@@ -118,26 +123,34 @@ void skillsAuton() {
     Point{22.0_in, -115.5_in, -180.0_deg},
     Point{6.7721_in, -125.728_in, -135.0_deg},
   }, false, 0.14);
-  stack();
   travelProfile({
     Point{6.7721_in, 125.728_in, 135.0_deg},
+    Point{7.7721_in, 124.728_in, 135.0_deg},
+  }, true, 0.14);
+  stack(9);
+  travelProfile({
+    Point{7.7721_in, 124.728_in, 135.0_deg},
     Point{21.7279_in, 112.228_in, 135.0_deg},
   }, true, 0.1);
   // stop outtaking from stacking
   intake.stop();
+  rails.moveBack(200);
   // stabilize position
   drive.turnAngle(-225.0_deg);
+  pros::delay(200);
   expectedPA = getPosAngle(SOUTH);
   // tower 1
   intake.move(QUICK_SUCK_SPEED);
   travelProfile({
     Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
-    Point{24.7761_in, -86.0995_in, 90.0572_deg},
+    Point{24.7761_in, -87.5995_in, 90.0572_deg},
   }, false, 0.25);
   travelProfile({
-    Point{24.7761_in, 86.0995_in, -90.0572_deg},
+    Point{24.7761_in, 87.5995_in, -90.0572_deg},
     Point{24.7826_in, 92.5995_in, -90.0572_deg},
   }, true, 0.25);
+  intake.move(100);
+  pros::delay(500);
   intake.move(-100);
   pros::delay(300);
   intake.stop();
@@ -146,12 +159,12 @@ void skillsAuton() {
   lift.waitUntilSettled();
   travelProfile({
     Point{24.7826_in, -92.5995_in, 90.0572_deg},
-    Point{24.7786_in, -88.5995_in, 90.0572_deg},
+    Point{24.7786_in, -90.0995_in, 90.0572_deg},
   }, false, 0.15);
   intake.move(-150);
   pros::delay(100);
   travelProfile({
-    Point{24.7786_in, 88.5995_in, -90.0572_deg},
+    Point{24.7786_in, 90.0995_in, -90.0572_deg},
     Point{25.0_in, 99.0_in, -90.0_deg},
   }, true, 0.25);
   intake.stop();
