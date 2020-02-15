@@ -10,7 +10,7 @@
 class Drive {
   /* ---- CONFIG ---- */
   const float MAX_DRIVE_ACCEL = 0.02;
-  const float MAX_DRIVE_DECEL = 0.08;
+  const float MAX_DRIVE_DECEL = 0.20;
   const float ARMS_UP_TURN_SCALE = 0.8;
   const float DEAD_ZONE_WIDTH = 0.2;
   // range at top where will be full speed
