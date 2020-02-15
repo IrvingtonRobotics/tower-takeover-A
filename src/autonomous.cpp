@@ -14,10 +14,7 @@
 
 /* ---- CONFIG ---- */
 // default start settings
-bool isRed = true;
-
-// to override MODE
-#include "config.hpp"
+bool isRed = IS_RED;
 
 #define QUICK_SUCK_SPEED 900
 
@@ -194,16 +191,6 @@ void autonomous() {
   pros::Task runChecksTask(runChecksFn);
   pros::Task timeoutTask(timeoutFn);
 
-  int potValue = 0;
-  do {
-    pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
-    potValue = pot.get_value();
-    pros::delay(10);
-  } while (potValue == 0);
-  printf("Pot value %d\n", potValue);
-  isRed = abs(potValue - POT_RED_POS) < abs(potValue - POT_BLUE_POS);
-
-  printf("Drive setSide isRed=%s (disabled)\n", isRed ? "true" : "false");
   drive.setSide(isRed);
 
   // pick up cubes and go to goal zone

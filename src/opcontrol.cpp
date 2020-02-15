@@ -5,7 +5,6 @@
 #include "common.hpp"
 #include "controls.hpp"
 #include "utils.hpp"
-#include "config.hpp"
 
 const int STANDARD_DELAY = 10;
 const RQuantity DOUBLE_PRESS_INTERVAL = 200_ms;

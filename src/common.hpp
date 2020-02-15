@@ -13,6 +13,7 @@
 #define DRIVER 4
 
 #include "main.h"
+#include "config.hpp"
 #include "lift.cpp"
 #include "drive.cpp"
 #include "rails.cpp"

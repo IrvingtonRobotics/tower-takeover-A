@@ -1,5 +1,4 @@
 #include "common.hpp"
-#include "config.hpp"
 
 Timer autonTimer;
 

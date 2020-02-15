@@ -1,1 +1,2 @@
-#define MODE SMALL_SIDE
+#define MODE BIG_SIDE
+#define IS_RED true

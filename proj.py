@@ -12,28 +12,28 @@ init()
 
 opts = {
   "small": {
-    "name": "Small Auton (44730A)",
+    "name": "Small",
     "slot": 1,
     "files": {
       "include/config.hpp": "#define MODE SMALL_SIDE"
     }
   },
   "big": {
-    "name": "Big Auton (44730A)",
+    "name": "Big",
     "slot": 2,
     "files": {
       "include/config.hpp": "#define MODE BIG_SIDE"
     }
   },
   "skills": {
-    "name": "Auton Skills (44730A)",
+    "name": "Auton Skills",
     "slot": 3,
     "files": {
       "include/config.hpp": "#define MODE SKILLS"
     }
   },
   "driver": {
-    "name": "Driver Skills (44730A)",
+    "name": "Driver Skills",
     "slot": 4,
     "files": {
       "include/config.hpp": "#define MODE DRIVER"
@@ -60,15 +60,17 @@ def revert():
     os.rename(pp_bak, pp_start)
   already_reverted = True
 
-def run(make_all, upload_immediate, terminal, mode):
+def run(make_all, upload_immediate, terminal, mode, color):
   global already_reverted
   already_reverted = False
   with open(pp_start, "r") as f:
     project = json.load(f)
   os.rename(pp_start, pp_bak)
   opt = opts[mode]
+  isRed = color == "red"
+  print("is Red", isRed)
   with open(pp_start, "w+") as f:
-    name = datetime.now().strftime("%m-%d %H:%M") + " " + opt["name"]
+    name = datetime.now().strftime("%H:%M") + " " + ("Red" if isRed else "Blue") + " " + opt["name"] + " (44730A)"
     project["py/state"]["project_name"] = name
     json.dump(project, f)
   brightprint("Making...")
@@ -77,6 +79,8 @@ def run(make_all, upload_immediate, terminal, mode):
     with open(path, "w+") as f:
       f.write(opt["files"][path])
       f.write("\n")
+  with open("include/config.hpp", "a") as f:
+    f.write("#define IS_RED " + ("true" if isRed else "false") + "\n")
   c1 = ["prosv5", "make"]
   # always make
   if make_all:
@@ -100,13 +104,14 @@ def run(make_all, upload_immediate, terminal, mode):
     brightprint("Opening terminal...")
     subprocess.run(["prosv5", "terminal"])
 
-def run_safe(make_all, upload_immediate, terminal, mode):
+def run_safe(make_all, upload_immediate, terminal, mode, color, debug):
   try:
-    run(make_all, upload_immediate, terminal, mode)
+    run(make_all, upload_immediate, terminal, mode, color)
   except:
     # this is probably a PROS error, such as brain not connected, which has its own error message
     # otherwise this is almost surely the user saying "no", which they don't need feedback on
-    pass
+    if debug:
+      raise
   finally:
     revert()
 
@@ -153,15 +158,17 @@ def check_ports():
 parser = argparse.ArgumentParser(description="Autogenerate motion profile from SVG.")
 parser.add_argument("mode", choices=opts.keys(),
   help="Mode: any of " + str(list(opts.keys())))
+parser.add_argument("color", choices=["red", "blue"], help="Color for auton")
 group = parser.add_mutually_exclusive_group()
 group.add_argument("--quick", "-q", action="store_true", help="Make quick")
 group.add_argument("--all", "-a", action="store_true", help="Make all, not just quick")
 parser.add_argument("--upload-immediate", "-u", action="store_true", help="Upload without a confirmation")
 parser.add_argument("--terminal", "-t", action="store_true", help="Open terminal after uploading")
 parser.add_argument("--no-ports", "-p", action="store_true", help="Disable checking consistent README ports")
+parser.add_argument("--debug", "-d", action="store_true", help="Debug: unsuppress warnings")
 
 args = parser.parse_args()
 if not args.no_ports:
   check_ports()
 all = args.all or not args.quick
-run_safe(all, args.upload_immediate, args.terminal, args.mode)
+run_safe(all, args.upload_immediate, args.terminal, args.mode, args.color, args.debug)
