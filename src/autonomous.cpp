@@ -172,6 +172,18 @@ void skillsAuton() {
     Point{25.0_in, 99.0_in, -90.0_deg},
   }, true, 0.25);
   intake.stop();
+  intake.move(100);
+  travelProfile({
+    Point{25.0_in, -99.0_in, 90.0_deg},
+    Point{16.1061_in, -84.423_in, 107.254_deg},
+    Point{13.3796_in, -73.801_in, 92.21_deg},
+    Point{13.1331_in, -40.6061_in, 90.7668_deg},
+  }, false, 0.4);
+  intake.move(-80);
+  travelProfile({
+    Point{13.1331_in, -40.6061_in, 90.7668_deg},
+    Point{12.1478_in, -17.892_in, 96.928_deg},
+  }, false, 0.4);
   // end autogen
 }
 

@@ -1,2 +1,2 @@
-#define MODE BIG_SIDE
-#define IS_RED true
+#define MODE SKILLS
+#define IS_RED false

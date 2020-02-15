@@ -68,7 +68,6 @@ def run(make_all, upload_immediate, terminal, mode, color):
   os.rename(pp_start, pp_bak)
   opt = opts[mode]
   isRed = color == "red"
-  print("is Red", isRed)
   with open(pp_start, "w+") as f:
     name = datetime.now().strftime("%H:%M") + " " + ("Red" if isRed else "Blue") + " " + opt["name"] + " (44730A)"
     project["py/state"]["project_name"] = name
