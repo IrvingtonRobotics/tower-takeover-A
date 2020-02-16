@@ -66,9 +66,6 @@ void runLift() {
   if (isFastUp || isFastDown) {
     lift.glide(isFastUp);
   }
-  if (buttonRetareLift.changedToPressed()) {
-    lift.lowerToButton();
-  }
   if (outliftTriggered()) {
     // move up ASAP -- hopefully outtake keeps up
     isOutlifting = true;
@@ -94,6 +91,9 @@ void runRails() {
     return;
   }
   rails.step();
+  if (buttonScootRails.changedToPressed()) {
+    rails.scoot();
+  }
   if (buttonRailsToggle.changedToPressed()) {
     rails.togglePosition();
   }

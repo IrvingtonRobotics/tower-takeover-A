@@ -191,6 +191,10 @@ public:
     return getTargetTicks() - controller.getError();
   }
 
+  void scoot() {
+    move(getCurrentTicks() + 50);
+  }
+
   void stop() {
     if (isBacking) {
       stopBacking();

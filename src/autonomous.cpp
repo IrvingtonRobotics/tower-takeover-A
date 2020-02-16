@@ -30,28 +30,35 @@ void runChecksFn(void* param) {
 void timeoutFn(void* param) {
   printf("TIMEOUT STARTED %f\n", autonTimer.getDtFromStart().getValue());
   if (MODE == SMALL_SIDE || MODE == BIG_SIDE) {
-    pros::delay(14000);
+    pros::delay(13600);
     printf("TIMEOUT RESOLVED %f\n", autonTimer.getDtFromStart().getValue());
     // backup
+    drive.setMaxVelocity(5.7_in/1_s);
     intake.move(-300);
-    drive.moveTank(-0.5, -0.5);
-    pros::delay(400);
-    drive.moveDistance(-8_in);
+    pros::delay(200);
+    drive.moveDistance(-15_in);
     intake.stop();
+    drive.resetMaxVelocity(); // lol this fast
   }
 }
 
+void angleMeasureFn(void* param) {
+  pros::delay(200);
+  expectedPA.theta = getAngle(EAST);
+}
+
 void smallSideAuton() {
+  // begin autogen
   foldout(true);
   intake.move(QUICK_SUCK_SPEED);
-  pros::delay(150);
+  pros::Task angleMeasureTask(angleMeasureFn);
   expectedPA.theta = getAngle(EAST);
   travelProfile({
     Point{133.7505_in, -116.5_in, -1*expectedPA.theta},
     Point{95.7505_in, -118.5_in, -180.0_deg},
-  }, false, 0.2);
+  }, false, 0.185);
   drive.turnAngle(-159.3419_deg);
-  intake.move(-55);
+  intake.move(-45);
   travelProfile({
     Point{95.7505_in, -118.4905_in, -20.6581_deg},
     Point{127.6995_in, -134.7895_in, -31.5202_deg},
@@ -103,14 +110,12 @@ void skillsAuton() {
   travelProfile({
     Point{expectedPA.x, -1*expectedPA.y, -1*expectedPA.theta},
     Point{95.0_in, -117.0_in, -180.0_deg},
-    Point{73.5_in, -118.0_in, -180.0_deg},
+    Point{77.5_in, -118.5_in, -180.0_deg},
   }, false, 0.18);
   intake.move(-150);
-  pros::delay(100);
-  expectedPA.theta = getAngle(EAST);
   intake.stop();
   travelProfile({
-    Point{73.5_in, -118.0_in, -1*expectedPA.theta},
+    Point{77.5_in, -118.5_in, -180.0_deg},
     Point{64.5_in, -118.0_in, 175.475_deg},
   }, false, 0.15);
   intake.move(QUICK_SUCK_SPEED);
@@ -132,6 +137,7 @@ void skillsAuton() {
     Point{7.7721_in, 124.728_in, 135.0_deg},
   }, true, 0.14);
   stack(9);
+  drive.resetMaxVelocity();
   travelProfile({
     Point{7.7721_in, 124.728_in, 135.0_deg},
     Point{21.7279_in, 112.228_in, 135.0_deg},

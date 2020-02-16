@@ -175,6 +175,20 @@ public:
        controller
      );
    }
+
+   void setMaxVelocity(float rpm) {
+     controllerStraight.setMaxVelocity(rpm);
+     controllerReversed.setMaxVelocity(rpm);
+   }
+
+   void setMaxVelocity(RQuantity<std::ratio<0>, std::ratio<1>, std::ratio<-1>, std::ratio<0>> speed) {
+     setMaxVelocity((speed / (4_in * pi) * 1_min).getValue());
+   }
+
+   void resetMaxVelocity() {
+     setMaxVelocity(600);
+   }
+
 };
 
 #undef controller

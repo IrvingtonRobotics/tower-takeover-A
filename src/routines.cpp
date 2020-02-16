@@ -60,10 +60,10 @@ void stack(int cubes, bool outtakeLoad) {
   if (outtakeLoad) {
     // outtake prep while stacking
     intake.move(-150);
-    pros::delay(750);
+    pros::delay(800);
   }
-  intake.move(100);
-  rails.moveForward(1 + 0.01*cubes, 300 - 20*cubes);
+  intake.move(-100);
+  rails.moveForward(0.94 + 0.012*cubes, 300 - 20*cubes);
   pros::delay(150);
   intake.stop();
   rails.waitUntilSettled();
