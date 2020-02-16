@@ -97,10 +97,6 @@ void bigSideAuton() {
 }
 
 void skillsAuton() {
-  if (isRed) {
-    return;
-  }
-
   // autogen
   foldout(true);
   intake.move(QUICK_SUCK_SPEED);

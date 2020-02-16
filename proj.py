@@ -10,33 +10,48 @@ from datetime import datetime
 
 init()
 
+# 8 slot limit
 opts = {
-  "small": {
-    "name": "Small",
+  "smallblue": {
+    "name": "Small Blue",
     "slot": 1,
     "files": {
-      "include/config.hpp": "#define MODE SMALL_SIDE"
+      "include/config.hpp": "#define MODE SMALL_SIDE\n#define IS_RED false"
     }
   },
-  "big": {
-    "name": "Big",
+  "smallred": {
+    "name": "Small Red",
     "slot": 2,
     "files": {
-      "include/config.hpp": "#define MODE BIG_SIDE"
+      "include/config.hpp": "#define MODE SMALL_SIDE\n#define IS_RED true"
     }
   },
   "skills": {
     "name": "Auton Skills",
     "slot": 3,
     "files": {
-      "include/config.hpp": "#define MODE SKILLS"
+      "include/config.hpp": "#define MODE SKILLS\n#define IS_RED false"
     }
   },
   "driver": {
     "name": "Driver Skills",
     "slot": 4,
     "files": {
-      "include/config.hpp": "#define MODE DRIVER"
+      "include/config.hpp": "#define MODE DRIVER\n#define IS_RED false"
+    }
+  },
+  "bigblue": {
+    "name": "Big Blue",
+    "slot": 5,
+    "files": {
+      "include/config.hpp": "#define MODE BIG_SIDE\n#define IS_RED false"
+    }
+  },
+  "bigred": {
+    "name": "Big Red",
+    "slot": 6,
+    "files": {
+      "include/config.hpp": "#define MODE BIG_SIDE\n#define IS_RED true"
     }
   },
 }
@@ -60,16 +75,15 @@ def revert():
     os.rename(pp_bak, pp_start)
   already_reverted = True
 
-def run(make_all, upload_immediate, terminal, mode, color):
+def run(make_all, upload_immediate, terminal, mode):
   global already_reverted
   already_reverted = False
   with open(pp_start, "r") as f:
     project = json.load(f)
   os.rename(pp_start, pp_bak)
   opt = opts[mode]
-  isRed = color == "red"
   with open(pp_start, "w+") as f:
-    name = datetime.now().strftime("%H:%M") + " " + ("Red" if isRed else "Blue") + " " + opt["name"] + " (44730A)"
+    name = datetime.now().strftime("%H:%M") + " " + opt["name"] + " (44730A)"
     project["py/state"]["project_name"] = name
     json.dump(project, f)
   brightprint("Making...")
@@ -78,8 +92,6 @@ def run(make_all, upload_immediate, terminal, mode, color):
     with open(path, "w+") as f:
       f.write(opt["files"][path])
       f.write("\n")
-  with open("include/config.hpp", "a") as f:
-    f.write("#define IS_RED " + ("true" if isRed else "false") + "\n")
   c1 = ["prosv5", "make"]
   # always make
   if make_all:
@@ -103,12 +115,11 @@ def run(make_all, upload_immediate, terminal, mode, color):
     brightprint("Opening terminal...")
     subprocess.run(["prosv5", "terminal"])
 
-def run_safe(make_all, upload_immediate, terminal, mode, color, debug):
+def run_safe(make_all, upload_immediate, terminal, mode, debug):
   try:
-    run(make_all, upload_immediate, terminal, mode, color)
+    run(make_all, upload_immediate, terminal, mode)
   except:
     # this is probably a PROS error, such as brain not connected, which has its own error message
-    # otherwise this is almost surely the user saying "no", which they don't need feedback on
     if debug:
       raise
   finally:
@@ -157,7 +168,6 @@ def check_ports():
 parser = argparse.ArgumentParser(description="Autogenerate motion profile from SVG.")
 parser.add_argument("mode", choices=opts.keys(),
   help="Mode: any of " + str(list(opts.keys())))
-parser.add_argument("color", choices=["red", "blue"], help="Color for auton")
 group = parser.add_mutually_exclusive_group()
 group.add_argument("--quick", "-q", action="store_true", help="Make quick")
 group.add_argument("--all", "-a", action="store_true", help="Make all, not just quick")
@@ -170,4 +180,4 @@ args = parser.parse_args()
 if not args.no_ports:
   check_ports()
 all = args.all or not args.quick
-run_safe(all, args.upload_immediate, args.terminal, args.mode, args.color, args.debug)
+run_safe(all, args.upload_immediate, args.terminal, args.mode, args.debug)
