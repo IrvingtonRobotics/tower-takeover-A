@@ -11,13 +11,14 @@ g = 9.81
 h = cubes * 5.5 * 0.0254
 # rad from ground
 forward_angle = np.pi/2
-back_angle = forward_angle-2500/1800/5*2*np.pi
-# back_angle = 0
+back_angle = 40*np.pi/2
 # rad/s
 start_speed = 0
 
 c1 = g/h*np.sqrt(mu*mu+1)
 c2 = np.arctan(mu)
+
+format_cpp = True;
 
 print("c1c2", c1, c2)
 
@@ -34,7 +35,10 @@ for i, t in enumerate(a_t[:-1]):
   theta = asol[i][0]
   theta_t = asol[i][1]
   theta_tt = (asol[i+1][1]-asol[i][1])/(a_t[i+1]-a_t[i])
-  print(f"{t:.6f}\t{theta:.6f}\t{theta_t:.6f}\t{theta_tt:.6f}")
+  if format_cpp:
+    print(f"\t{{{theta:.6f},{theta_t:.6f},{theta_tt:.6f}}},")
+  else:
+    print(f"{t:.6f}\t{theta:.6f}\t{theta_t:.6f}\t{theta_tt:.6f}")
 
 """
 Learnings:

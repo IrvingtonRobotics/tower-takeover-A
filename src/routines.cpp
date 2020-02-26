@@ -63,7 +63,8 @@ void stack(int cubes, bool outtakeLoad) {
     pros::delay(800);
   }
   intake.move(-100);
-  rails.moveForward(0.94 + 0.012*cubes, 300 - 20*cubes);
+  // TODO: incorporate #cubes to go faster with few
+  rails.stackForward();
   pros::delay(150);
   intake.stop();
   rails.waitUntilSettled();
