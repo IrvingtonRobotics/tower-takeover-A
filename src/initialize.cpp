@@ -9,6 +9,8 @@ Lift lift = Lift();
 Drive drive = Drive();
 Rails rails = Rails();
 Intake intake = Intake();
+bool doClearArm = false;
+bool doUnclearArm = false;
 Timer cumTimer;
 
 /**

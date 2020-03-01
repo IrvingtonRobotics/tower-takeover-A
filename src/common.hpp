@@ -14,22 +14,25 @@
 
 #include "main.h"
 #include "config.hpp"
-#include "lift.cpp"
 #include "drive.cpp"
 #include "rails.cpp"
+#include "lift.cpp"
 #include "intake.cpp"
 #include "routines.hpp"
 #include "ultrasonic.hpp"
 
-extern Lift lift;
 extern Drive drive;
 extern Rails rails;
 extern Intake intake;
+extern Lift lift;
 
 extern Timer autonTimer;
 extern Timer cumTimer;
 
 extern bool isRed;
+
+extern bool doClearArm;
+extern bool doUnclearArm;
 
 struct posAngle {
   QLength x;

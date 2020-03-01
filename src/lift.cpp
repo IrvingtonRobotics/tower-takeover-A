@@ -1,9 +1,11 @@
 #include "main.h"
 #include "ports.hpp"
 
+extern bool doClearArm;
+extern bool doUnclearArm;
+
 /**
  * Main class for the Lift subsystem.
- * Most complicated subsytem controller of them all.
  * Wraps around both AsyncPosIntegratedController and AsyncVelIntegratedController
  * to provide movement to precise locations and smooth movement when lowering
  * to the button/limit switch
@@ -25,6 +27,8 @@ class Lift {
   const int ticksPerRev = 1800 * ARBITRARY_TICKS_FACTOR;
   // height the arm caps out at
   const QLength MAX_ARM_HEIGHT = 31_in;
+  // height need to start clearing
+  const QLength CLEAR_ARM_HEIGHT = 5_in;
   // height the arm starts at
   const QLength MIN_ARM_HEIGHT = 2.5_in;
   // tolerance of position when calculating new targets
@@ -200,6 +204,11 @@ public:
    */
   void move(double ticks) {
     double taredTicks = ticks - tareTicks;
+    if (getHeight(ticks) > CLEAR_ARM_HEIGHT) {
+      doClearArm = true;
+    } else {
+      doUnclearArm = true;
+    }
     controller.setTarget(taredTicks);
   }
 

@@ -2,6 +2,9 @@
 #include "ports.hpp"
 #include "railscalib.hpp"
 
+extern bool doClearArm;
+extern bool doUnclearArm;
+
 /**
  * Main class for the Rails angling subsystem
  * Wraps around AsyncPosIntegratedController and AsyncVelIntegratedController
@@ -12,10 +15,14 @@ class Rails {
   /* ---- CONFIG ---- */
   // ticks all the way back
   const double RAILS_BACK_THETA = 0.9;
+  const double CLEAR_ARM_THETA = 1.0;
   // ticks to rest in middle (moveMid)
   const double RAILS_MID_THETA = 1.1;
   // ticks all the way forward
   const double RAILS_FORWARD_THETA = 1.57;
+  const float SCOOT_DTHETA = 0.01;
+  const float SCOOT_SPEED = 400;
+  const double CLEAR_ARM_SPEED = 600;
   const double MOVE_BACK_SPEED = 520;
   const double MOVE_MID_SPEED = 300;
   // different scale
@@ -38,6 +45,7 @@ class Rails {
   ADIButton buttonLimit = ADIButton(RAILS_LIMIT_PORT);
   Timer timeoutTimer;
   bool isStacking = false;
+  bool isArmCleared = false;
 
   // horizontal offset of center of push gear from rail pivot
   const float x1 = (10_in).getValue();
@@ -197,6 +205,14 @@ public:
         controller.setTarget(thetaToTicks(RAILS_FORWARD_THETA));
       }
     }
+    if (doClearArm) {
+      clearArm();
+      doClearArm = false;
+    }
+    if (doUnclearArm) {
+      unclearArm();
+      doUnclearArm = false;
+    }
   }
 
   void stopBacking() {
@@ -262,7 +278,21 @@ public:
   }
 
   void scoot() {
-    move(getCurrentTicks() + 50);
+    moveAngle(getCurrentTheta() + SCOOT_DTHETA, SCOOT_SPEED);
+  }
+
+  void clearArm() {
+    if (getCurrentTheta() < CLEAR_ARM_THETA) {
+      moveAngle(CLEAR_ARM_THETA, CLEAR_ARM_SPEED);
+      isArmCleared = true;
+    }
+  }
+
+  void unclearArm() {
+    if (isArmCleared) {
+      isArmCleared = false;
+      moveAngle(RAILS_BACK_THETA, MOVE_BACK_SPEED);
+    }
   }
 
   void stop() {
