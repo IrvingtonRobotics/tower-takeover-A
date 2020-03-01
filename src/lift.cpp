@@ -20,11 +20,11 @@ class Lift {
   const QLength ARM_LENGTH = 22_in;
   // height of arm pivot above ground
   const QLength ARM_ELEVATION = 16_in;
-  // 1800 ticks/rev with 36:1 gears -- high torque
-  // 900 ticks/rev with 18:1 gears
-  // 300 ticks/rev with 6:1 gears -- high speed
-  const double ARBITRARY_TICKS_FACTOR = 1.8;
-  const int ticksPerRev = 1800 * ARBITRARY_TICKS_FACTOR;
+  // 720 ticks/rev with 36:1 gears -- high torque
+  // 360 ticks/rev with 18:1 gears
+  // 180 ticks/rev with 6:1 gears -- high speed
+  const double GEAR_RATIO = 7;
+  const int TICKS_PER_REV = 720 * GEAR_RATIO;
   // height the arm caps out at
   const QLength MAX_ARM_HEIGHT = 31_in;
   // height need to start clearing
@@ -84,7 +84,7 @@ class Lift {
    */
   double getTicks(double angle) {
     double revolutions = angle / PI / 2;
-    return revolutions * ticksPerRev;
+    return revolutions * TICKS_PER_REV;
   }
 
   /**
@@ -93,7 +93,7 @@ class Lift {
    */
   double getAngle(double taredTicks) {
     double ticks = taredTicks;
-    double revolutions = ticks / ticksPerRev;
+    double revolutions = ticks / TICKS_PER_REV;
     // radians
     double angle = revolutions * PI * 2;
     return angle;
