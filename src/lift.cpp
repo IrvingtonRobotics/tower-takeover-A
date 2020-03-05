@@ -17,9 +17,9 @@ extern bool doUnclearArm;
  */
 class Lift {
   /* ---- CONFIG ---- */
-  const QLength ARM_LENGTH = 22_in;
+  const QLength ARM_LENGTH = 18.75_in;
   // height of arm pivot above ground
-  const QLength ARM_ELEVATION = 16_in;
+  const QLength ARM_ELEVATION = 15.5_in;
   // 720 ticks/rev with 36:1 gears -- high torque
   // 360 ticks/rev with 18:1 gears
   // 180 ticks/rev with 6:1 gears -- high speed
