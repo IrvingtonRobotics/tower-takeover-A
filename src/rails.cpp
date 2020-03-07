@@ -15,14 +15,15 @@ class Rails {
   /* ---- CONFIG ---- */
   // ticks all the way back
   const double RAILS_BACK_THETA = 0.9;
-  const double CLEAR_ARM_THETA = 1.0;
+  const double CLEAR_ARM_THETA = 1.1;
   // ticks to rest in middle (moveMid)
-  const double RAILS_MID_THETA = 1.1;
+  const double RAILS_MID_THETA = 1.2;
   // ticks all the way forward
   const double RAILS_FORWARD_THETA = 1.57;
   const float SCOOT_DTHETA = 0.01;
   const float SCOOT_SPEED = 400;
   const double CLEAR_ARM_SPEED = 600;
+  const double CLEAR_BACK_SPEED = 150;
   const double MOVE_BACK_SPEED = 520;
   const double MOVE_MID_SPEED = 300;
   // different scale
@@ -291,7 +292,7 @@ public:
   void unclearArm() {
     if (isArmCleared) {
       isArmCleared = false;
-      moveAngle(RAILS_BACK_THETA, MOVE_BACK_SPEED);
+      moveAngle(RAILS_BACK_THETA, CLEAR_BACK_SPEED);
     }
   }
 
