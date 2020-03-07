@@ -29,8 +29,7 @@ class Lift {
   const QLength MAX_ARM_HEIGHT = 31_in;
   // height need to start clearing
   const QLength CLEAR_ARM_HEIGHT = 5_in;
-  // height the arm starts at
-  const QLength MIN_ARM_HEIGHT = 2.5_in;
+  const QLength MIN_ARM_HEIGHT = 3_in;
   // tolerance of position when calculating new targets
   const QLength POS_TOLERANCE = 0.5_in;
   // size of opcontrol small movements
@@ -43,12 +42,14 @@ class Lift {
   const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
   const int DEFAULT_LOWER_SPEED = 100;
   static const int NUM_HEIGHTS = 3;
+  const QLength TARE_HEIGHT = 3_in;
   // WARNING: targetHeights MUST be sorted
   // {min, small tower, med tower}
-  const QLength targetHeights[NUM_HEIGHTS] = {MIN_ARM_HEIGHT, 24.5_in, MAX_ARM_HEIGHT};
+  const QLength targetHeights[NUM_HEIGHTS] = {7_in, 17_in, 25_in};
   const QLength MID_HEIGHT = (targetHeights[NUM_HEIGHTS-1] + targetHeights[0])/2;
   // ticks per second
-  const int DEFAULT_MAX_VELOCITY = 500;
+  const int UP_DEFAULT_MAX_VELOCITY = 600;
+  const int DOWN_DEFAULT_MAX_VELOCITY = 900;
 
   /* ---- No need to edit ---- */
   double tareTicks = 0;
@@ -158,7 +159,7 @@ public:
   }
 
   void tare() {
-    tareHeight(MIN_ARM_HEIGHT);
+    tareHeight(TARE_HEIGHT);
   }
 
   void moveToggle() {
@@ -277,7 +278,11 @@ public:
 
 
   void resetMaxVelocity() {
-    setMaxVelocity(DEFAULT_MAX_VELOCITY);
+    setMaxVelocity(UP_DEFAULT_MAX_VELOCITY);
+  }
+
+  void setMaxVelocityDown() {
+    setMaxVelocity(DOWN_DEFAULT_MAX_VELOCITY);
   }
 
   void setMaxVelocity(double tps) {

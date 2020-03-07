@@ -58,11 +58,17 @@ void runLift() {
   lift.step();
   bool isUp = buttonLiftUp.changedToPressed();
   bool isDown = buttonLiftDown.changedToPressed();
+  if (isDown) {
+    lift.setMaxVelocityDown();
+  }
   if (isUp || isDown) {
     lift.move(isUp, false);
   }
   bool isFastUp = buttonGlideUp.changedToPressed();
   bool isFastDown = buttonGlideDown.changedToPressed();
+  if (isFastDown) {
+    lift.setMaxVelocityDown();
+  }
   if (isFastUp || isFastDown) {
     lift.glide(isFastUp);
   }

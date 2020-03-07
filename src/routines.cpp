@@ -9,25 +9,18 @@ void foldout(bool doBackward) {
     rails.backToButton();
   }
   // foldout
-  lift.move(31_in);
-  intake.outtake();
+  lift.setMaxVelocity(700);
+  lift.move(29_in);
   lift.waitUntilSettled();
   pros::delay(400);
   // return
-  lift.setMaxVelocity(500);
-  lift.move(0);
-  printf("INTAKE STOPPED %f\n", autonTimer.getDtFromStart().getValue());
-  drive.moveDistance(2_in);
-  intake.stop();
-  printf("DRIVE FORWARD\n");
-  if (doBackward) {
-    drive.moveDistance(-2_in);
-  }
-  printf("DRIVE BACKWARD\n");
+  lift.setMaxVelocity(1200);
+  lift.move(1_in);
+  lift.waitUntilSettled();
   lift.resetMaxVelocity();
-  printf("FINISHED FOLDOUT\n");
+  lift.move(0);
 
-  // time to wobble to a stop
+  // time to wobble to a stop ig
   pros::delay(50);
 }
 
