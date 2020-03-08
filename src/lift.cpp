@@ -73,7 +73,6 @@ class Lift {
   double getTicks(QLength height) {
     QLength dy = height - ARM_ELEVATION;
     double ratio = (dy / ARM_LENGTH).getValue();
-    
     // radians
     double angle = asin(ratio);
     return getTicks(angle);
@@ -119,7 +118,6 @@ class Lift {
    *  POS_TOLERANCE away
    */
   QLength getChangedHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
-    
     int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
       // just move a bit in one direction
@@ -135,7 +133,6 @@ class Lift {
       */
       int i = isIncrease ? 0 : NUM_HEIGHTS - 1;
       while (lastHeight * m > targetHeights[i] * m - POS_TOLERANCE) {
-        
         i += m;
       }
       i = std::clamp(i, 0, NUM_HEIGHTS - 1);
@@ -177,18 +174,11 @@ public:
     // calculates tareTicks as ticks from center
     // tare to 0
     controller.tarePosition();
-    
     // assume lift is height off ground
-    
-    
     tareTicks = getTicks(height);
-    
-    
-    
   }
 
   void move(int heightIndex) {
-    
     if (heightIndex < 0) {
       heightIndex = NUM_HEIGHTS + heightIndex;
     }
@@ -217,11 +207,8 @@ public:
    * Moves, but height is limited between MIN_ARM_HEIGHT and MAX_ARM_HEIGHT
    */
   void move(QLength height) {
-    
     QLength clampedHeight = std::clamp(height, MIN_ARM_HEIGHT, MAX_ARM_HEIGHT);
-    
     double targetTicks = getTicks(clampedHeight);
-    
     move(targetTicks);
   }
 
@@ -233,9 +220,6 @@ public:
    */
 
   void move(bool isIncrease, bool isSmall) {
-    
-    
-    
     if (!isSmall) {
       smallMoveThreshold = MIN_THRESHOLD;
     }
