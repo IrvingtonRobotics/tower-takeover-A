@@ -99,7 +99,8 @@ class Rails {
   }
 
   void move(double ticks) {
-    if (_ticksToTheta(ticks) < RAILS_BACK_THETA) {
+    printf("Moving rails to %f\n", ticksToTheta(ticks));
+    if (ticksToTheta(ticks) < RAILS_BACK_THETA) {
       // would die moving back
       return;
     }
