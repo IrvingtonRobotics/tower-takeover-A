@@ -13,9 +13,10 @@ extern bool doUnclearArm;
  **/
 class Rails {
   /* ---- CONFIG ---- */
+  const double RAILS_TARE_THETA = 0.8;
   // ticks all the way back
   const double RAILS_BACK_THETA = 0.9;
-  const double CLEAR_ARM_THETA = 1.1;
+  const double CLEAR_ARM_THETA = 1.2;
   // ticks to rest in middle (moveMid)
   const double RAILS_MID_THETA = 1.2;
   // ticks all the way forward
@@ -76,7 +77,7 @@ class Rails {
   }
 
   float thetaToTicks(float theta) {
-    return _thetaToTicks(theta) - _thetaToTicks(RAILS_BACK_THETA);
+    return _thetaToTicks(theta) - _thetaToTicks(RAILS_TARE_THETA);
   }
 
   float _ticksToTheta(float ticks) {
@@ -90,7 +91,7 @@ class Rails {
   }
 
   float ticksToTheta(float ticks) {
-    return _ticksToTheta(ticks + _thetaToTicks(RAILS_BACK_THETA));
+    return _ticksToTheta(ticks + _thetaToTicks(RAILS_TARE_THETA));
   }
 
   float dTicksDTheta(float theta) {
@@ -99,6 +100,10 @@ class Rails {
   }
 
   void move(double ticks) {
+    if (_ticksToTheta(ticks) < RAILS_BACK_THETA) {
+      // would die moving back
+      return;
+    }
     abortStack();
     printf("Moving rails to %f ticks\n", ticks);
     controller.setTarget(ticks);
@@ -272,7 +277,7 @@ public:
    */
   void tare() {
     controller.tarePosition();
-    move((float) 0);
+    controller.setTarget(0);
   }
 
   void waitUntilSettled() {

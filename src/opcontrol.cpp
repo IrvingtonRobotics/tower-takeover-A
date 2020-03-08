@@ -120,9 +120,8 @@ void runRails() {
   if (buttonRailsToggleMid.changedToPressed()) {
     rails.togglePositionMid();
   }
-  if (buttonTareRails.changedToPressed()) {
-    printf("taring rails\n");
-    rails.backToButton();
+  if (buttonFakeTareRails.changedToPressed()) {
+    rails.moveBack();
   }
 }
 

@@ -16,7 +16,7 @@ ControllerButton buttonRailsToggleMid(ControllerDigital::R2);
 ControllerButton buttonOutLift(ControllerDigital::A);
 ControllerButton buttonScootRails(ControllerDigital::B);
 ControllerButton buttonKill(ControllerDigital::X);
-ControllerButton buttonTareRails(ControllerDigital::Y);
+ControllerButton buttonFakeTareRails(ControllerDigital::Y);
 ControllerButton buttonRunIntake(ControllerDigital::L1);
 ControllerButton buttonRunOuttake(ControllerDigital::L2);
 Controller masterController;
