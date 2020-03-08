@@ -45,7 +45,6 @@ class Rails {
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
   ADIButton buttonLimit = ADIButton(RAILS_LIMIT_PORT);
-  Timer timeoutTimer;
   bool isStacking = false;
   bool isArmCleared = false;
 
@@ -193,7 +192,7 @@ public:
   void step() {
     // printf("isStacking=%s, ticks=%f, theta=%f, goalticks=%f, goaltheta=%f\n", isStacking?"true":"false", getCurrentTicks(), getCurrentTheta(), getTargetTicks(), getTargetTheta());
     if (isBacking) {
-      if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= BACK_TO_BUTTON_TIMEOUT) {
+      if (buttonLimit.isPressed()) {
         stopBacking();
       }
     }
@@ -236,7 +235,6 @@ public:
     // move control to vel for smooth movement
     flipDisable(true);
     isBacking = true;
-    timeoutTimer = Timer();
     velController.setTarget(-abs(speed));
   }
 
@@ -281,6 +279,9 @@ public:
   }
 
   void waitUntilSettled() {
+    while (isBacking) {
+      pros::delay(10);
+    }
     controller.waitUntilSettled();
   }
 

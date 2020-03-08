@@ -5,9 +5,8 @@ Timer autonTimer;
 void foldout(bool doBackward) {
   printf("FOLD OUT START %f\n", autonTimer.getDtFromStart().getValue());
   // home rails while lifting
-  if (MODE != DRIVER) {
-    rails.backToButton();
-  }
+  rails.backToButton();
+  rails.waitUntilSettled();
   // foldout
   lift.setMaxVelocity(700);
   lift.move(29_in);
