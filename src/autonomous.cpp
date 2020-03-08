@@ -22,6 +22,7 @@ posAngle expectedPA;
 
 void runChecksFn(void* param) {
   while (true) {
+    lift.step();
     rails.step();
     pros::delay(10);
   }
@@ -51,19 +52,27 @@ void smallSideAuton() {
   // begin autogen
   foldout(true);
   intake.move(QUICK_SUCK_SPEED);
-  pros::Task angleMeasureTask(angleMeasureFn);
-  expectedPA.theta = getAngle(EAST);
+  pros::delay(150);
   travelProfile({
-    Point{133.7505_in, -116.5_in, -1*expectedPA.theta},
-    Point{95.7505_in, -118.5_in, -180.0_deg},
+    Point{133.7505_in, -116.5_in, -180.0_deg},
+    Point{95.7505_in, -118.0_in, 176.942_deg},
   }, false, 0.185);
-  drive.turnAngle(-159.3419_deg);
-  intake.move(-45);
   travelProfile({
-    Point{95.7505_in, -118.4905_in, -20.6581_deg},
-    Point{127.6995_in, -134.7895_in, -31.5202_deg},
-  }, false, 0.6);
-  stack(4, false);
+    Point{95.7505_in, -118.0_in, 176.942_deg},
+    Point{91.207_in, -114.0735_in, 139.5796_deg},
+    Point{86.5415_in, -110.042_in, 170.2791_deg},
+  }, false, 0.185);
+  travelProfile({
+    Point{86.5415_in, 110.042_in, -170.2791_deg},
+    Point{92.0415_in, 111.042_in, -170.2791_deg},
+  }, true, 0.3);
+  drive.turnAngle(-155.693_deg);
+  intake.move(-35);
+  travelProfile({
+    Point{92.0415_in, -111.042_in, -34.0279_deg},
+    Point{128.6995_in, -132.7895_in, -31.5202_deg},
+  }, false, 0.5);
+  stack(6, false);
 }
 
 void bigSideAuton() {

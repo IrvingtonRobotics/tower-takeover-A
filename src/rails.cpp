@@ -37,7 +37,7 @@ class Rails {
   // const double RAILS_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_FORWARD_TICKS) / 2;
   // // ticks half way between back and mid
   // const double RAILS_MID_MIDPOINT_TICKS = (RAILS_BACK_TICKS + RAILS_MID_TICKS) / 2;
-  const int PORT = ANGLE_RAILS_PORT;
+  const int PORT = -ANGLE_RAILS_PORT;
   bool isBacking = false;
   AsyncPosIntegratedController controller =
     AsyncControllerFactory::posIntegrated(PORT);
@@ -59,7 +59,7 @@ class Rails {
   // perpendicular offset from rails to push pivot
   const float x3 = (0.7_in).getValue();
   // distance of push pivot from rails pivot along rails
-  const float y3 = (10.25_in).getValue();
+  const float y3 = (10.5_in).getValue();
   // calculated
   const float l1 = sqrt(x3*x3+y3*y3);
   const float l2 = sqrt(x1*x1+y2*y2);
@@ -178,6 +178,7 @@ public:
   }
 
   void stackForward() {
+    // moveAngle(RAILS_FORWARD_THETA, 100);
     // for getTargetTicks
     controller.setTarget(thetaToTicks(RAILS_FORWARD_THETA));
     isStacking = true;

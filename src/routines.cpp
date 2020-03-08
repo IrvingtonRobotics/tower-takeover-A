@@ -15,7 +15,7 @@ void foldout(bool doBackward) {
   pros::delay(400);
   // return
   lift.setMaxVelocity(1200);
-  lift.move(1_in);
+  lift.move(2_in);
   lift.waitUntilSettled();
   lift.resetMaxVelocity();
   lift.move(0);
