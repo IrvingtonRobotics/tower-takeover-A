@@ -49,17 +49,17 @@ class Rails {
   bool isArmCleared = false;
 
   // horizontal offset of center of push gear from rail pivot
-  const float x1 = (9.5_in).getValue();
+  const float x1 = (8.5_in).getValue();
   // vertical offset of center of push gear from rail pivot
-  const float y2 = (1.75_in).getValue();
+  const float y2 = (2_in).getValue();
   // length of the upper push segment
-  const float x2 = (7.0_in).getValue();
+  const float x2 = (6.0_in).getValue();
   // length of the lower push segment
-  const float y1 = (5.5_in).getValue();
+  const float y1 = (6.0_in).getValue();
   // perpendicular offset from rails to push pivot
-  const float x3 = (0.7_in).getValue();
+  const float x3 = (1_in).getValue();
   // distance of push pivot from rails pivot along rails
-  const float y3 = (10.5_in).getValue();
+  const float y3 = (11.0_in).getValue();
   // calculated
   const float l1 = sqrt(x3*x3+y3*y3);
   const float l2 = sqrt(x1*x1+y2*y2);
