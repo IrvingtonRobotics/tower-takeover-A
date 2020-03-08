@@ -11,6 +11,8 @@ const RQuantity DOUBLE_PRESS_INTERVAL = 200_ms;
 const bool disableDoublePress = true;
 const RQuantity OUTLIFT_OUT_TIME = 200_ms;
 
+Controller controller;
+
 bool killed = false;
 Timer intakePressedTimer = Timer();
 Timer outtakePressedTimer = Timer();
@@ -28,6 +30,7 @@ void runDrive() {
   }
   bool armsUp = lift.getCurrentHeight() > 10_in;
   drive.move(DRIVE_X_CONTROL, DRIVE_Y_CONTROL, 1, false, armsUp);
+  drive.step();
 }
 
 /**
@@ -40,6 +43,17 @@ void runDrive() {
 void runDriveFn(void* param) {
   while (true) {
     runDrive();
+    pros::delay(STANDARD_DELAY);
+  }
+}
+
+void runFeedback() {
+  feedback.step();
+}
+
+void runFeedbackFn(void* param) {
+  while (true) {
+    runFeedback();
     pros::delay(STANDARD_DELAY);
   }
 }
@@ -190,6 +204,7 @@ void opcontrol() {
   pros::Task runLiftTask(runLiftFn);
   pros::Task runRailsTask(runRailsFn);
   pros::Task runIntakeTask(runIntakeFn);
+  pros::Task runFeedbackTask(runFeedbackFn);
   while (true) {
     // kill if necessary
     if (buttonKill.changedToPressed()) {
@@ -200,7 +215,7 @@ void opcontrol() {
       intake.stop();
     }
     // printPAPos();
-    // printf("Pot value %d\n", pot.get_value());
+
     pros::delay(10);
   }
 }

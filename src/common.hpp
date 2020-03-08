@@ -14,6 +14,7 @@
 
 #include "main.h"
 #include "config.hpp"
+#include "feedback.hpp"
 #include "drive.cpp"
 #include "rails.cpp"
 #include "lift.cpp"
@@ -25,6 +26,7 @@ extern Drive drive;
 extern Rails rails;
 extern Intake intake;
 extern Lift lift;
+extern Feedback feedback;
 
 extern Timer autonTimer;
 extern Timer cumTimer;

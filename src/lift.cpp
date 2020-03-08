@@ -73,7 +73,7 @@ class Lift {
   double getTicks(QLength height) {
     QLength dy = height - ARM_ELEVATION;
     double ratio = (dy / ARM_LENGTH).getValue();
-    // printf("Height sin: %f\n", ratio);
+    
     // radians
     double angle = asin(ratio);
     return getTicks(angle);
@@ -119,7 +119,7 @@ class Lift {
    *  POS_TOLERANCE away
    */
   QLength getChangedHeight(QLength lastHeight, bool isIncrease, bool isIncreaseSmall) {
-    // printf("Last height %f\n", lastHeight.getValue());
+    
     int m = boolToSign(isIncrease);
     if (isIncreaseSmall) {
       // just move a bit in one direction
@@ -135,7 +135,7 @@ class Lift {
       */
       int i = isIncrease ? 0 : NUM_HEIGHTS - 1;
       while (lastHeight * m > targetHeights[i] * m - POS_TOLERANCE) {
-        // printf("i %d\n", i);
+        
         i += m;
       }
       i = std::clamp(i, 0, NUM_HEIGHTS - 1);
@@ -177,18 +177,18 @@ public:
     // calculates tareTicks as ticks from center
     // tare to 0
     controller.tarePosition();
-    // printf("Think ticks: %f\n", controller.getTarget());
+    
     // assume lift is height off ground
-    // printf("Taring arm to height %f\n", height.getValue());
-    // printf("Think ticks: %f\n", controller.getTarget());
+    
+    
     tareTicks = getTicks(height);
-    // printf("Height ticks: %f\n", getTicks(height));
-    // printf("Think height:%f\n", getHeight(getCurrentTicks()));
-    // printf("Tare ticks: %f\n", tareTicks);
+    
+    
+    
   }
 
   void move(int heightIndex) {
-    // printf("Moving lift to height %d\n", heightIndex);
+    
     if (heightIndex < 0) {
       heightIndex = NUM_HEIGHTS + heightIndex;
     }
@@ -217,11 +217,11 @@ public:
    * Moves, but height is limited between MIN_ARM_HEIGHT and MAX_ARM_HEIGHT
    */
   void move(QLength height) {
-    // printf("tare ticks %f\n", tareTicks);
+    
     QLength clampedHeight = std::clamp(height, MIN_ARM_HEIGHT, MAX_ARM_HEIGHT);
-    // printf("Clamped height from %f to %f\n", height.getValue(), clampedHeight.getValue());
+    
     double targetTicks = getTicks(clampedHeight);
-    // printf("New target ticks %f\n", taredTicks);
+    
     move(targetTicks);
   }
 
@@ -233,9 +233,9 @@ public:
    */
 
   void move(bool isIncrease, bool isSmall) {
-    // printf("\n");
-    // printf("Moving lift +%d\n", boolToSign(isIncrease) * (isSmall ? 1 : 20));
-    // printf("Last height %f\n", lastTargetHeight.getValue());
+    
+    
+    
     if (!isSmall) {
       smallMoveThreshold = MIN_THRESHOLD;
     }

@@ -186,7 +186,7 @@ public:
   }
 
   void step() {
-    printf("isStacking=%s, ticks=%f, theta=%f, goalticks=%f, goaltheta=%f\n", isStacking?"true":"false", getCurrentTicks(), getCurrentTheta(), getTargetTicks(), getTargetTheta());
+    // printf("isStacking=%s, ticks=%f, theta=%f, goalticks=%f, goaltheta=%f\n", isStacking?"true":"false", getCurrentTicks(), getCurrentTheta(), getTargetTicks(), getTargetTheta());
     if (isBacking) {
       if (buttonLimit.isPressed() || timeoutTimer.getDtFromStart() >= BACK_TO_BUTTON_TIMEOUT) {
         stopBacking();

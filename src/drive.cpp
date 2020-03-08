@@ -1,5 +1,8 @@
 #include "main.h"
 #include "ports.hpp"
+#include "feedback.hpp"
+
+extern Feedback feedback;
 
 #define controller (*controllerPtr)
 
@@ -19,6 +22,12 @@ class Drive {
   const ChassisScales &scales = ChassisScales({4_in, 13_in});
   //https://pros.cs.purdue.edu/v5/okapi/api/device/motor/abstract-abstract-motor.html#gearset
   static const auto gearset = AbstractMotor::gearset::green;
+  Motor motors[4] = {
+    Motor(DRIVE_LEFT_BACK_PORT),
+    Motor(DRIVE_LEFT_FRONT_PORT),
+    Motor(DRIVE_RIGHT_BACK_PORT),
+    Motor(DRIVE_RIGHT_FRONT_PORT)
+  };
 
   /* ---- No need to edit ---- */
   float leftDriveSpeed = 0;
@@ -75,6 +84,17 @@ class Drive {
   }
 
 public:
+  void step() {
+    for (int i=0; i<4; i++) {
+      float e = motors[i].getEfficiency();
+      // printf("%f\t", e);
+      if (e > 60) {
+        feedback.print("Motor loose");
+        feedback.attention();
+      }
+    }
+  }
+
   void moveTank(float left, float right) {
     moveTank(left, right, false);
   }
