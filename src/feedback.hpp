@@ -17,8 +17,8 @@ public:
 
   void step() {
     if (attnTimer.repeat(ATTENTION_INTERVAL)) {
-      printf("TRY RUMBLEEEEE\n");
-      controller.rumble(".");
+      // printf("TRY RUMBLEEEEE\n");
+      // controller.rumble(".");
       doAttention = false;
       attnTimer.placeHardMark();
     }

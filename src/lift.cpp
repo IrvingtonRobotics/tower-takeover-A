@@ -50,6 +50,7 @@ class Lift {
   // ticks per second
   const int UP_DEFAULT_MAX_VELOCITY = 600;
   const int DOWN_DEFAULT_MAX_VELOCITY = 900;
+  const QTime CLEAR_DELAY = 70_ms;
 
   /* ---- No need to edit ---- */
   double tareTicks = 0;
@@ -197,6 +198,7 @@ public:
     double taredTicks = ticks - tareTicks;
     if (getHeight(ticks) > CLEAR_ARM_HEIGHT) {
       doClearArm = true;
+      pros::delay((CLEAR_DELAY / 1_ms).getValue());
     } else {
       doUnclearArm = true;
     }

@@ -13,10 +13,10 @@ extern bool doUnclearArm;
  **/
 class Rails {
   /* ---- CONFIG ---- */
-  const double RAILS_TARE_THETA = 0.8;
+  const double RAILS_TARE_THETA = 0.75;
   // ticks all the way back
-  const double RAILS_BACK_THETA = 0.9;
-  const double CLEAR_ARM_THETA = 1.2;
+  const double RAILS_BACK_THETA = 0.82;
+  const double CLEAR_ARM_THETA = 1.25;
   // ticks to rest in middle (moveMid)
   const double RAILS_MID_THETA = 1.2;
   // ticks all the way forward
@@ -32,6 +32,9 @@ class Rails {
   const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
   // for backToButton
   const int DEFAULT_BACK_SPEED = 220;
+  const QTime UNCLEAR_ARM_DELAY = 150_ms;
+  Timer unclearArmTimer = Timer();
+  bool delayingUnclearArm = true;
 
   /* ---- No need to edit ---- */
   // // ticks half way between back and forward
@@ -217,8 +220,14 @@ public:
       doClearArm = false;
     }
     if (doUnclearArm) {
-      unclearArm();
+      delayingUnclearArm = true;
       doUnclearArm = false;
+      unclearArmTimer.placeHardMark();
+    } else if (delayingUnclearArm) {
+      if (unclearArmTimer.getDtFromHardMark() > UNCLEAR_ARM_DELAY) {
+        delayingUnclearArm = false;
+        unclearArm();
+      }
     }
   }
 
