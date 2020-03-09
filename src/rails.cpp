@@ -1,6 +1,9 @@
 #include "main.h"
 #include "ports.hpp"
 #include "railscalib.hpp"
+#include "feedback.hpp"
+
+extern Feedback feedback;
 
 extern bool doClearArm;
 extern bool doUnclearArm;
@@ -22,6 +25,7 @@ class Rails {
   const double RAILS_MID_THETA = 1.2;
   // ticks all the way forward
   const double RAILS_FORWARD_THETA = 1.57;
+  const double RAILS_DONE_NOTIFY_THRESHOLD = 0.05;
   const float SCOOT_DTHETA = 0.01;
   const float SCOOT_SPEED = 400;
   const double CLEAR_ARM_SPEED = 600;
@@ -36,6 +40,8 @@ class Rails {
   const QTime UNCLEAR_ARM_DELAY = 250_ms;
   Timer unclearArmTimer = Timer();
   bool delayingUnclearArm = true;
+  // start true so we don't vibrate as soon as match starts
+  bool railsDoneNotified = true;
 
   /* ---- No need to edit ---- */
   // // ticks half way between back and forward
@@ -114,6 +120,7 @@ class Rails {
     }
     abortStack();
     printf("Moving rails to %f ticks\n", ticks);
+    railsDoneNotified = false;
     controller.setTarget(ticks);
   }
 
@@ -200,21 +207,28 @@ public:
 
   void step() {
     // printf("isStacking=%s, ticks=%f, theta=%f, goalticks=%f, goaltheta=%f\n", isStacking?"true":"false", getCurrentTicks(), getCurrentTheta(), getTargetTicks(), getTargetTheta());
+    float theta = getCurrentTheta();
+    if (!railsDoneNotified) {
+      bool doneBack = theta < RAILS_BACK_THETA + RAILS_DONE_NOTIFY_THRESHOLD;
+      bool doneForward = theta > RAILS_FORWARD_THETA - RAILS_DONE_NOTIFY_THRESHOLD;
+      if (doneBack || doneForward) {
+        feedback.attention();
+        railsDoneNotified = true;
+      }
+    }
     if (isBacking) {
       if (buttonLimit.isPressed()) {
         stopBacking();
       }
     }
     if (isStacking) {
-      float ticks = getCurrentTicks();
-      float theta = ticksToTheta(ticks);
       float desiredSpeed = getDesiredRailsSpeed(theta);
       printf("desiredSpeed dThetaDT %f\n", desiredSpeed);
       desiredSpeed = desiredSpeed * dTicksDTheta(theta);
       desiredSpeed *= STACKING_SPEED;
       printf("desiredSpeed dTicksDT %f\n", desiredSpeed);
       velController.setTarget(desiredSpeed);
-      if (getCurrentTheta() > RAILS_FORWARD_THETA-0.001) {
+      if (theta > RAILS_FORWARD_THETA-0.001) {
         velController.setTarget(0);
         abortStack();
         controller.setTarget(thetaToTicks(RAILS_FORWARD_THETA));
