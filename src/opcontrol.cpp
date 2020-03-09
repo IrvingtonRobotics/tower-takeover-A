@@ -17,7 +17,6 @@ bool killed = false;
 Timer intakePressedTimer = Timer();
 Timer outtakePressedTimer = Timer();
 bool isContinuousIntake = false;
-Timer outliftTimer = Timer();
 bool isOutlifting = false;
 bool autonActive = false;
 /**
@@ -85,12 +84,6 @@ void runLift() {
   }
   if (isFastUp || isFastDown) {
     lift.glide(isFastUp);
-  }
-  if (outliftTriggered()) {
-    // move up ASAP -- hopefully outtake keeps up
-    isOutlifting = true;
-    outliftTimer = Timer();
-    lift.glide(true);
   }
 }
 
@@ -190,7 +183,6 @@ void driverTimeoutFn(void* param) {
  * For thread safety, ensure that no task affects any other subsystem.
  */
 void opcontrol() {
-  pros::ADIPotentiometer pot(POTENTIOMETER_PORT);
   if (MODE == DRIVER) {
     pros::Task timeoutTask(driverTimeoutFn);
     foldout();
@@ -208,10 +200,6 @@ void opcontrol() {
     // kill if necessary
     if (buttonKill.changedToPressed()) {
       killed = !killed;
-    }
-    if (isOutlifting && outliftTimer.getDtFromStart() > OUTLIFT_OUT_TIME) {
-      isOutlifting = false;
-      intake.stop();
     }
     // printPAPos();
 

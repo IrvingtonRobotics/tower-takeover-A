@@ -27,7 +27,6 @@ The flags can of course be mixed and matched.
 | R2 | Toggle rails angle between fully back and midway forward |
 | Up/Down arrows | Lift up/down to top/bottom |
 | Left/Right arrow | Lift up/down one notch |
-| A / Flick left joystick | Outtake lift |
 | B | Re-tare lift |
 | X | Stop all movement (Emergency kill). Pressing this again will enable movement |
 | Y | Tare Rails |
@@ -41,7 +40,6 @@ It will not cut power to the motors. To do that, hold the power off button.
 | Port | Description |
 |------------|----------|
 | `ADI E` | Rails limit bumper |
-| `ADI F` | Auton selector potentiometer |
 | `ADI A` | Side ultra PING (OUTPUT) |
 | `ADI B` | Side ultra ECHO (INPUT) |
 | `ADI C` | Left ultra PING (OUTPUT) |
@@ -53,7 +51,7 @@ It will not cut power to the motors. To do that, hold the power off button.
 | Motor Port | Function |
 |------------|----------|
 | `10` | Left front drive motor |
-| `2` | Left back drive motor |
+| `3` | Left back drive motor |
 | `9` | Right front drive motor |
 | `1` | Right back drive motor |
 | `15` | Lift motor |

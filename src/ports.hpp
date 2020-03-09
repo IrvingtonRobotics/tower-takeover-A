@@ -10,7 +10,7 @@
 
 // motor ports
 #define DRIVE_LEFT_FRONT_PORT 10
-#define DRIVE_LEFT_BACK_PORT 2
+#define DRIVE_LEFT_BACK_PORT 3
 #define DRIVE_RIGHT_FRONT_PORT 9
 #define DRIVE_RIGHT_BACK_PORT 1
 #define LIFT_PORT 15
@@ -21,7 +21,6 @@
 // ADI (3-wire)
 // What does ADI Stand for? Analog Device Input?
 #define RAILS_LIMIT_PORT 'E'
-#define POTENTIOMETER_PORT 'F'
 // (OUTPUT wire) must be odd (ACEG/1357)
 #define SIDE_ULTRA_PING_PORT 'A'
 // (INPUT wire) must be 1 more than the ping?
