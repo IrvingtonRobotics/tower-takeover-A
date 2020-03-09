@@ -6,18 +6,18 @@ void foldout(bool doBackward) {
   printf("FOLD OUT START %f\n", autonTimer.getDtFromStart().getValue());
   // home rails while lifting
   rails.backToButton();
-  rails.waitUntilSettled();
   // foldout
   lift.setMaxVelocity(700);
-  lift.move(29_in);
+  lift.move(20_in);
   lift.waitUntilSettled();
-  pros::delay(400);
+
   // return
   lift.setMaxVelocity(1200);
-  lift.move(2_in);
-  lift.waitUntilSettled();
-  lift.resetMaxVelocity();
   lift.move(0);
+  lift.waitUntilSettled();
+
+  rails.waitUntilSettled();
+  lift.resetMaxVelocity();
 
   // time to wobble to a stop ig
   pros::delay(50);
