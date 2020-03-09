@@ -39,9 +39,6 @@ class Lift {
   const QLength MIN_THRESHOLD = -1000_in;
   // tolerance when doing small movements: just reach within this of the threshold
   const QLength SMALL_MOVE_TOLERANCE = 0.2_in;
-  // give up on lowering to button after this time if not hit limit switch
-  const QTime LOWER_TO_BUTTON_TIMEOUT = 5_s;
-  const int DEFAULT_LOWER_SPEED = 100;
   static const int NUM_HEIGHTS = 3;
   const QLength TARE_HEIGHT = 2_in;
   // WARNING: targetHeights MUST be sorted
@@ -66,7 +63,6 @@ class Lift {
     AsyncControllerFactory::posIntegrated(PORT);
   AsyncVelIntegratedController velController =
     AsyncControllerFactory::velIntegrated(PORT);
-  Timer timeoutTimer;
 
   /**
    * @param QLength height from ground
@@ -278,47 +274,12 @@ public:
   }
 
   void step() {
-    if (isLowering) {
-      if (timeoutTimer.getDtFromStart() >= LOWER_TO_BUTTON_TIMEOUT) {
-        stopLowering();
-      }
-    }
     // double confirm that arm is holding in place
     controller.setTarget(controller.getTarget());
     if (doClearDropArm) {
       doClearDropArm = false;
       move(0);
     }
-  }
-
-  void stopLowering() {
-    // hand control back to pos
-    flipDisable();
-    isLowering = false;
-    velController.setTarget(0);
-    tare();
-    // avoid the controller resuming to its previous location
-    controller.setTarget(0);
-  }
-
-  void startLowering(int speed) {
-    // move control to vel for smooth movement
-    flipDisable();
-    isLowering = true;
-    timeoutTimer = Timer();
-    velController.setTarget(-abs(speed));
-  }
-
-  void lowerToButton(int speed) {
-    if (isLowering) {
-      stopLowering();
-    } else {
-      startLowering(speed);
-    }
-  }
-
-  void lowerToButton() {
-    lowerToButton(DEFAULT_LOWER_SPEED);
   }
 
   /**
@@ -338,32 +299,14 @@ public:
     printf("---------\n");
   }
 
-  /**
-   * [Deprecated]
-   * Move the lift 90 degrees up from its current position without regard
-   * for apparent height limits
-   * Used in debugging (Please don't)
-   */
-  void lift90() {
-    printf("---------\n");
-    printf("  lift90  \n");
-    printf("---------\n");
-    double currentTicks = getCurrentTicks();
-    printf("current %f\n", currentTicks);
-    double nextTicks = currentTicks + getTicks(PI / 2);
-    printf("next %f\n", nextTicks);
-    controller.setTarget(nextTicks);
-    printf("---------\n");
-  }
-
   void waitUntilSettled() {
+    while (isLowering) {
+      pros::delay(10);
+    }
     controller.waitUntilSettled();
   }
 
   void stop() {
-    if (isLowering) {
-      stopLowering();
-    }
     move(getCurrentTicks());
   }
 };
