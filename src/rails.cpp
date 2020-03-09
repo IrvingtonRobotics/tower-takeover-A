@@ -32,7 +32,7 @@ class Rails {
   const QTime BACK_TO_BUTTON_TIMEOUT = 8_s;
   // for backToButton
   const int DEFAULT_BACK_SPEED = 220;
-  const QTime UNCLEAR_ARM_DELAY = 150_ms;
+  const QTime UNCLEAR_ARM_DELAY = 250_ms;
   Timer unclearArmTimer = Timer();
   bool delayingUnclearArm = true;
 

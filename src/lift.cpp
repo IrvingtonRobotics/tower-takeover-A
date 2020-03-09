@@ -196,6 +196,7 @@ public:
    */
   void move(double ticks) {
     double taredTicks = ticks - tareTicks;
+    printf("Moving lift to height %f_in\n", (getHeight(ticks)/1_in).getValue());
     if (getHeight(ticks) > CLEAR_ARM_HEIGHT) {
       doClearArm = true;
       pros::delay((CLEAR_DELAY / 1_ms).getValue());
