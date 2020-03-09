@@ -3,6 +3,7 @@
 
 extern bool doClearArm;
 extern bool doUnclearArm;
+extern bool doClearDropArm;
 
 /**
  * Main class for the Lift subsystem.
@@ -282,7 +283,12 @@ public:
         stopLowering();
       }
     }
+    // double confirm that arm is holding in place
     controller.setTarget(controller.getTarget());
+    if (doClearDropArm) {
+      doClearDropArm = false;
+      move(0);
+    }
   }
 
   void stopLowering() {

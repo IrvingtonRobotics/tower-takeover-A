@@ -35,6 +35,7 @@ extern bool isRed;
 
 extern bool doClearArm;
 extern bool doUnclearArm;
+extern bool doClearDropArm;
 
 struct posAngle {
   QLength x;

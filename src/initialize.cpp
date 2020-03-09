@@ -12,6 +12,7 @@ Intake intake = Intake();
 Feedback feedback = Feedback();
 bool doClearArm = false;
 bool doUnclearArm = false;
+bool doClearDropArm = false;
 Timer cumTimer;
 
 /**

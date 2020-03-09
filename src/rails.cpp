@@ -4,6 +4,7 @@
 
 extern bool doClearArm;
 extern bool doUnclearArm;
+extern bool doClearDropArm;
 
 /**
  * Main class for the Rails angling subsystem
@@ -102,10 +103,14 @@ class Rails {
   }
 
   void move(double ticks) {
-    printf("Moving rails to %f\n", ticksToTheta(ticks));
-    if (ticksToTheta(ticks) < RAILS_BACK_THETA) {
+    float destAngle = ticksToTheta(ticks);
+    printf("Moving rails to %f\n", destAngle);
+    if (destAngle < RAILS_BACK_THETA) {
       // would die moving back
       return;
+    }
+    if (destAngle < CLEAR_ARM_THETA) {
+      doClearDropArm = true;
     }
     abortStack();
     printf("Moving rails to %f ticks\n", ticks);
@@ -300,7 +305,7 @@ public:
   }
 
   void clearArm() {
-    if (getCurrentTheta() < CLEAR_ARM_THETA) {
+    if (getTargetTheta() < CLEAR_ARM_THETA) {
       moveAngle(CLEAR_ARM_THETA, CLEAR_ARM_SPEED);
       isArmCleared = true;
     }
