@@ -1,6 +1,12 @@
 # VEX Tower Takeover Code
 **Team 44730A Bluescreens**
 
+Competition season is now over. Since there are a few items in this repo that should be split, I'll move them into separate repos soon. These include:
+
+ - `proj.py` for compiling different routines to different slots and checking the README ports. This could be improved by also checking the controls table.
+ - `utils/auto-profile` for creating autonomous routines from pseudo-programming in Figma
+ - `utils/auto-cat` for printing out all the code for documentation. This one definitely needs some work, such as showing just diffs instead of the whole code.
+
 ## Uploading
 You can make and upload just with the standard `pros make all` and `pros upload`, but to utilize default slots, do the following:
 
